@@ -5,7 +5,6 @@ import {
     Column,
     CreateDateColumn,
     Entity,
-    JoinColumn,
     ManyToOne,
     PrimaryGeneratedColumn,
     UpdateDateColumn,
@@ -17,17 +16,20 @@ export class Comment {
     id: number;
 
     @Column()
-    content: string;
-
-    @Column()
-    @IsNumber()
-    likes: number;
-
-    @Column()
     postId: number;
 
     @Column()
     userId: number;
+
+    @Column({ nullable: true })
+    parentId: number;
+
+    @Column()
+    content: string;
+
+    @Column({ default: 0 })
+    @IsNumber()
+    likes: number;
 
     @CreateDateColumn()
     createdAt: Date;
@@ -38,6 +40,6 @@ export class Comment {
     @ManyToOne(() => User, (user) => user.comments)
     user: User;
 
-    @ManyToOne(() => Post, (post) => post.comments)
+    @ManyToOne(() => Post, (post) => post.comments, { onDelete: 'CASCADE' })
     post: Post;
 }
