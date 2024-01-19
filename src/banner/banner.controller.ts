@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import { Controller, Get, Post, Body, Param, Delete, Put } from '@nestjs/common';
 import { BannerService } from './banner.service';
 import { CreateBannerDto } from './dto/create-banner.dto';
 import { UpdateBannerDto } from './dto/update-banner.dto';
@@ -7,28 +7,33 @@ import { UpdateBannerDto } from './dto/update-banner.dto';
 export class BannerController {
     constructor(private readonly bannerService: BannerService) {}
 
+    // 새 배너 생성
     @Post()
-    create(@Body() createBannerDto: CreateBannerDto) {
-        return this.bannerService.create(createBannerDto);
+    async createBanner(@Body() createBannerDto: CreateBannerDto) {
+        return await this.bannerService.createBanner(createBannerDto);
     }
 
-    @Get()
-    findAll() {
-        return this.bannerService.findAll();
-    }
-
+    // 특정 배너 조회
     @Get(':id')
-    findOne(@Param('id') id: string) {
-        return this.bannerService.findOne(+id);
+    async getBanner(@Param('id') id: string) {
+        return await this.bannerService.getBannerById(+id);
     }
 
-    @Patch(':id')
-    update(@Param('id') id: string, @Body() updateBannerDto: UpdateBannerDto) {
-        return this.bannerService.update(+id, updateBannerDto);
+    // 배너 수정
+    @Put(':id')
+    async updateBanner(@Param('id') id: string, @Body() updateBannerDto: UpdateBannerDto) {
+        return await this.bannerService.updateBanner(+id, updateBannerDto);
     }
 
+    // 배너 삭제
     @Delete(':id')
-    remove(@Param('id') id: string) {
-        return this.bannerService.remove(+id);
+    async deleteBanner(@Param('id') id: string) {
+        return await this.bannerService.deleteBanner(+id);
+    }
+
+    // 배너 클릭 이벤트
+    @Get(':id/click')
+    async getBannerClick(@Param('id') id: string) {
+        return this.bannerService.clickBanner(+id);
     }
 }
