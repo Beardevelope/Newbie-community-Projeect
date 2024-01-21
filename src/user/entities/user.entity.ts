@@ -8,7 +8,6 @@ import {
     CreateDateColumn,
     DeleteDateColumn,
     Entity,
-    ManyToMany,
     OneToMany,
     PrimaryGeneratedColumn,
     UpdateDateColumn,
@@ -54,7 +53,7 @@ export class User {
     @DeleteDateColumn()
     deletedAt: Date;
 
-    @OneToMany((type) => Comment, (comment) => comment.user)
+    @OneToMany((type) => Comment, (comment) => comment.users)
     comments: Comment[];
 
     @OneToMany((type) => Post, (post) => post.user)
