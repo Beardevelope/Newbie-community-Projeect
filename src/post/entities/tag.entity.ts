@@ -22,6 +22,6 @@ export class Tag {
     @UpdateDateColumn()
     updatedAt: Date;
 
-    @ManyToMany((type) => Post, (post)=> post.tags)
+    @ManyToMany((type) => Post, (post) => post.tags)
     posts: Post[];
 }
