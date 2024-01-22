@@ -6,10 +6,8 @@ import { Post } from './entities/post.entity';
 import { Tag } from './entities/tag.entity';
 
 @Module({
-  imports: [
-    TypeOrmModule.forFeature([Post, Tag]),
-  ],
-  controllers: [PostController],
-  providers: [PostService],
+    imports: [TypeOrmModule.forFeature([Post, Tag])],
+    controllers: [PostController],
+    providers: [PostService],
 })
 export class PostModule {}
