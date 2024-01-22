@@ -2,7 +2,7 @@ import { BadRequestException, Injectable, NotFoundException } from '@nestjs/comm
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { InjectRepository } from '@nestjs/typeorm';
-import { UserModel } from './entities/user.entity';
+import { User } from './entities/user.entity';
 import { Repository } from 'typeorm';
 import { DUPLICATE_EMAIL, PASSWORD_NOT_MATCH } from './const/users-error-message';
 import * as bcrypt from 'bcrypt';
@@ -10,8 +10,8 @@ import * as bcrypt from 'bcrypt';
 @Injectable()
 export class UserService {
     constructor(
-        @InjectRepository(UserModel)
-        private readonly usersRepository: Repository<UserModel>,
+        @InjectRepository(User)
+        private readonly usersRepository: Repository<User>,
     ) {}
 
     /**
