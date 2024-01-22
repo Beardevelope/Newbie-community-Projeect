@@ -2,7 +2,7 @@ import { BadRequestException, Injectable, NotFoundException } from '@nestjs/comm
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { InjectRepository } from '@nestjs/typeorm';
-import { UsersModel } from './entities/user.entity';
+import { UserModel } from './entities/user.entity';
 import { Repository } from 'typeorm';
 import { DUPLICATE_EMAIL, PASSWORD_NOT_MATCH } from './const/users-error-message';
 import * as bcrypt from 'bcrypt';
@@ -10,22 +10,9 @@ import * as bcrypt from 'bcrypt';
 @Injectable()
 export class UserService {
     constructor(
-        @InjectRepository(UsersModel)
-        private readonly usersRepository: Repository<UsersModel>,
+        @InjectRepository(UserModel)
+        private readonly usersRepository: Repository<UserModel>,
     ) {}
-
-    /**
-     * 이메일을 통해 유저정보 찾기
-     * @param email
-     */
-
-    async findUserAndEmail(email: string) {
-        return this.usersRepository.findOne({
-            where: {
-                email,
-            },
-        });
-    }
 
     /**
      * 회원가입
@@ -33,7 +20,7 @@ export class UserService {
      */
 
     async signup(createUserDto: CreateUserDto) {
-        const findUser = await this.findUserAndEmail(createUserDto.email);
+        const findUser = await this.getUserByEmail(createUserDto.email);
 
         if (findUser) {
             throw new BadRequestException(DUPLICATE_EMAIL);
@@ -43,12 +30,15 @@ export class UserService {
             throw new BadRequestException(PASSWORD_NOT_MATCH);
         }
 
-        const hashedPassword = await bcrypt.hash(createUserDto.password, +process.env.SALT_KEY);
+        const hashedPassword = await bcrypt.hash(
+            createUserDto.password,
+            +process.env.BCRYPT_SALT_ROUND,
+        );
 
         const newUser = await this.usersRepository.save({
             email: createUserDto.email,
             password: hashedPassword,
-            nickname: createUserDto.name,
+            nickname: createUserDto.nickname,
         });
 
         return newUser;
@@ -62,6 +52,19 @@ export class UserService {
         return this.usersRepository.findOne({
             where: {
                 id,
+            },
+        });
+    }
+
+    /**
+     * email로 유저 조회
+     * @param email
+     */
+
+    getUserByEmail(email: string) {
+        return this.usersRepository.findOne({
+            where: {
+                email,
             },
         });
     }
@@ -127,10 +130,4 @@ export class UserService {
         user.deletedAt = new Date();
         await this.usersRepository.save(user);
     }
-
-    /**
-     * 1. 이력서 파일업로드 (put method 만들 때 구현할것
-     * 2. 핸드폰 번호 닉네임 추가하는 부분에서 인증기능 가능하면 알아보기.
-     * 3. 이력서 다운로드 기능. 이력서 삭제기능 등록기능.
-     */
 }

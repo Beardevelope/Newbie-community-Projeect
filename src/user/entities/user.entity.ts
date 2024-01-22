@@ -1,24 +1,21 @@
 import { Exclude } from 'class-transformer';
 import { IsEmail, IsNotEmpty, IsNumber, IsString, MinLength } from 'class-validator';
-import { Banner } from 'src/banner/entities/banner.entity';
-import { Comment } from 'src/comment/entities/comment.entity';
-import { Company } from 'src/company/entity/company.entity';
-import { Post } from 'src/post/entities/post.entity';
-import { RecruitPost } from 'src/recruit-post/entities/recruit-post.entity';
+// import { Banner } from 'src/banner/entities/banner.entity';
+// import { Comment } from 'src/comment/entities/comment.entity';
+// import { Post } from 'src/post/entities/post.entity';
 import {
     Column,
     CreateDateColumn,
     DeleteDateColumn,
     Entity,
-    ManyToMany,
     OneToMany,
     OneToOne,
     PrimaryGeneratedColumn,
     UpdateDateColumn,
 } from 'typeorm';
 
-@Entity()
-export class UsersModel {
+@Entity({ name: 'user' })
+export class UserModel {
     @PrimaryGeneratedColumn()
     id: number;
 
@@ -30,10 +27,7 @@ export class UsersModel {
     @IsNotEmpty()
     @IsString()
     @MinLength(6)
-    @Column({ select: false })
-    @Exclude({
-        toPlainOnly: true,
-    })
+    @Column()
     password: string;
 
     @IsNotEmpty({ message: '닉네임을 입력해주세요.' })
@@ -47,6 +41,9 @@ export class UsersModel {
     @Column()
     @IsNumber()
     points: number;
+
+    @Column()
+    isAdmin: boolean;
 
     @Column()
     techType: string;
@@ -66,18 +63,15 @@ export class UsersModel {
     @DeleteDateColumn()
     deletedAt: Date;
 
-    @OneToOne(() => Company, (company) => company.user)
-    company: Company;
+    @Column({ nullable: true })
+    profileImage: string;
 
-    @OneToMany(() => Comment, (comment) => comment.user)
-    comments: Comment[];
+    // @OneToMany(() => Comment, (comment) => comment.user)
+    // comments: Comment[];
 
-    @OneToMany(() => Post, (post) => post.user)
-    posts: Post[];
+    // @OneToMany(() => Post, (post) => post.user)
+    // posts: Post[];
 
-    @OneToMany(() => RecruitPost, (recruitPost) => recruitPost.user)
-    recruitPosts: RecruitPost[];
-
-    @OneToMany(() => Banner, (banner) => banner.user)
-    banners: Banner[];
+    // @OneToMany(() => Banner, (banner) => banner.user)
+    // banners: Banner[];
 }
