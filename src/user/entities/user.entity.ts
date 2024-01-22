@@ -1,3 +1,4 @@
+import { Exclude } from 'class-transformer';
 import { IsEmail, IsNotEmpty, IsNumber, IsString, MinLength } from 'class-validator';
 import { Answer } from 'src/answer/entities/answer.entity';
 import { Banner } from 'src/banner/entities/banner.entity';
@@ -10,24 +11,25 @@ import {
     DeleteDateColumn,
     Entity,
     OneToMany,
+    OneToOne,
     PrimaryGeneratedColumn,
     UpdateDateColumn,
 } from 'typeorm';
 
-@Entity({ name: 'users' })
-export class User {
+@Entity({ name: 'user' })
+export class UserModel {
     @PrimaryGeneratedColumn()
     id: number;
 
-    @IsNotEmpty({ message: '이메일을 입력해주세요.' })
-    @IsEmail({}, { message: '이메일 형식이 올바르지 않습니다.' })
+    @IsNotEmpty()
+    @IsEmail()
     @Column({ unique: true })
     email: string;
 
-    @IsNotEmpty({ message: '비밀번호를 입력해주세요.' })
+    @IsNotEmpty()
     @IsString()
-    @MinLength(6, { message: '비밀번호는 6자 이상이어야 합니다.' })
-    @Column({ select: false })
+    @MinLength(6)
+    @Column()
     password: string;
 
     @IsNotEmpty({ message: '닉네임을 입력해주세요.' })
@@ -43,7 +45,16 @@ export class User {
     points: number;
 
     @Column()
+    isAdmin: boolean;
+
+    @Column()
     techType: string;
+
+    @Column({ default: null, nullable: true })
+    name: string;
+
+    @Column({ default: null, nullable: true })
+    contact: string;
 
     @CreateDateColumn()
     createdAt: Date;
@@ -54,10 +65,13 @@ export class User {
     @DeleteDateColumn()
     deletedAt: Date;
 
-    @OneToMany((type) => Comment, (comment) => comment.user)
-    comments: Comment[];
+    @Column({ nullable: true })
+    profileImage: string;
 
-    @OneToMany((type) => Post, (post) => post.user)
+    // @OneToMany(() => Comment, (comment) => comment.user)
+    // comments: Comment[];
+
+    @OneToMany(() => Post, (post) => post.user)
     posts: Post[];
 
     @OneToMany((type) => Banner, (banner) => banner.user)

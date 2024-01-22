@@ -9,6 +9,7 @@ import { BannerModule } from './banner/banner.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ConfigModule } from '@nestjs/config';
 import { configModuleValidationSchema } from './configs/env-validate.config';
+import { JwtModule } from '@nestjs/jwt';
 import { typeOrmModuleOptions } from './configs/database.config';
 import { ProjectPostModule } from './project-post/project-post.module';
 import { QuestionModule } from './question/question.module';
@@ -23,16 +24,20 @@ import { LikeModule } from './like/like.module';
         PostModule,
         CommentModule,
         BannerModule,
-        ConfigModule.forRoot({
-            isGlobal: true,
-            validationSchema: configModuleValidationSchema,
-        }),
-        TypeOrmModule.forRootAsync(typeOrmModuleOptions),
         ProjectPostModule,
         QuestionModule,
         NeedInfoModule,
         AnswerModule,
         LikeModule,
+        ConfigModule.forRoot({
+            isGlobal: true,
+            validationSchema: configModuleValidationSchema,
+        }),
+        TypeOrmModule.forRootAsync(typeOrmModuleOptions),
+        JwtModule.register({
+            global: true,
+            secret: process.env.JWT_SECRET_KEY,
+        }),
     ],
     controllers: [AppController],
     providers: [AppService],
