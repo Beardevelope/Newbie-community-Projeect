@@ -2,7 +2,7 @@ import { Exclude } from 'class-transformer';
 import { IsEmail, IsNotEmpty, IsNumber, IsString, MinLength } from 'class-validator';
 // import { Banner } from 'src/banner/entities/banner.entity';
 // import { Comment } from 'src/comment/entities/comment.entity';
-// import { Post } from 'src/post/entities/post.entity';
+import { Post } from 'src/post/entities/post.entity';
 import {
     Column,
     CreateDateColumn,
@@ -69,8 +69,8 @@ export class UserModel {
     // @OneToMany(() => Comment, (comment) => comment.user)
     // comments: Comment[];
 
-    // @OneToMany(() => Post, (post) => post.user)
-    // posts: Post[];
+    @OneToMany(() => Post, (post) => post.user)
+    posts: Post[];
 
     // @OneToMany(() => Banner, (banner) => banner.user)
     // banners: Banner[];
