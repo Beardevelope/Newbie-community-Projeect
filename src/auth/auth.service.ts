@@ -1,6 +1,6 @@
 // auth.service.ts
 import { Injectable, UnauthorizedException } from '@nestjs/common';
-import { UserModel } from '../user/entities/user.entity';
+import { User } from '../user/entities/user.entity';
 import { UserService } from '../user/user.service';
 import { JwtService } from '@nestjs/jwt';
 import * as bcrypt from 'bcrypt';
@@ -24,13 +24,13 @@ export class AuthService {
      * @returns login > existingUser
      */
 
-    async loginWithEmail(user: Pick<UserModel, 'email' | 'password'>) {
+    async loginWithEmail(user: Pick<User, 'email' | 'password'>) {
         const existingUser = await this.authenticate(user);
 
         return this.loginUser(existingUser);
     }
 
-    loginUser(user: Pick<UserModel, 'email' | 'id'>) {
+    loginUser(user: Pick<User, 'email' | 'id'>) {
         return {
             accessToken: this.signToken(user, false),
             refreshToken: this.signToken(user, true),
@@ -42,7 +42,7 @@ export class AuthService {
      * @returns existingUser
      */
 
-    async authenticate(user: Pick<UserModel, 'email' | 'password'>) {
+    async authenticate(user: Pick<User, 'email' | 'password'>) {
         console.log(user);
         const existingUser = await this.userService.getUserByEmail(user.email);
 
@@ -63,7 +63,7 @@ export class AuthService {
      * @returns
      */
 
-    signToken(user: Pick<UserModel, 'email' | 'id'>, isRefreshToken: boolean) {
+    signToken(user: Pick<User, 'email' | 'id'>, isRefreshToken: boolean) {
         const token = this.jwtService.sign(
             {
                 id: user.id,
