@@ -1,60 +1,69 @@
-// import { IsDate, IsNotEmpty, IsNumber, IsString } from 'class-validator';
-// import { Comment } from 'src/comment/entities/comment.entity';
-// import { UserModel } from 'src/user/entities/user.entity';
-// import {
-//     Column,
-//     CreateDateColumn,
-//     Entity,
-//     JoinColumn,
-//     ManyToOne,
-//     OneToMany,
-//     PrimaryGeneratedColumn,
-//     UpdateDateColumn,
-// } from 'typeorm';
+import { IsNotEmpty, IsNumber, IsString } from 'class-validator';
+import { UserModel } from 'src/user/entities/user.entity';
+import {
+    Column,
+    CreateDateColumn,
+    Entity,
+    JoinColumn,
+    JoinTable,
+    ManyToMany,
+    ManyToOne,
+    OneToMany,
+    PrimaryGeneratedColumn,
+    UpdateDateColumn,
+} from 'typeorm';
+import { Tag } from './tag.entity';
+import { Comment } from 'src/comment/entities/comment.entity';
 
-// @Entity({ name: 'posts' })
-// export class Post {
-//     @PrimaryGeneratedColumn()
-//     id: number;
+@Entity()
+export class Post {
+    @PrimaryGeneratedColumn()
+    id: number;
 
-//     @Column()
-//     userId: number;
+    @Column()
+    userId: number;
 
-//     @Column()
-//     @IsNotEmpty({ message: '입력란을 확인해주세요' })
-//     @IsString()
-//     title: string;
+    @Column()
+    @IsNotEmpty({ message: '입력란을 확인해주세요' })
+    @IsString()
+    title: string;
 
-//     @Column()
-//     @IsNotEmpty({ message: '입력란을 확인해주세요' })
-//     @IsString()
-//     content: string;
+    @Column()
+    @IsNotEmpty({ message: '입력란을 확인해주세요' })
+    @IsString()
+    content: string;
 
-//     @Column()
-//     @IsString()
-//     image: string;
+    @Column()
+    @IsString()
+    image: string;
 
-//     @Column()
-//     @IsNumber()
-//     likes: number;
+    @Column()
+    @IsNumber()
+    likes: number;
 
-//     @Column()
-//     @IsDate()
-//     deadLine?: Date;
+    @Column({ default: null })
+    status: string;
 
-//     @Column()
-//     category: string;
+    @Column()
+    hitCount: number;
 
-//     @CreateDateColumn()
-//     createdAt: Date;
+    @Column()
+    warning: number;
 
-//     @UpdateDateColumn()
-//     updatedAt: Date;
+    @CreateDateColumn()
+    createdAt: Date;
 
-//     @ManyToOne((type) => UserModel, (user) => user.posts)
-//     @JoinColumn()
-//     user: UserModel;
+    @UpdateDateColumn()
+    updatedAt: Date;
 
-//     @OneToMany((type) => Comment, (comment) => comment.post)
-//     comments: Comment[];
-// }
+    @ManyToOne((type) => User, (user) => user.posts)
+    @JoinColumn({ name: 'user_id', referencedColumnName: 'id' })
+    user: User;
+
+    @ManyToMany((type) => Tag, (tag) => tag.posts, { cascade: true })
+    @JoinTable()
+    tags: Tag[];
+    
+    @OneToMany((type) => Comment, (comment) => comment.post)
+    comments: Comment[];
+}
