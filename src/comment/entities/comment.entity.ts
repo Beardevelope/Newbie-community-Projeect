@@ -1,43 +1,53 @@
-// import { IsNumber } from 'class-validator';
-// import { Post } from 'src/post/entities/post.entity';
-// import { UserModel } from 'src/user/entities/user.entity';
-// import {
-//     Column,
-//     CreateDateColumn,
-//     Entity,
-//     JoinColumn,
-//     ManyToOne,
-//     PrimaryGeneratedColumn,
-//     UpdateDateColumn,
-// } from 'typeorm';
+import { IsNotEmpty, IsNumber } from 'class-validator';
+import { Post } from 'src/post/entities/post.entity';
+import { User } from 'src/user/entities/user.entity';
+import {
+    Column,
+    CreateDateColumn,
+    DeleteDateColumn,
+    Entity,
+    JoinColumn,
+    ManyToOne,
+    PrimaryGeneratedColumn,
+    UpdateDateColumn,
+} from 'typeorm';
 
-// @Entity({ name: 'comment' })
-// export class Comment {
-//     @PrimaryGeneratedColumn()
-//     id: number;
+@Entity({ name: 'comments' })
+export class Comment {
+    @PrimaryGeneratedColumn()
+    id: number;
 
-//     @Column()
-//     content: string;
+    @Column()
+    userId: number;
 
-//     @Column()
-//     @IsNumber()
-//     likes: number;
+    @Column()
+    postId: number;
 
-//     @Column()
-//     postId: number;
+    @Column({ nullable: true })
+    parentId: number;
 
-//     @Column()
-//     userId: number;
+    @Column()
+    @IsNotEmpty({ message: '댓글을 입력해주세요.' })
+    content: string;
 
-//     @CreateDateColumn()
-//     createdAt: Date;
+    @Column({ default: 0 })
+    @IsNumber()
+    likes: number;
 
-//     @UpdateDateColumn()
-//     updatedAt: Date;
+    @CreateDateColumn()
+    createdAt: Date;
 
-//     @ManyToOne(() => UserModel, (user) => user.comments)
-//     user: UserModel;
+    @UpdateDateColumn()
+    updatedAt: Date;
 
-//     @ManyToOne(() => Post, (post) => post.comments)
-//     post: Post;
-// }
+    @DeleteDateColumn()
+    deletedAt: Date;
+
+    @ManyToOne(() => User, (user) => user.comments)
+    @JoinColumn({ name: 'userId' })
+    user: User;
+
+    @ManyToOne(() => Post, (post) => post.comments, { onDelete: 'CASCADE' })
+    @JoinColumn({ name: 'postId' })
+    post: Post;
+}
