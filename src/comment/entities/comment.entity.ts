@@ -1,10 +1,12 @@
-import { IsNumber } from 'class-validator';
+import { IsNotEmpty, IsNumber } from 'class-validator';
 import { Post } from 'src/post/entities/post.entity';
 import { User } from 'src/user/entities/user.entity';
 import {
     Column,
     CreateDateColumn,
+    DeleteDateColumn,
     Entity,
+    JoinColumn,
     ManyToOne,
     PrimaryGeneratedColumn,
     UpdateDateColumn,
@@ -16,15 +18,16 @@ export class Comment {
     id: number;
 
     @Column()
-    postId: number;
+    userId: number;
 
     @Column()
-    userId: number;
+    postId: number;
 
     @Column({ nullable: true })
     parentId: number;
 
     @Column()
+    @IsNotEmpty({ message: '댓글을 입력해주세요.' })
     content: string;
 
     @Column({ default: 0 })
@@ -37,9 +40,14 @@ export class Comment {
     @UpdateDateColumn()
     updatedAt: Date;
 
+    @DeleteDateColumn()
+    deletedAt: Date;
+
     @ManyToOne(() => User, (user) => user.comments)
+    @JoinColumn({ name: 'userId' })
     user: User;
 
     @ManyToOne(() => Post, (post) => post.comments, { onDelete: 'CASCADE' })
+    @JoinColumn({ name: 'postId' })
     post: Post;
 }

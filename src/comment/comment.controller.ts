@@ -19,9 +19,7 @@ import { CreateReplyDto } from './dto/create-reply.dto';
 export class CommentController {
     constructor(private readonly commentService: CommentService) {}
 
-    /**
-     * 댓글 작성
-     */
+    // 새 댓글 작성
     // @UseGuards(AccessTokenGuard)
     @Post(':postId')
     async create(
@@ -30,6 +28,7 @@ export class CommentController {
         @Body() createCommentDto: CreateCommentDto,
     ) {
         const userId = req.userId;
+        console.log(userId);
         const comment = await this.commentService.createComment(+postId, userId, createCommentDto);
 
         return {
@@ -38,22 +37,13 @@ export class CommentController {
         };
     }
 
-    /**
-     * 해당 게시글 댓글 조회
-     */
+    // 해당 게시글 댓글 조회
     @Get(':postId')
     async findAll(@Param('postId') postId: string) {
         return this.commentService.findAllCommentByPostId(+postId);
     }
 
-    // @Get(':id')
-    // findOne(@Param('id') id: string) {
-    //     return this.commentService.findOne(+id);
-    // }
-
-    /**
-     * 댓글 수정
-     */
+    // 댓글 수정
     // @UseGuards(AccessTokenGuard)
     @Put(':postId/:id')
     async update(
@@ -74,9 +64,7 @@ export class CommentController {
         };
     }
 
-    /**
-     * 댓글 삭제
-     */
+    // 댓글 삭제
     // @UseGuards(AccessTokenGuard)
     @Delete(':postId/:id')
     async remove(@Request() req, @Param('id') id: string, @Param('postId') postId: string) {
@@ -134,6 +122,12 @@ export class CommentController {
             userId,
             updateCommentDto,
         );
+
+        const comment = await this.commentService.findCommentById(+id);
+        if (comment.userId !== req.userId) {
+            throw new ForbiddenException('권한이 없습니다.');
+        }
+
         return {
             statusCode: HttpStatus.OK,
             replyComment,
@@ -161,12 +155,12 @@ export class CommentController {
         };
     }
 
-    /**
-     * 좋아요
-     */
+    // 좋아요
     // @UseGuards(AccessTokenGuard)
     @Put(':id/like')
-    async like(@Param('id') id: string) {
-        return this.commentService.likeComment(+id);
+    async like(@Request() req, @Param('id') id: string) {
+        const userId = req.userId;
+        const comment = await this.commentService.likeComment(+id, userId);
+        return comment;
     }
 }

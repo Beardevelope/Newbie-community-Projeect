@@ -1,18 +1,21 @@
-import { IsDate, IsNotEmpty, IsNumber, IsString } from 'class-validator';
-import { Comment } from 'src/comment/entities/comment.entity';
+import { IsNotEmpty, IsNumber, IsString } from 'class-validator';
 import { User } from 'src/user/entities/user.entity';
 import {
     Column,
     CreateDateColumn,
     Entity,
     JoinColumn,
+    JoinTable,
+    ManyToMany,
     ManyToOne,
     OneToMany,
     PrimaryGeneratedColumn,
     UpdateDateColumn,
 } from 'typeorm';
+import { Tag } from './tag.entity';
+import { Comment } from 'src/comment/entities/comment.entity';
 
-@Entity({ name: 'posts' })
+@Entity()
 export class Post {
     @PrimaryGeneratedColumn()
     id: number;
@@ -38,12 +41,14 @@ export class Post {
     @IsNumber()
     likes: number;
 
-    @Column()
-    @IsDate()
-    deadLine?: Date;
+    @Column({ default: null })
+    status: string;
 
     @Column()
-    category: string;
+    hitCount: number;
+
+    @Column()
+    warning: number;
 
     @CreateDateColumn()
     createdAt: Date;
@@ -52,8 +57,12 @@ export class Post {
     updatedAt: Date;
 
     @ManyToOne((type) => User, (user) => user.posts)
-    @JoinColumn()
+    @JoinColumn({ name: 'user_id', referencedColumnName: 'id' })
     user: User;
+
+    @ManyToMany((type) => Tag, (tag) => tag.posts, { cascade: true })
+    @JoinTable()
+    tags: Tag[];
 
     @OneToMany((type) => Comment, (comment) => comment.post)
     comments: Comment[];
