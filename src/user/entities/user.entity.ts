@@ -1,14 +1,13 @@
 import { IsEmail, IsNotEmpty, IsNumber, IsString, MinLength } from 'class-validator';
+import { Answer } from 'src/answer/entities/answer.entity';
 import { Banner } from 'src/banner/entities/banner.entity';
 import { Comment } from 'src/comment/entities/comment.entity';
 import { Post } from 'src/post/entities/post.entity';
-import { RecruitPost } from 'src/recruit-post/entities/recruit-post.entity';
 import {
     Column,
     CreateDateColumn,
     DeleteDateColumn,
     Entity,
-    ManyToMany,
     OneToMany,
     PrimaryGeneratedColumn,
     UpdateDateColumn,
@@ -60,9 +59,9 @@ export class User {
     @OneToMany((type) => Post, (post) => post.user)
     posts: Post[];
 
-    @OneToMany((type) => RecruitPost, (recruitPost) => recruitPost.user)
-    recruitPosts: RecruitPost[];
-
     @OneToMany((type) => Banner, (banner) => banner.user)
     banners: Banner[];
+
+    @OneToMany((type) => Answer, (answer) => answer.user)
+    answer: Answer[];
 }

@@ -36,8 +36,10 @@ export class Comment {
     updatedAt: Date;
 
     @ManyToOne(() => User, (user) => user.comments)
+    @JoinColumn({ name: 'userId' })
     user: User;
 
     @ManyToOne(() => Post, (post) => post.comments)
+    @JoinColumn({ name: 'postId' })
     post: Post;
 }
