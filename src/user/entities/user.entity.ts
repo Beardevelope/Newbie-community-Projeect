@@ -11,13 +11,12 @@ import {
     DeleteDateColumn,
     Entity,
     OneToMany,
-    OneToOne,
     PrimaryGeneratedColumn,
     UpdateDateColumn,
 } from 'typeorm';
 
 @Entity({ name: 'user' })
-export class UserModel {
+export class User {
     @PrimaryGeneratedColumn()
     id: number;
 
@@ -68,8 +67,8 @@ export class UserModel {
     @Column({ nullable: true })
     profileImage: string;
 
-    // @OneToMany(() => Comment, (comment) => comment.user)
-    // comments: Comment[];
+    @OneToMany(() => Comment, (comment) => comment.user)
+    comments: Comment[];
 
     @OneToMany(() => Post, (post) => post.user)
     posts: Post[];
