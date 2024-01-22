@@ -1,33 +1,33 @@
+import { Exclude } from 'class-transformer';
 import { IsEmail, IsNotEmpty, IsNumber, IsString, MinLength } from 'class-validator';
-import { Banner } from 'src/banner/entities/banner.entity';
-import { Comment } from 'src/comment/entities/comment.entity';
-import { Post } from 'src/post/entities/post.entity';
-import { RecruitPost } from 'src/recruit-post/entities/recruit-post.entity';
+// import { Banner } from 'src/banner/entities/banner.entity';
+// import { Comment } from 'src/comment/entities/comment.entity';
+// import { Post } from 'src/post/entities/post.entity';
 import {
     Column,
     CreateDateColumn,
     DeleteDateColumn,
     Entity,
-    ManyToMany,
     OneToMany,
+    OneToOne,
     PrimaryGeneratedColumn,
     UpdateDateColumn,
 } from 'typeorm';
 
-@Entity({ name: 'users' })
-export class User {
+@Entity({ name: 'user' })
+export class UserModel {
     @PrimaryGeneratedColumn()
     id: number;
 
-    @IsNotEmpty({ message: '이메일을 입력해주세요.' })
-    @IsEmail({}, { message: '이메일 형식이 올바르지 않습니다.' })
+    @IsNotEmpty()
+    @IsEmail()
     @Column({ unique: true })
     email: string;
 
-    @IsNotEmpty({ message: '비밀번호를 입력해주세요.' })
+    @IsNotEmpty()
     @IsString()
-    @MinLength(6, { message: '비밀번호는 6자 이상이어야 합니다.' })
-    @Column({ select: false })
+    @MinLength(6)
+    @Column()
     password: string;
 
     @IsNotEmpty({ message: '닉네임을 입력해주세요.' })
@@ -43,7 +43,16 @@ export class User {
     points: number;
 
     @Column()
+    isAdmin: boolean;
+
+    @Column()
     techType: string;
+
+    @Column({ default: null, nullable: true })
+    name: string;
+
+    @Column({ default: null, nullable: true })
+    contact: string;
 
     @CreateDateColumn()
     createdAt: Date;
@@ -54,15 +63,15 @@ export class User {
     @DeleteDateColumn()
     deletedAt: Date;
 
-    @OneToMany((type) => Comment, (comment) => comment.user)
-    comments: Comment[];
+    @Column({ nullable: true })
+    profileImage: string;
 
-    @OneToMany((type) => Post, (post) => post.user)
-    posts: Post[];
+    // @OneToMany(() => Comment, (comment) => comment.user)
+    // comments: Comment[];
 
-    @OneToMany((type) => RecruitPost, (recruitPost) => recruitPost.user)
-    recruitPosts: RecruitPost[];
+    // @OneToMany(() => Post, (post) => post.user)
+    // posts: Post[];
 
-    @OneToMany((type) => Banner, (banner) => banner.user)
-    banners: Banner[];
+    // @OneToMany(() => Banner, (banner) => banner.user)
+    // banners: Banner[];
 }
