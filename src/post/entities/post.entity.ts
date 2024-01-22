@@ -1,5 +1,5 @@
 import { IsNotEmpty, IsNumber, IsString } from 'class-validator';
-import { UserModel } from 'src/user/entities/user.entity';
+import { User } from 'src/user/entities/user.entity';
 import {
     Column,
     CreateDateColumn,
@@ -63,7 +63,7 @@ export class Post {
     @ManyToMany((type) => Tag, (tag) => tag.posts, { cascade: true })
     @JoinTable()
     tags: Tag[];
-    
+
     @OneToMany((type) => Comment, (comment) => comment.post)
     comments: Comment[];
 }
