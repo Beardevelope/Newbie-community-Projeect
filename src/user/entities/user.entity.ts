@@ -1,4 +1,3 @@
-import { Exclude } from 'class-transformer';
 import { IsEmail, IsNotEmpty, IsNumber, IsString, MinLength } from 'class-validator';
 import { Answer } from 'src/answer/entities/answer.entity';
 import { Banner } from 'src/banner/entities/banner.entity';
