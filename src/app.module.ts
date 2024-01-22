@@ -14,6 +14,7 @@ import { ProjectPostModule } from './project-post/project-post.module';
 import { QuestionModule } from './question/question.module';
 import { NeedInfoModule } from './need-info/need-info.module';
 import { AnswerModule } from './answer/answer.module';
+import { LikeModule } from './like/like.module';
 
 @Module({
     imports: [
@@ -31,6 +32,7 @@ import { AnswerModule } from './answer/answer.module';
         QuestionModule,
         NeedInfoModule,
         AnswerModule,
+        LikeModule,
     ],
     controllers: [AppController],
     providers: [AppService],

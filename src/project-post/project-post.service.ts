@@ -49,6 +49,8 @@ export class ProjectPostService {
         const { title, content, image, applicationDeadLine, startDate, dueDate } =
             updateProjectPostDto;
 
+        await this.findById(id);
+
         await this.projectPostRepository.update(
             { id },
             {
@@ -70,6 +72,17 @@ export class ProjectPostService {
     async remove(id: number) {
         await this.projectPostRepository.delete({ id });
         return { message: '프로젝트 삭제 완료' };
+    }
+
+    // 프로젝트 조회수
+    async increaseHitCount(id: number) {
+        const projectPost = await this.findById(id);
+
+        projectPost.hitCount += 1;
+
+        await this.projectPostRepository.save(projectPost);
+
+        return projectPost.hitCount;
     }
 
     // Id로 찾는 함수

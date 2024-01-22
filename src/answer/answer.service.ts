@@ -75,7 +75,7 @@ export class AnswerService {
         });
 
         if (!findStack) {
-            throw new BadRequestException('존재하지않은 기술입니다');
+            throw new BadRequestException(BAD_REQUEST);
         }
     }
 }

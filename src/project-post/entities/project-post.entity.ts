@@ -1,4 +1,5 @@
 import { IsDate, IsNotEmpty, IsNumber, IsString } from 'class-validator';
+import { Like } from 'src/like/entities/like.entity';
 import { NeedInfo } from 'src/need-info/entities/need-info.entity';
 import { Question } from 'src/question/entities/question.entity';
 import {
@@ -48,10 +49,6 @@ export class ProjectPost {
     @IsNumber()
     hitCount: number;
 
-    @Column({ default: 0 })
-    @IsNumber()
-    like: number;
-
     @CreateDateColumn()
     createdAt: Date;
 
@@ -63,4 +60,7 @@ export class ProjectPost {
 
     @OneToMany((type) => Question, (question) => question.projectPost)
     question: Question[];
+
+    @OneToMany((type) => Like, (like) => like.projectPost)
+    like: Like[];
 }

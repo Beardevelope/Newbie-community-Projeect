@@ -31,4 +31,9 @@ export class ProjectPostController {
     remove(@Param('id') id: string) {
         return this.projectPostService.remove(+id);
     }
+
+    @Patch(':id/increaseHitCount')
+    increaseHitCount(@Param('id') id: string) {
+        return this.projectPostService.increaseHitCount(+id);
+    }
 }

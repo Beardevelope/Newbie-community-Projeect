@@ -2,6 +2,7 @@ import { IsEmail, IsNotEmpty, IsNumber, IsString, MinLength } from 'class-valida
 import { Answer } from 'src/answer/entities/answer.entity';
 import { Banner } from 'src/banner/entities/banner.entity';
 import { Comment } from 'src/comment/entities/comment.entity';
+import { Like } from 'src/like/entities/like.entity';
 import { Post } from 'src/post/entities/post.entity';
 import {
     Column,
@@ -64,4 +65,7 @@ export class User {
 
     @OneToMany((type) => Answer, (answer) => answer.user)
     answer: Answer[];
+
+    @OneToMany((type) => Like, (like) => like.user)
+    like: Like[];
 }
