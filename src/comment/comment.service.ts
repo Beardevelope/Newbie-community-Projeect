@@ -7,6 +7,7 @@ import { Comment } from 'src/comment/entities/comment.entity';
 import { Post } from 'src/post/entities/post.entity';
 import { CreateReplyDto } from './dto/create-reply.dto';
 import { UpdateReplyDto } from './dto/update-reply.dto';
+import { CommentLike } from '../comment-like/entitis/comment-like.entity';
 
 @Injectable()
 export class CommentService {
@@ -15,6 +16,8 @@ export class CommentService {
         private readonly commentRepository: Repository<Comment>,
         @InjectRepository(Post)
         private readonly postRepository: Repository<Post>,
+        @InjectRepository(CommentLike)
+        private readonly commentLikeRepository: Repository<CommentLike>,
     ) {}
 
     // 게시글 유효성 확인
@@ -30,7 +33,7 @@ export class CommentService {
     private async verifyCommentId(id: number) {
         const comment = await this.commentRepository.findOne({ where: { id } });
         if (!comment) {
-            throw new NotFoundException('댓글을 찾을 수 없습니다.');
+            throw new NotFoundException('댓글을 찾을 수 없습니다1.');
         }
         return comment;
     }
@@ -39,7 +42,7 @@ export class CommentService {
     private async verifyPostAndComment(id: number, postId: number) {
         const comment = await this.commentRepository.findOne({ where: { id, postId } });
         if (!comment) {
-            throw new NotFoundException('댓글을 찾을 수 없습니다.');
+            throw new NotFoundException('댓글을 찾을 수 없습니다2.');
         }
     }
 
@@ -73,8 +76,8 @@ export class CommentService {
     async updateComment(id: number, postId: number, updateCommentDto: UpdateCommentDto) {
         await this.verifyPostAndComment(id, postId);
 
-        const updatcomment = await this.commentRepository.update(id, updateCommentDto);
-        return updatcomment;
+        const updatComment = await this.commentRepository.update(id, updateCommentDto);
+        return this.verifyCommentId(id);
     }
 
     // 댓글 삭제
@@ -107,7 +110,6 @@ export class CommentService {
     async updateReplyComment(
         postId: number,
         parentId: number,
-        userId: number,
         id: number,
         updateReplyDto: UpdateReplyDto,
     ) {
@@ -115,7 +117,7 @@ export class CommentService {
         await this.verifyCommentId(id);
 
         const updateReply = await this.commentRepository.update(id, updateReplyDto);
-        return updateReply;
+        return this.verifyCommentId(id);
     }
 
     // 대댓글 삭제
@@ -126,20 +128,22 @@ export class CommentService {
         const result = await this.commentRepository.delete(id);
     }
 
-    // 좋아요
-    async likeComment(id: number, userId: number) {
-        // 해당 사용자가 댓글에 좋아요 눌렀는지 확인
-        const userLike = await this.commentRepository.findOne({ where: { id, userId } });
+    // 좋아요 추가
+    async addCommentLike(userId: number, commentId: number): Promise<number> {
+        // 좋아요를 눌렀는지 확인
+        const existingLike = await this.commentLikeRepository.findOne({
+            where: { userId, commentId },
+        });
 
-        if (userLike) {
-            // 이미 좋아요를 눌렀으면 좋아요 취소
-            await this.commentRepository.remove(userLike);
+        if (existingLike) {
+            // 이미 좋아요를 눌렀으면 취소
+            await this.commentLikeRepository.delete(existingLike.id);
             return -1;
         } else {
-            // 이미 누르지 않았으면 좋아요 추가
-            const newLike = this.commentRepository.create({ id, userId });
-            await this.commentRepository.save(newLike);
-            return +1;
+            // 좋아요 추가
+            const newLike = this.commentLikeRepository.create({ userId, commentId });
+            await this.commentLikeRepository.save(newLike);
+            return 1;
         }
     }
 }
