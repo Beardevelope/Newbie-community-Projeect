@@ -248,7 +248,7 @@ export class PostService {
         posts.forEach(async (post) => {
             if (post.comments.length <= 0) {
                 const aiReplied = await this.autoReply.ask(post.content);
-                await this.commenService.createComment(post.id, 1, { content: '' });
+                await this.commenService.createComment(post.id, 1, { content: aiReplied });
             }
         });
     }
