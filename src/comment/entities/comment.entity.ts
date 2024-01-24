@@ -1,6 +1,8 @@
 import { IsNotEmpty, IsNumber } from 'class-validator';
 import { Post } from 'src/post/entities/post.entity';
 import { User } from 'src/user/entities/user.entity';
+import { CommentLike } from '../../comment-like/entitis/comment-like.entity';
+
 import {
     Column,
     CreateDateColumn,
@@ -8,11 +10,12 @@ import {
     Entity,
     JoinColumn,
     ManyToOne,
+    OneToMany,
     PrimaryGeneratedColumn,
     UpdateDateColumn,
 } from 'typeorm';
 
-@Entity({ name: 'comments' })
+@Entity({ name: 'comment' })
 export class Comment {
     @PrimaryGeneratedColumn()
     id: number;
@@ -43,11 +46,15 @@ export class Comment {
     @DeleteDateColumn()
     deletedAt: Date;
 
+    @OneToMany(() => CommentLike, (commentLike) => commentLike.comment)
+    @JoinColumn()
+    commentLikes: CommentLike;
+
     @ManyToOne(() => User, (user) => user.comments)
-    @JoinColumn({ name: 'userId' })
+    @JoinColumn()
     user: User;
 
     @ManyToOne(() => Post, (post) => post.comments, { onDelete: 'CASCADE' })
-    @JoinColumn({ name: 'postId' })
+    @JoinColumn()
     post: Post;
 }
