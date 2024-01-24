@@ -6,11 +6,13 @@ import {
     Column,
     CreateDateColumn,
     Entity,
+    ManyToMany,
     OneToMany,
     PrimaryGeneratedColumn,
     UpdateDateColumn,
 } from 'typeorm';
 import { ProjectApplicant } from './projectApplicant.entity';
+import { User } from 'src/user/entities/user.entity';
 
 @Entity({ name: 'project_post' })
 export class ProjectPost {
@@ -69,6 +71,6 @@ export class ProjectPost {
     @OneToMany((type) => Like, (like) => like.projectPost)
     like: Like[];
 
-    @OneToMany((type) => ProjectApplicant, (projectApplicant) => projectApplicant.projectPost)
-    projectApplicant: ProjectApplicant[];
+    @ManyToMany((type) => User, (user) => user.projectPost)
+    user: User[];
 }
