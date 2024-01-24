@@ -67,7 +67,7 @@ export class User {
     deletedAt: Date;
 
     @Column({ nullable: true })
-    profileImage: string;
+    profileImage?: string;
 
     @OneToMany(() => Comment, (comment) => comment.user)
     comments: Comment[];
