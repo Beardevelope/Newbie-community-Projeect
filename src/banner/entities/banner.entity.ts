@@ -4,6 +4,7 @@ import {
     Column,
     CreateDateColumn,
     Entity,
+    JoinColumn,
     ManyToOne,
     OneToOne,
     PrimaryGeneratedColumn,
@@ -24,10 +25,10 @@ export class Banner {
     @IsString()
     title: string;
 
-    @Column()
+    @Column({ nullable: true })
     @IsNotEmpty({ message: '이미지 url을 입력해주세요.' })
     @IsString()
-    url: string;
+    file: string;
 
     @CreateDateColumn()
     createdAt: Date;
@@ -36,6 +37,7 @@ export class Banner {
     updatedAt: Date;
 
     @ManyToOne(() => User, (user) => user.banners)
+    @JoinColumn()
     user: User;
 
     @OneToOne(() => BannerClick, (bannerClick) => bannerClick.banner)
