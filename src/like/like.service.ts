@@ -13,17 +13,15 @@ export class LikeService {
         private readonly projectPostRepository: Repository<ProjectPost>,
     ) {}
 
-    async create(projectPostId: number) {
-        //userId 넣기
-        const projectPost = await this.likeRepository.save({ projectPostId });
+    async create(projectPostId: number, userId: number) {
+        const projectPost = await this.likeRepository.save({ userId, projectPostId });
 
         return projectPost;
     }
 
     // 좋아요 목록 전체 조회 (userId에 따라 projectPost 조회 예정)
-    async findAll() {
-        //userId 넣기
-        const likes = await this.likeRepository.find({});
+    async findAll(userId: number) {
+        const likes = await this.likeRepository.find({ where: { userId } });
 
         return likes.map(async (like) => {
             return await this.projectPostRepository.findOne({

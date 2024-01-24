@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Patch, Param } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Req } from '@nestjs/common';
 import { AnswerService } from './answer.service';
 import { CreateAnswerDto } from './dto/create-answer.dto';
 import { UpdateAnswerDto } from './dto/update-answer.dto';
@@ -11,9 +11,10 @@ export class AnswerController {
     create(
         @Param('projectPostId') projectPostId: string,
         @Param('questionId') questionId: string,
+        @Req() req,
         @Body() createAnswerDto: CreateAnswerDto,
     ) {
-        return this.answerService.create(+projectPostId, +questionId, createAnswerDto);
+        return this.answerService.create(+projectPostId, +questionId, req.user.id, createAnswerDto);
     }
 
     @Get(':projectPostId')
@@ -25,8 +26,9 @@ export class AnswerController {
     update(
         @Param('projectPostId') projectPostId: string,
         @Param('questionId') questionId: string,
+        @Req() req,
         @Body() updateAnswerDto: UpdateAnswerDto,
     ) {
-        return this.answerService.update(+projectPostId, +questionId, updateAnswerDto);
+        return this.answerService.update(+projectPostId, +questionId, req.user.id, updateAnswerDto);
     }
 }

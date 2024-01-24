@@ -10,6 +10,7 @@ import {
     PrimaryGeneratedColumn,
     UpdateDateColumn,
 } from 'typeorm';
+import { ProjectApplicant } from './projectApplicant.entity';
 
 @Entity({ name: 'project_post' })
 export class ProjectPost {
@@ -29,6 +30,10 @@ export class ProjectPost {
     @Column()
     @IsString()
     image: string;
+
+    @Column({ default: '모집중' })
+    @IsString()
+    status: string;
 
     @Column()
     @IsNotEmpty({ message: '마감 일자를 입력해주세요' })
@@ -63,4 +68,7 @@ export class ProjectPost {
 
     @OneToMany((type) => Like, (like) => like.projectPost)
     like: Like[];
+
+    @OneToMany((type) => ProjectApplicant, (projectApplicant) => projectApplicant.projectPost)
+    projectApplicant: ProjectApplicant[];
 }

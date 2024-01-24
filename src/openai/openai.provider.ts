@@ -1,4 +1,4 @@
-
+/** 
     //인스턴스 생성
     const openai = new OpenAI({
         apiKey: this.configservice.get<string>('OPENAI_API_KEY')
@@ -18,3 +18,4 @@
     });
 
 
+*/

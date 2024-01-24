@@ -1,7 +1,8 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, Req } from '@nestjs/common';
 import { ProjectPostService } from './project-post.service';
 import { CreateProjectPostDto } from './dto/create-project-post.dto';
 import { UpdateProjectPostDto } from './dto/update-project-post.dto';
+import { ProjectApplicant } from './entities/projectApplicant.entity';
 
 @Controller('project-post')
 export class ProjectPostController {
@@ -35,5 +36,15 @@ export class ProjectPostController {
     @Patch(':id/increaseHitCount')
     increaseHitCount(@Param('id') id: string) {
         return this.projectPostService.increaseHitCount(+id);
+    }
+
+    @Post(':id/projectApplicant')
+    createProjectApplicant(@Param('id') id: string, @Req() req) {
+        return this.projectPostService.createProjectApplicant(+id, req.user.id);
+    }
+
+    @Delete(':id/ProjectApplicant')
+    removeProjectApplicant(@Param('id') id: string, @Req() req) {
+        return this.projectPostService.removeProjectApplicant(+id, req.user.id);
     }
 }

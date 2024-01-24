@@ -5,11 +5,14 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { NeedInfo } from './entities/need-info.entity';
 import { Repository } from 'typeorm';
 import _ from 'lodash';
+import { ProjectPost } from 'src/project-post/entities/project-post.entity';
 
 @Injectable()
 export class NeedInfoService {
     constructor(
         @InjectRepository(NeedInfo) private readonly needInfoRepository: Repository<NeedInfo>,
+        @InjectRepository(ProjectPost)
+        private readonly projectPostRepository: Repository<ProjectPost>,
     ) {}
 
     // 필요 기술 스택 생성
@@ -38,6 +41,18 @@ export class NeedInfoService {
         const { numberOfPeople } = updateNeedInfoDto;
 
         await this.needInfoRepository.update({ projectPostId, id }, { numberOfPeople });
+
+        const findAllStacks = await this.findAll(projectPostId);
+
+        const existStacks = findAllStacks.some((stack) => {
+            return stack.numberOfPeople === 0;
+        });
+
+        if (existStacks) {
+            await this.projectPostRepository.update({ id: projectPostId }, { status: '모집완료' });
+        } else {
+            await this.projectPostRepository.update({ id: projectPostId }, { status: '모집중' });
+        }
 
         const result = await this.findById(projectPostId, id);
 

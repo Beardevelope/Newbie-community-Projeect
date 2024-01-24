@@ -4,6 +4,7 @@ import { Banner } from 'src/banner/entities/banner.entity';
 import { Comment } from 'src/comment/entities/comment.entity';
 import { Like } from 'src/like/entities/like.entity';
 import { Post } from 'src/post/entities/post.entity';
+import { ProjectApplicant } from 'src/project-post/entities/projectApplicant.entity';
 import {
     Column,
     CreateDateColumn,
@@ -80,4 +81,7 @@ export class User {
 
     @OneToMany((type) => Like, (like) => like.user)
     like: Like[];
+
+    @OneToMany((type) => ProjectApplicant, (projectApplicant) => projectApplicant.user)
+    projectApplicant: ProjectApplicant[];
 }

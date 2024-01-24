@@ -3,9 +3,10 @@ import { ProjectPostService } from './project-post.service';
 import { ProjectPostController } from './project-post.controller';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ProjectPost } from './entities/project-post.entity';
+import { ProjectApplicant } from './entities/projectApplicant.entity';
 
 @Module({
-    imports: [TypeOrmModule.forFeature([ProjectPost])],
+    imports: [TypeOrmModule.forFeature([ProjectPost, ProjectApplicant])],
     controllers: [ProjectPostController],
     providers: [ProjectPostService],
 })

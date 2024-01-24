@@ -15,8 +15,13 @@ export class AnswerService {
         @InjectRepository(NeedInfo) private readonly needInfoRepository: Repository<NeedInfo>,
     ) {}
 
-    // 답변 생성 (유저 추가 예정)
-    async create(projectPostId: number, questionId: number, createAnswerDto: CreateAnswerDto) {
+    // 답변 생성 (유저 추가 예정 테스트하기)
+    async create(
+        projectPostId: number,
+        questionId: number,
+        userId: number,
+        createAnswerDto: CreateAnswerDto,
+    ) {
         const { answer, stack } = createAnswerDto;
 
         await this.findStack(projectPostId, stack);
@@ -25,6 +30,7 @@ export class AnswerService {
             questionId,
             answer,
             stack,
+            userId,
         });
 
         return result;
@@ -42,20 +48,24 @@ export class AnswerService {
     }
 
     // 답변 수정을 어떻게 할지 ex) 유저 지원 목록에서 변경 or 변경불가
-    async update(projectPostId: number, questionId: number, updateAnswerDto: UpdateAnswerDto) {
+    async update(
+        projectPostId: number,
+        questionId: number,
+        userId: number,
+        updateAnswerDto: UpdateAnswerDto,
+    ) {
         const { answer, stack } = updateAnswerDto;
 
         await this.findStack(projectPostId, stack);
 
-        /** 
-         * 
-        const oldAnswer = this.answerRepository.find({ where: { userId } });
+        const oldAnswers = await this.answerRepository.find({ where: { userId } });
 
-        if (oldAnswer.stack !== stack) {
-            await this.answerRepository.update({ userId }, { stack });
-        }
-
-        */
+        // 필터로 바꿔보기?
+        oldAnswers.map(async (oldAnswer) => {
+            if (oldAnswer.stack !== stack) {
+                await this.answerRepository.update({ userId }, { stack });
+            }
+        });
 
         const result = await this.answerRepository.update(
             { questionId },

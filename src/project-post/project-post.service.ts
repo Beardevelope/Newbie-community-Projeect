@@ -5,12 +5,15 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { ProjectPost } from './entities/project-post.entity';
 import { Repository } from 'typeorm';
 import _ from 'lodash';
+import { ProjectApplicant } from './entities/projectApplicant.entity';
 
 @Injectable()
 export class ProjectPostService {
     constructor(
         @InjectRepository(ProjectPost)
         private readonly projectPostRepository: Repository<ProjectPost>,
+        @InjectRepository(ProjectApplicant)
+        private readonly projectApplicantRepository: Repository<ProjectApplicant>,
     ) {}
 
     // 토이프로젝트 생성
@@ -83,6 +86,24 @@ export class ProjectPostService {
         await this.projectPostRepository.save(projectPost);
 
         return projectPost.hitCount;
+    }
+
+    // 프로젝트 지원 생성
+    async createProjectApplicant(id: number, userId: number) {
+        await this.findById(id);
+
+        await this.projectApplicantRepository.save({ projectPostId: id, userId: userId });
+
+        return { message: '프로젝트 지원 완료' };
+    }
+
+    // 프로젝트 지원 삭제
+    async removeProjectApplicant(id: number, userId: number) {
+        await this.findById(id);
+
+        await this.projectApplicantRepository.delete({ projectPostId: id, userId: userId });
+
+        return { message: '프로젝트 지원 완료' };
     }
 
     // Id로 찾는 함수
