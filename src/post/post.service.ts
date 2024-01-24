@@ -1,8 +1,10 @@
 import {
     BadRequestException,
+    Inject,
     Injectable,
     NotAcceptableException,
     NotFoundException,
+    forwardRef,
 } from '@nestjs/common';
 import { CreatePostDto } from './dto/create-post.dto';
 import { UpdatePostDto } from './dto/update-post.dto';
@@ -11,6 +13,8 @@ import { Post } from './entities/post.entity';
 import { DataSource, IsNull, LessThan, MoreThan, Not, Repository } from 'typeorm';
 import { Cron } from '@nestjs/schedule';
 import { Tag } from './entities/tag.entity';
+import { AutoReply } from 'src/openai/openai.provider';
+import { CommentService } from 'src/comment/comment.service';
 
 @Injectable()
 export class PostService {
@@ -20,6 +24,9 @@ export class PostService {
         @InjectRepository(Tag)
         private readonly tagRepository: Repository<Tag>,
         private readonly dataSource: DataSource,
+        @Inject(forwardRef(() => AutoReply))
+        private readonly autoReply: AutoReply,
+        private readonly commenService: CommentService,
     ) {}
 
     // 게시글 생성
@@ -38,13 +45,15 @@ export class PostService {
             tags.push(existedTag);
         }
 
-        return await this.postRepository.save({
+        const post = await this.postRepository.save({
             title,
             content,
             image,
             tags,
             userId,
         });
+
+        return post;
     }
 
     // 게시글 조회 기능 구현 필터까지 다 구현하기 req.query를 이용하여 구현하기
@@ -95,6 +104,7 @@ export class PostService {
             where: {
                 id: postId,
             },
+            relations: { comments: true },
         });
 
         if (!foundPost) {
@@ -215,10 +225,31 @@ export class PostService {
     async removeByAccumulatedWarning() {
         const foundPosts = await this.postRepository.find();
 
-        for(let i =0; i<foundPosts.length; i++) {
+        for (let i = 0; i < foundPosts.length; i++) {
             if (foundPosts[i].warning > 4) {
-                await this.postRepository.delete(foundPosts[i].id)
+                await this.postRepository.delete(foundPosts[i].id);
             }
         }
+    }
+
+    async autoReplyComment() {
+        const posts = await this.postRepository.find({
+            where: {
+                createdAt: LessThan(new Date()), // Replace with your desired date comparison
+                comments: {
+                    id: IsNull(), // This ensures that the post has comments
+                },
+            },
+            order: { createdAt: 'ASC' },
+            take: 3,
+            relations: { comments: true },
+        });
+        console.log(posts);
+        posts.forEach(async (post) => {
+            if (post.comments.length <= 0) {
+                const aiReplied = await this.autoReply.ask(post.content);
+                await this.commenService.createComment(post.id, 1, { content: '' });
+            }
+        });
     }
 }
