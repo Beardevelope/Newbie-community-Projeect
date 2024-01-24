@@ -16,6 +16,7 @@ import { QuestionModule } from './question/question.module';
 import { NeedInfoModule } from './need-info/need-info.module';
 import { AnswerModule } from './answer/answer.module';
 import { LikeModule } from './like/like.module';
+import { CommentLikeModule } from './comment-like/comment-like.module';
 
 @Module({
     imports: [
@@ -29,6 +30,7 @@ import { LikeModule } from './like/like.module';
         NeedInfoModule,
         AnswerModule,
         LikeModule,
+        CommentLikeModule,
         ConfigModule.forRoot({
             isGlobal: true,
             validationSchema: configModuleValidationSchema,
