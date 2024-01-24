@@ -9,27 +9,29 @@ import {
     Request,
     HttpStatus,
     ForbiddenException,
+    UseGuards,
+    ParseIntPipe,
 } from '@nestjs/common';
 import { CommentService } from './comment.service';
 import { CreateCommentDto } from './dto/create-comment.dto';
 import { UpdateCommentDto } from './dto/update-comment.dto';
 import { CreateReplyDto } from './dto/create-reply.dto';
+import { BasicTokenGuard } from 'src/auth/guard/basic.guard';
 
 @Controller('comment')
 export class CommentController {
     constructor(private readonly commentService: CommentService) {}
 
     // 새 댓글 작성
-    // @UseGuards(AccessTokenGuard)
+    @UseGuards(BasicTokenGuard)
     @Post(':postId')
     async create(
         @Request() req,
-        @Param('postId') postId: string,
+        @Param('postId', ParseIntPipe) postId: number,
         @Body() createCommentDto: CreateCommentDto,
     ) {
-        const userId = req.userId;
-        console.log(userId);
-        const comment = await this.commentService.createComment(+postId, userId, createCommentDto);
+        const userId = req.user.id;
+        const comment = await this.commentService.createComment(postId, userId, createCommentDto);
 
         return {
             statusCode: HttpStatus.CREATED,
@@ -39,62 +41,64 @@ export class CommentController {
 
     // 해당 게시글 댓글 조회
     @Get(':postId')
-    async findAll(@Param('postId') postId: string) {
-        return this.commentService.findAllCommentByPostId(+postId);
+    async findAll(@Param('postId', ParseIntPipe) postId: number) {
+        return this.commentService.findAllCommentByPostId(postId);
     }
 
     // 댓글 수정
-    // @UseGuards(AccessTokenGuard)
+    @UseGuards(BasicTokenGuard)
     @Put(':postId/:id')
     async update(
         @Request() req,
-        @Param('id') id: string,
-        @Param('postId') postId: string,
+        @Param('id', ParseIntPipe) id: number,
+        @Param('postId', ParseIntPipe) postId: number,
         @Body() updateCommentDto: UpdateCommentDto,
     ) {
-        const comment = await this.commentService.findCommentById(+id);
-        if (comment.userId !== req.userId) {
+        const comment = await this.commentService.findCommentById(id);
+        if (comment.userId !== req.user.id) {
             throw new ForbiddenException('권한이 없습니다.');
         }
 
-        await this.commentService.updateComment(+id, +postId, updateCommentDto);
+        const updateComment = await this.commentService.updateComment(id, postId, updateCommentDto);
         return {
             statusCode: HttpStatus.OK,
-            comment,
+            updateComment,
         };
     }
 
     // 댓글 삭제
-    // @UseGuards(AccessTokenGuard)
+    @UseGuards(BasicTokenGuard)
     @Delete(':postId/:id')
-    async remove(@Request() req, @Param('id') id: string, @Param('postId') postId: string) {
-        const comment = await this.commentService.findCommentById(+id);
-        if (comment.userId !== req.userId) {
+    async remove(
+        @Request() req,
+        @Param('id', ParseIntPipe) id: number,
+        @Param('postId', ParseIntPipe) postId: number,
+    ) {
+        const comment = await this.commentService.findCommentById(id);
+        if (comment.userId !== req.user.id) {
             throw new ForbiddenException('권한이 없습니다.');
         }
 
-        await this.commentService.deleteComment(+id, +postId);
+        await this.commentService.deleteComment(id, postId);
         return {
             statusCode: HttpStatus.OK,
             message: '댓글이 삭제되었습니다.',
         };
     }
 
-    /**
-     * 대댓글 작성
-     */
-    // @UseGuards(AccessTokenGuard)
+    // 대댓글 작성
+    @UseGuards(BasicTokenGuard)
     @Post(':postId/:parentId')
     async createReply(
         @Request() req,
-        @Param('postId') postId: string,
-        @Param('parentId') parentId: string,
+        @Param('postId', ParseIntPipe) postId: number,
+        @Param('parentId', ParseIntPipe) parentId: number,
         @Body() createReplyDto: CreateReplyDto,
     ) {
-        const userId = req.userId;
+        const userId = req.user.id;
         const replyComment = await this.commentService.createReplyComment(
-            +postId,
-            +parentId,
+            postId,
+            parentId,
             userId,
             createReplyDto,
         );
@@ -105,26 +109,25 @@ export class CommentController {
     }
 
     // 대댓글 수정
-    // @UseGuards(AccessTokenGuard)
+    @UseGuards(BasicTokenGuard)
     @Put(':postId/:parentId/:id')
     async updateReply(
         @Request() req,
-        @Param('postId') postId: string,
-        @Param('parentId') parentId: string,
-        @Param('id') id: string,
+        @Param('postId', ParseIntPipe) postId: number,
+        @Param('parentId', ParseIntPipe) parentId: number,
+        @Param('id', ParseIntPipe) id: number,
         @Body() updateCommentDto: UpdateCommentDto,
     ) {
-        const userId = req.userId;
+        const userId = req.user.id;
         const replyComment = await this.commentService.updateReplyComment(
-            +postId,
-            +parentId,
-            +id,
-            userId,
+            postId,
+            parentId,
+            id,
             updateCommentDto,
         );
 
         const comment = await this.commentService.findCommentById(+id);
-        if (comment.userId !== req.userId) {
+        if (comment.userId !== req.user.id) {
             throw new ForbiddenException('권한이 없습니다.');
         }
 
@@ -135,32 +138,23 @@ export class CommentController {
     }
 
     // 대댓글 삭제
-    // @UseGuards(AccessTokenGuard)
+    @UseGuards(BasicTokenGuard)
     @Delete(':postId/:parentId/:id')
     async deleteReply(
         @Request() req,
-        @Param('postId') postId: string,
-        @Param('parentId') parentId: string,
-        @Param('id') id: string,
+        @Param('postId', ParseIntPipe) postId: number,
+        @Param('parentId', ParseIntPipe) parentId: number,
+        @Param('id', ParseIntPipe) id: number,
     ) {
-        const comment = await this.commentService.findCommentById(+id);
-        if (comment.userId !== req.userId) {
+        const comment = await this.commentService.findCommentById(id);
+        if (comment.userId !== req.user.id) {
             throw new ForbiddenException('권한이 없습니다.');
         }
 
-        await this.commentService.deleteReplyComment(+id, +parentId, +postId);
+        await this.commentService.deleteReplyComment(id, parentId, postId);
         return {
             statusCode: HttpStatus.OK,
             message: '댓글이 삭제되었습니다.',
         };
-    }
-
-    // 좋아요
-    // @UseGuards(AccessTokenGuard)
-    @Put(':id/like')
-    async like(@Request() req, @Param('id') id: string) {
-        const userId = req.userId;
-        const comment = await this.commentService.likeComment(+id, userId);
-        return comment;
     }
 }
