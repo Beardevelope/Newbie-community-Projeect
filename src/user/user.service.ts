@@ -6,12 +6,15 @@ import { User } from './entities/user.entity';
 import { Repository } from 'typeorm';
 import { DUPLICATE_EMAIL, PASSWORD_NOT_MATCH } from './const/users-error-message';
 import * as bcrypt from 'bcrypt';
+import { UploadServiceService } from 'src/upload-service/upload-service.service';
+import { error } from 'console';
 
 @Injectable()
 export class UserService {
     constructor(
         @InjectRepository(User)
         private readonly usersRepository: Repository<User>,
+        private readonly uploadService: UploadServiceService,
     ) {}
 
     /**
@@ -135,21 +138,23 @@ export class UserService {
      * 이미지 추가 로직
      */
 
-    async addProfileImage(userId: number, profileImage: string) {
+    async addProfileImage(userId: number, profileImage: Express.Multer.File) {
         const user = await this.usersRepository.findOne({
             where: {
                 id: userId,
             },
         });
-
-        // 사용자가 존재 && 프로필 image X
-        // 프로필 이미지 주어진 값으로 설정.
-        if (user && !user.profileImage) {
-            user.profileImage = profileImage;
-        } else {
-            // 이미지가 존재한다면 기존 이미지 업데이트.
-            user.profileImage = profileImage;
+        if (!profileImage) {
+            throw new BadRequestException();
         }
+
+        const url = await this.uploadService.uploadFile(profileImage);
+
+        if (!url) {
+            throw new BadRequestException();
+        }
+
+        user.profileImage = url;
 
         await this.usersRepository.save(user);
 

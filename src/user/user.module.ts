@@ -9,12 +9,14 @@ import * as multer from 'multer';
 import { PROFILE_FOLDER_NAME, PROFILE_IMAGE_PATH } from './const/path.const';
 import { v4 as uuid } from 'uuid';
 import { AuthModule } from 'src/auth/auth.module';
+import { UploadServiceModule } from 'src/upload-service/upload-service.module';
 
 @Module({
     controllers: [UserController],
     providers: [UserService],
     exports: [UserService],
     imports: [
+        UploadServiceModule,
         forwardRef(() => AuthModule),
         TypeOrmModule.forFeature([User]),
         MulterModule.register({
@@ -38,14 +40,6 @@ import { AuthModule } from 'src/auth/auth.module';
                 }
                 return cb(null, true);
             },
-            storage: multer.diskStorage({
-                destination: function (req, res, cb) {
-                    cb(null, PROFILE_IMAGE_PATH);
-                },
-                filename: function (req, file, cb) {
-                    cb(null, `${uuid()}${extname(file.originalname)}`);
-                },
-            }),
         }),
     ],
 })

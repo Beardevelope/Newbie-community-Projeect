@@ -20,6 +20,7 @@ import { UseGuards } from '@nestjs/common';
 import { AccessTokenGuard, BearerTokenGuard } from '../auth/guard/bearer.guard';
 import { NOT_AUTHORIZED_USER } from './const/users-error-message';
 import { Request } from 'express';
+import { BasicTokenGuard } from 'src/auth/guard/basic.guard';
 
 @Controller('user')
 export class UserController {
@@ -37,19 +38,21 @@ export class UserController {
      * @returns
      */
     @Post('profile/:userId')
-    @UseGuards(BearerTokenGuard)
+    @UseGuards(AccessTokenGuard)
     @UseInterceptors(FileInterceptor('image'))
     async addProfile(
         @Param('userId', ParseIntPipe) userId: number,
         @UploadedFile() file: Express.Multer.File,
         @Req() request: Request,
     ) {
+        // request.userId를 사용하였으나 오류가 발생함. 이유 확인하기.
+        // 투터님께 여쭤보기.
         const authenticatedUser = request['userId'];
 
         if (authenticatedUser !== userId) {
             throw new UnauthorizedException(NOT_AUTHORIZED_USER);
         }
-        const result = await this.userService.addProfileImage(userId, file.filename);
+        const result = await this.userService.addProfileImage(userId, file);
 
         return result;
     }

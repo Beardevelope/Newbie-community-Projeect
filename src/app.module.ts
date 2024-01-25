@@ -17,7 +17,7 @@ import { NeedInfoModule } from './need-info/need-info.module';
 import { AnswerModule } from './answer/answer.module';
 import { LikeModule } from './like/like.module';
 import { CommentLikeModule } from './comment-like/comment-like.module';
-
+import { UploadServiceModule } from './upload-service/upload-service.module';
 @Module({
     imports: [
         UserModule,
