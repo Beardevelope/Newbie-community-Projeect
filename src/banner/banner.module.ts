@@ -12,7 +12,7 @@ import { MulterModule } from '@nestjs/platform-express';
     imports: [
         TypeOrmModule.forFeature([User, Banner, BannerClick]),
         AuthModule,
-        MulterModule.register({ dest: 'src/banner/uploads' }),
+        // MulterModule.register({ dest: 'src/banner/uploads' }),
     ],
     controllers: [BannerController],
     providers: [BannerService],

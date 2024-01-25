@@ -28,7 +28,7 @@ export class Banner {
     @Column({ nullable: true })
     @IsNotEmpty({ message: '이미지 url을 입력해주세요.' })
     @IsString()
-    file: string;
+    url: string;
 
     @CreateDateColumn()
     createdAt: Date;

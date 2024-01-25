@@ -18,35 +18,61 @@ import { CreateBannerDto } from './dto/create-banner.dto';
 import { UpdateBannerDto } from './dto/update-banner.dto';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { BasicTokenGuard } from 'src/auth/guard/basic.guard';
+import * as AWS from 'aws-sdk';
 
 @Controller('banner')
 export class BannerController {
     constructor(private readonly bannerService: BannerService) {}
 
-    // 새 배너 생성
+    // 배너 생성
+    // @UseGuards(AcessTokenGuard)
     @UseGuards(BasicTokenGuard)
-    @Post()
-    @UseInterceptors(FileInterceptor('file'))
+    @Post('create')
+    @UseInterceptors(FileInterceptor('url'))
     async createBanner(
         @Request() req,
-        @UploadedFile() file,
+        @UploadedFile() url,
         @Body() createBannerDto: CreateBannerDto,
     ) {
         const userId = req.user.id;
-        return await this.bannerService.createBanner(userId, createBannerDto);
+        try {
+            const result = await this.bannerService.createBanner(userId, createBannerDto, url);
+            return result;
+        } catch (error) {
+            console.log(error);
+        }
     }
 
     // multer로 파일 업로드
+    // @UseGuards(BasicTokenGuard)
+    // @UseGuards(AcessTokenGuard)
     @Post('upload')
     @UseInterceptors(FileInterceptor('file'))
-    uploadFile(@UploadedFile() file) {
-        console.log('========================================================');
-        console.log({ file });
-        console.log('========================================================');
-        if (!file) {
-            throw new Error('이미지를 업로드 해주세요.');
+    async uploadFile(@Request() req, @UploadedFile() file) {
+        // const userId = req.user.id;
+        AWS.config.update({
+            region: 'ap-northeast-2',
+            credentials: {
+                accessKeyId: process.env.AWS_ACCESS_KEY,
+                secretAccessKey: process.env.AWS_SECRET_KEY,
+            },
+        });
+        try {
+            const upload = await new AWS.S3()
+                .putObject({
+                    Key: `${Date.now() + file.originalname}`,
+                    Body: file.buffer,
+                    Bucket: 'final-project-jj-bucket/banner',
+                })
+                .promise();
+            console.log('========================================================');
+            console.log({ file });
+            console.log({ upload });
+            console.log('========================================================');
+            return { mesage: '업로드 성공', upload };
+        } catch (error) {
+            console.log(error);
         }
-        return { message: '이미지가 저장 되었습니다.' };
     }
 
     // 배너 전체 조회
@@ -63,6 +89,7 @@ export class BannerController {
 
     // 배너 수정
     @UseGuards(BasicTokenGuard)
+    // @UseGuards(BearerToken)
     @Put(':id')
     async updateBanner(
         @Request() req,
@@ -79,6 +106,7 @@ export class BannerController {
 
     // 배너 삭제
     @UseGuards(BasicTokenGuard)
+    // @UseGuards(BearerToken)
     @Delete(':id')
     async deleteBanner(@Request() req, @Param('id', ParseIntPipe) id: number) {
         const userId = req.user.id;
@@ -86,13 +114,13 @@ export class BannerController {
     }
 
     // 배너 클릭 이벤트
-    @UseGuards(BasicTokenGuard)
-    @Get(':id/click')
-    async getBannerClick(@Request() req, @Param('id', ParseIntPipe) id: number) {
-        await this.bannerService.clickBanner(id);
+    // @UseGuards(BasicTokenGuard)
+    // @UseGuards(AccessTokenGuard)
+    @Get('click/:bannerId')
+    async getBannerClick(@Request() req, @Param('bannerId', ParseIntPipe) bannerId: number) {
+        await this.bannerService.clickBanner(bannerId);
         return {
             statusCode: HttpStatus.OK,
-            message: '댓글이 삭제되었습니다.',
         };
     }
 }

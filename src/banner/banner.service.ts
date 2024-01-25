@@ -5,6 +5,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Banner } from './entities/banner.entity';
 import { BannerClick } from './entities/banner-click.entity';
+import * as AWS from 'aws-sdk';
 
 @Injectable()
 export class BannerService {
@@ -14,6 +15,36 @@ export class BannerService {
         @InjectRepository(BannerClick)
         private readonly bannerClickRepository: Repository<BannerClick>,
     ) {}
+
+    // S3에 파일 업로드
+    private async uploadFileS3(file: any) {
+        AWS.config.update({
+            region: 'ap-northeast-2',
+            credentials: {
+                accessKeyId: process.env.AWS_ACCESS_KEY,
+                secretAccessKey: process.env.AWS_SECRET_KEY,
+            },
+        });
+        try {
+            const key = `${Date.now() + file.originalname}`;
+            await new AWS.S3()
+                .putObject({
+                    Key: key,
+                    Body: file.buffer,
+                    Bucket: 'final-project-jj-bucket',
+                })
+                .promise();
+
+            const url = `https://final-project-jj-bucket.s3.ap-northeast-2.amazonaws.com/${key}`;
+            console.log('========================================================');
+            console.log({ url });
+            console.log('========================================================');
+            return url;
+        } catch (error) {
+            console.log({ error });
+            throw new Error();
+        }
+    }
 
     // 배너 전체 조회
     async getAllBanner() {
@@ -40,8 +71,14 @@ export class BannerService {
     }
 
     // 새 배너 생성
-    async createBanner(userId: number, createBannerDto: CreateBannerDto) {
-        const banner = this.bannerRepository.create({ userId, ...createBannerDto });
+    async createBanner(userId: number, url: any, createBannerDto: CreateBannerDto) {
+        const file = await this.uploadFileS3(url);
+        console.log({ file });
+
+        const banner = this.bannerRepository.create({ userId, url, ...createBannerDto });
+        console.log('========================================================');
+        console.log({ banner });
+        console.log('========================================================');
         return this.bannerRepository.save(banner);
     }
 
@@ -64,10 +101,22 @@ export class BannerService {
 
     // 배너 조회수
     async clickBanner(bannerId: number) {
-        const bannerClick = await this.bannerClickRepository.findOne({ where: { bannerId } });
+        let bannerClick = await this.bannerClickRepository.findOne({ where: { bannerId } });
+        // if (!bannerClick) {
+        //     throw new NotFoundException('배너를 찾을 수 없습니다.');
+        // }
+        // return bannerClick;
         if (!bannerClick) {
-            throw new NotFoundException('배너를 찾을 수 없습니다.');
+            bannerClick = new BannerClick();
+            bannerClick.bannerId = bannerId;
+            bannerClick.clickCount = 1; // 첫 번째 클릭이므로 1로 초기화
+        } else {
+            bannerClick.clickCount += 1; // 이미 클릭 기록이 있으면 조회수 증가
         }
+
+        // 배너 클릭 정보 저장
+        await this.bannerClickRepository.save(bannerClick);
+
         return bannerClick;
     }
 }
