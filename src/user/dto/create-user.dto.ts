@@ -20,10 +20,4 @@ export class CreateUserDto extends PickType(User, ['email', 'password', 'nicknam
     @IsString()
     @IsNotEmpty()
     nickname: string;
-
-    @IsString()
-    name: string;
-
-    @IsString()
-    contact: string;
 }
