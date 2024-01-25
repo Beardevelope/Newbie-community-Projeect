@@ -6,12 +6,13 @@ import {
     Column,
     CreateDateColumn,
     Entity,
-    ManyToMany,
+    JoinColumn,
+    ManyToOne,
     OneToMany,
     PrimaryGeneratedColumn,
     UpdateDateColumn,
 } from 'typeorm';
-import { ProjectApplicant } from './projectApplicant.entity';
+import { ProjectApplicant } from './project-applicant.entity';
 import { User } from 'src/user/entities/user.entity';
 
 @Entity({ name: 'project_post' })
@@ -62,15 +63,24 @@ export class ProjectPost {
     @UpdateDateColumn()
     updatedAt: Date;
 
-    @OneToMany((type) => NeedInfo, (needInfo) => needInfo.projectPost)
+    @OneToMany((type) => NeedInfo, (needInfo) => needInfo.projectPost, { cascade: true })
     needInfo: NeedInfo[];
 
-    @OneToMany((type) => Question, (question) => question.projectPost)
+    @OneToMany((type) => Question, (question) => question.projectPost, { cascade: true })
     question: Question[];
 
-    @OneToMany((type) => Like, (like) => like.projectPost)
+    @OneToMany((type) => Like, (like) => like.projectPost, { cascade: true })
     like: Like[];
 
-    @ManyToMany((type) => User, (user) => user.projectPost)
-    user: User[];
+    @Column()
+    userId: number;
+
+    @ManyToOne((type) => User, (user) => user.projectPost)
+    @JoinColumn({ name: 'user_id' })
+    user: User;
+
+    @OneToMany((type) => ProjectApplicant, (projectApplicant) => projectApplicant.projectPost, {
+        cascade: true,
+    })
+    projectApplicant: ProjectApplicant[];
 }

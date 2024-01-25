@@ -1,4 +1,4 @@
-import { BadRequestException, Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable, UnauthorizedException } from '@nestjs/common';
 import { CreateNeedInfoDto } from './dto/create-need-info.dto';
 import { UpdateNeedInfoDto } from './dto/update-need-info.dto';
 import { InjectRepository } from '@nestjs/typeorm';
@@ -16,8 +16,14 @@ export class NeedInfoService {
     ) {}
 
     // 필요 기술 스택 생성
-    async create(projectPostId: number, createNeedInfoDto: CreateNeedInfoDto) {
+    async create(projectPostId: number, createNeedInfoDto: CreateNeedInfoDto, userId: number) {
         const { stack, numberOfPeople } = createNeedInfoDto;
+
+        const project = await this.projectPostRepository.findOne({ where: { id: projectPostId } });
+
+        if (userId !== project.userId) {
+            throw new UnauthorizedException('권한이 없습니다.');
+        }
 
         const result = await this.needInfoRepository.save({
             projectPostId,
@@ -37,8 +43,19 @@ export class NeedInfoService {
     }
 
     // 필요 기술 스택 인원 변경
-    async update(projectPostId: number, id: number, updateNeedInfoDto: UpdateNeedInfoDto) {
+    async update(
+        projectPostId: number,
+        id: number,
+        updateNeedInfoDto: UpdateNeedInfoDto,
+        userId: number,
+    ) {
         const { numberOfPeople } = updateNeedInfoDto;
+
+        const project = await this.projectPostRepository.findOne({ where: { id: projectPostId } });
+
+        if (userId !== project.userId) {
+            throw new UnauthorizedException('권한이 없습니다.');
+        }
 
         await this.needInfoRepository.update({ projectPostId, id }, { numberOfPeople });
 
@@ -60,8 +77,14 @@ export class NeedInfoService {
     }
 
     // 필요 기술 스택 삭제
-    async remove(projectPostId: number, id: number) {
+    async remove(projectPostId: number, id: number, userId: number) {
         await this.findById(projectPostId, id);
+
+        const project = await this.projectPostRepository.findOne({ where: { id: projectPostId } });
+
+        if (userId !== project.userId) {
+            throw new UnauthorizedException('권한이 없습니다.');
+        }
 
         await this.needInfoRepository.delete({ projectPostId, id });
         return { message: '답변 삭제 완료' };

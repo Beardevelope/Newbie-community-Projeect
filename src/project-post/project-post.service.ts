@@ -1,11 +1,12 @@
-import { BadRequestException, Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable, UnauthorizedException } from '@nestjs/common';
 import { CreateProjectPostDto } from './dto/create-project-post.dto';
 import { UpdateProjectPostDto } from './dto/update-project-post.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { ProjectPost } from './entities/project-post.entity';
 import { Repository } from 'typeorm';
 import _ from 'lodash';
-import { ProjectApplicant } from './entities/projectApplicant.entity';
+import { ProjectApplicant } from './entities/project-applicant.entity';
+import { PaginationDto } from './dto/paginationDto';
 
 @Injectable()
 export class ProjectPostService {
@@ -17,7 +18,7 @@ export class ProjectPostService {
     ) {}
 
     // 토이프로젝트 생성
-    async create(createProjectPostDto: CreateProjectPostDto) {
+    async create(createProjectPostDto: CreateProjectPostDto, userId: number) {
         const { title, content, image, applicationDeadLine, startDate, dueDate } =
             createProjectPostDto;
 
@@ -25,6 +26,7 @@ export class ProjectPostService {
             title,
             content,
             image,
+            userId,
             applicationDeadLine: new Date(applicationDeadLine as any),
             startDate: new Date(startDate as any),
             dueDate: new Date(dueDate as any),
@@ -33,11 +35,17 @@ export class ProjectPostService {
         return result;
     }
 
-    // 토이프로젝트 목록 조회
-    async findAll() {
-        const result = await this.projectPostRepository.find();
+    // 토이프로젝트 목록 조회(프론트랑 연결 후 다시 확인)
+    async findAll(paginationDto: PaginationDto) {
+        const { page, pageSize } = paginationDto;
 
-        return result;
+        const onePage = (page - 1) * pageSize;
+
+        const sortPost = await this.projectPostRepository.find({ order: { updatedAt: 'ASC' } });
+
+        const postOnPage = sortPost.slice(onePage, onePage + pageSize);
+
+        return postOnPage;
     }
 
     // 토이프로젝트 상세 조회
@@ -48,11 +56,15 @@ export class ProjectPostService {
     }
 
     // 토이프로젝트 수정
-    async update(id: number, updateProjectPostDto: UpdateProjectPostDto) {
+    async update(id: number, updateProjectPostDto: UpdateProjectPostDto, userId: number) {
         const { title, content, image, applicationDeadLine, startDate, dueDate } =
             updateProjectPostDto;
 
-        await this.findById(id);
+        const findById = await this.findById(id);
+
+        if (userId !== findById.userId) {
+            throw new UnauthorizedException('수정할 권한이 없습니다.');
+        }
 
         await this.projectPostRepository.update(
             { id },
@@ -72,8 +84,15 @@ export class ProjectPostService {
     }
 
     // 토이프로젝트 삭제
-    async remove(id: number) {
+    async remove(id: number, userId: number) {
+        const findById = await this.findById(id);
+
+        if (userId !== findById.userId) {
+            throw new UnauthorizedException('삭제할 권한이 없습니다.');
+        }
+
         await this.projectPostRepository.delete({ id });
+
         return { message: '프로젝트 삭제 완료' };
     }
 

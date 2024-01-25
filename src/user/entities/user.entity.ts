@@ -6,7 +6,6 @@ import { CommentLike } from 'src/comment-like/entitis/comment-like.entity';
 import { Like } from 'src/like/entities/like.entity';
 import { Post } from 'src/post/entities/post.entity';
 import { ProjectPost } from 'src/project-post/entities/project-post.entity';
-import { ProjectApplicant } from 'src/project-post/entities/projectApplicant.entity';
 import {
     Column,
     CreateDateColumn,
@@ -17,6 +16,7 @@ import {
     PrimaryGeneratedColumn,
     UpdateDateColumn,
 } from 'typeorm';
+import { ProjectApplicant } from 'src/project-post/entities/project-applicant.entity';
 
 @Entity({ name: 'user' })
 export class User {
@@ -88,6 +88,9 @@ export class User {
     @OneToMany(() => Like, (like) => like.user)
     like: Like[];
 
-    @ManyToMany((type) => ProjectPost, (projectPost) => projectPost.user)
+    @OneToMany(() => ProjectPost, (projectPost) => projectPost.user)
     projectPost: ProjectPost[];
+
+    @OneToMany((type) => ProjectApplicant, (projectApplicant) => projectApplicant.user)
+    projectApplicant: ProjectApplicant[];
 }

@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, Req } from '@nestjs/common';
 import { NeedInfoService } from './need-info.service';
 import { CreateNeedInfoDto } from './dto/create-need-info.dto';
 import { UpdateNeedInfoDto } from './dto/update-need-info.dto';
@@ -11,8 +11,9 @@ export class NeedInfoController {
     create(
         @Param('projectPostId') projectPostId: string,
         @Body() createNeedInfoDto: CreateNeedInfoDto,
+        @Req() req,
     ) {
-        return this.needInfoService.create(+projectPostId, createNeedInfoDto);
+        return this.needInfoService.create(+projectPostId, createNeedInfoDto, req.user.id);
     }
 
     @Get(':projectPostId')
@@ -25,12 +26,13 @@ export class NeedInfoController {
         @Param('projectPostId') projectPostId: string,
         @Param('id') id: string,
         @Body() updateNeedInfoDto: UpdateNeedInfoDto,
+        @Req() req,
     ) {
-        return this.needInfoService.update(+projectPostId, +id, updateNeedInfoDto);
+        return this.needInfoService.update(+projectPostId, +id, updateNeedInfoDto, req.user.id);
     }
 
     @Delete('/:projectPostId/:id')
-    remove(@Param('projectPostId') projectPostId: string, @Param('id') id: string) {
-        return this.needInfoService.remove(+projectPostId, +id);
+    remove(@Param('projectPostId') projectPostId: string, @Param('id') id: string, @Req() req) {
+        return this.needInfoService.remove(+projectPostId, +id, req.user.id);
     }
 }

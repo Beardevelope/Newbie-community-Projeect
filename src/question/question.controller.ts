@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Patch, Param } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Req } from '@nestjs/common';
 import { QuestionService } from './question.service';
 import { CreateQuestionDto } from './dto/create-question.dto';
 import { UpdateQuestionDto } from './dto/update-question.dto';
@@ -11,8 +11,9 @@ export class QuestionController {
     create(
         @Param('projectPostId') projectPostId: string,
         @Body() createQuestionDto: CreateQuestionDto,
+        @Req() req,
     ) {
-        return this.questionService.create(+projectPostId, createQuestionDto);
+        return this.questionService.create(+projectPostId, createQuestionDto, req.user.id);
     }
 
     @Get(':projectPostId')
@@ -25,7 +26,8 @@ export class QuestionController {
         @Param('projectPostId') projectPostId: string,
         @Param('id') id: string,
         @Body() updateQuestionDto: UpdateQuestionDto,
+        @Req() req,
     ) {
-        return this.questionService.update(+projectPostId, +id, updateQuestionDto);
+        return this.questionService.update(+projectPostId, +id, updateQuestionDto, req.user.id);
     }
 }
