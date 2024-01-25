@@ -27,7 +27,7 @@ export class BannerService {
         });
         try {
             const key = `${Date.now() + file.originalname}`;
-            await new AWS.S3()
+            const uploadFile = await new AWS.S3()
                 .putObject({
                     Key: key,
                     Body: file.buffer,
@@ -39,11 +39,24 @@ export class BannerService {
             console.log('========================================================');
             console.log({ url });
             console.log('========================================================');
-            return url;
+            return uploadFile;
         } catch (error) {
             console.log({ error });
             throw new Error();
         }
+    }
+
+    // 새 배너 생성
+    async createBanner(userId: number, url: any, createBannerDto: CreateBannerDto) {
+        const fileUrl = await this.uploadFileS3(url);
+        console.log({ fileUrl });
+
+        const banner = this.bannerRepository.create({ userId, url, ...createBannerDto });
+        console.log('========================================================');
+        console.log({ banner });
+        console.log('========================================================');
+        const newBanner = this.bannerRepository.save(banner);
+        return newBanner;
     }
 
     // 배너 전체 조회
@@ -68,18 +81,6 @@ export class BannerService {
         if (!bannerUser) {
             throw new ForbiddenException('권한이 없습니다.');
         }
-    }
-
-    // 새 배너 생성
-    async createBanner(userId: number, url: any, createBannerDto: CreateBannerDto) {
-        const file = await this.uploadFileS3(url);
-        console.log({ file });
-
-        const banner = this.bannerRepository.create({ userId, url, ...createBannerDto });
-        console.log('========================================================');
-        console.log({ banner });
-        console.log('========================================================');
-        return this.bannerRepository.save(banner);
     }
 
     // 배너 수정

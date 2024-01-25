@@ -28,15 +28,15 @@ export class BannerController {
     // @UseGuards(AcessTokenGuard)
     @UseGuards(BasicTokenGuard)
     @Post('create')
-    @UseInterceptors(FileInterceptor('url'))
+    @UseInterceptors(FileInterceptor('file'))
     async createBanner(
         @Request() req,
-        @UploadedFile() url,
+        @UploadedFile() file,
         @Body() createBannerDto: CreateBannerDto,
     ) {
         const userId = req.user.id;
         try {
-            const result = await this.bannerService.createBanner(userId, createBannerDto, url);
+            const result = await this.bannerService.createBanner(userId, file, createBannerDto);
             return result;
         } catch (error) {
             console.log(error);
@@ -58,18 +58,22 @@ export class BannerController {
             },
         });
         try {
+            const key = `${Date.now() + file.originalname}`;
             const upload = await new AWS.S3()
                 .putObject({
-                    Key: `${Date.now() + file.originalname}`,
+                    Key: key,
                     Body: file.buffer,
                     Bucket: 'final-project-jj-bucket/banner',
                 })
                 .promise();
+            const url = `https://final-project-jj-bucket.s3.ap-northeast-2.amazonaws.com/${key}`;
+
             console.log('========================================================');
             console.log({ file });
             console.log({ upload });
+            console.log({ url });
             console.log('========================================================');
-            return { mesage: '업로드 성공', upload };
+            return { mesage: '업로드 성공', upload, url };
         } catch (error) {
             console.log(error);
         }
