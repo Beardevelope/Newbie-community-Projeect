@@ -1,18 +1,21 @@
-import { Controller, Get, Post, Param, Delete, Req } from '@nestjs/common';
+import { Controller, Get, Post, Param, Delete, Req, UseGuards } from '@nestjs/common';
 import { LikeService } from './like.service';
+import { BearerTokenGuard } from 'src/auth/guard/bearer.guard';
 
 @Controller('like')
 export class LikeController {
     constructor(private readonly likeService: LikeService) {}
 
+    @UseGuards(BearerTokenGuard)
     @Post(':projectPostId')
     create(@Param('projectPostId') projectPostId: string, @Req() req) {
-        return this.likeService.create(+projectPostId, req.user.id);
+        return this.likeService.create(+projectPostId, +req.userId);
     }
 
+    @UseGuards(BearerTokenGuard)
     @Get()
     findAll(@Req() req) {
-        return this.likeService.findAll(req.user.id);
+        return this.likeService.findAll(+req.userId);
     }
 
     @Get(':id')

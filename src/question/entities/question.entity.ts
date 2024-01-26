@@ -30,7 +30,7 @@ export class Question {
     @Column()
     projectPostId: number;
 
-    @ManyToOne((type) => ProjectPost, (projectPost) => projectPost.question, { cascade: true })
+    @ManyToOne((type) => ProjectPost, (projectPost) => projectPost.question)
     @JoinColumn({ name: 'project_post_id' })
     projectPost: ProjectPost;
 

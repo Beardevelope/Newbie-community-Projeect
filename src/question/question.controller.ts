@@ -1,19 +1,21 @@
-import { Controller, Get, Post, Body, Patch, Param, Req } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Req, UseGuards } from '@nestjs/common';
 import { QuestionService } from './question.service';
 import { CreateQuestionDto } from './dto/create-question.dto';
 import { UpdateQuestionDto } from './dto/update-question.dto';
+import { BearerTokenGuard } from 'src/auth/guard/bearer.guard';
 
 @Controller('question')
 export class QuestionController {
     constructor(private readonly questionService: QuestionService) {}
 
+    @UseGuards(BearerTokenGuard)
     @Post(':projectPostId')
     create(
         @Param('projectPostId') projectPostId: string,
         @Body() createQuestionDto: CreateQuestionDto,
         @Req() req,
     ) {
-        return this.questionService.create(+projectPostId, createQuestionDto, req.user.id);
+        return this.questionService.create(+projectPostId, createQuestionDto, +req.userId);
     }
 
     @Get(':projectPostId')
@@ -21,6 +23,7 @@ export class QuestionController {
         return this.questionService.findAll(+projectPostId);
     }
 
+    @UseGuards(BearerTokenGuard)
     @Patch('/:projectPostId/:id')
     update(
         @Param('projectPostId') projectPostId: string,
@@ -28,6 +31,6 @@ export class QuestionController {
         @Body() updateQuestionDto: UpdateQuestionDto,
         @Req() req,
     ) {
-        return this.questionService.update(+projectPostId, +id, updateQuestionDto, req.user.id);
+        return this.questionService.update(+projectPostId, +id, updateQuestionDto, +req.userId);
     }
 }

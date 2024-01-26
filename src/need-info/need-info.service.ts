@@ -25,6 +25,21 @@ export class NeedInfoService {
             throw new UnauthorizedException('권한이 없습니다.');
         }
 
+        const existStack = await this.needInfoRepository.findOne({
+            where: { projectPostId, stack },
+        });
+
+        if (existStack) {
+            await this.needInfoRepository.update(
+                { stack },
+                { numberOfPeople: existStack.numberOfPeople + numberOfPeople },
+            );
+
+            const findProject = await this.needInfoRepository.find({ where: { projectPostId } });
+
+            return findProject;
+        }
+
         const result = await this.needInfoRepository.save({
             projectPostId,
             stack,
@@ -87,7 +102,7 @@ export class NeedInfoService {
         }
 
         await this.needInfoRepository.delete({ projectPostId, id });
-        return { message: '답변 삭제 완료' };
+        return { message: '기술 삭제 완료' };
     }
 
     // Id로 찾는 함수

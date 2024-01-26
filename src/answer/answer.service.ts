@@ -6,6 +6,7 @@ import { Answer } from './entities/answer.entity';
 import { Repository } from 'typeorm';
 import { Question } from 'src/question/entities/question.entity';
 import { NeedInfo } from 'src/need-info/entities/need-info.entity';
+import { User } from 'src/user/entities/user.entity';
 
 @Injectable()
 export class AnswerService {
@@ -13,9 +14,10 @@ export class AnswerService {
         @InjectRepository(Answer) private readonly answerRepository: Repository<Answer>,
         @InjectRepository(Question) private readonly questionRepository: Repository<Question>,
         @InjectRepository(NeedInfo) private readonly needInfoRepository: Repository<NeedInfo>,
+        @InjectRepository(User) private readonly userRepository: Repository<User>,
     ) {}
 
-    // 답변 생성 (유저 추가 예정 테스트하기)
+    // 답변 생성
     async create(
         projectPostId: number,
         questionId: number,
@@ -36,18 +38,25 @@ export class AnswerService {
         return result;
     }
 
-    // 답변 전체 목록 조회 (유저정보를 가져올 로직으로 유저정보도 추가할 예정)
+    // 답변 전체 목록 조회 (테스트하기)
     async findAll(projectPostId: number) {
         const questions = await this.questionRepository.find({ where: { projectPostId } });
 
-        const answers = questions.map(async (question) => {
-            return await this.answerRepository.find({ where: { questionId: question.id } });
+        const result = questions.map(async (question) => {
+            const answer = await this.answerRepository.findOne({
+                where: { questionId: question.id },
+            });
+            const user = await this.userRepository.findOne({ where: { id: answer.userId } });
+            return {
+                answer,
+                user,
+            };
         });
 
-        return answers;
+        return result;
     }
 
-    // 답변 수정을 어떻게 할지 ex) 유저 지원 목록에서 변경 or 변경불가
+    // 답변 수정
     async update(
         projectPostId: number,
         questionId: number,
@@ -60,7 +69,6 @@ export class AnswerService {
 
         const oldAnswers = await this.answerRepository.find({ where: { userId } });
 
-        // 필터로 바꿔보기?
         oldAnswers.map(async (oldAnswer) => {
             if (oldAnswer.stack !== stack) {
                 await this.answerRepository.update({ userId }, { stack });

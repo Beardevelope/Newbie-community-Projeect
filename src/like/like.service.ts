@@ -19,7 +19,7 @@ export class LikeService {
         return projectPost;
     }
 
-    // 좋아요 목록 전체 조회 (userId에 따라 projectPost 조회 예정)
+    // 좋아요 목록 전체 조회
     async findAll(userId: number) {
         const likes = await this.likeRepository.find({ where: { userId } });
 

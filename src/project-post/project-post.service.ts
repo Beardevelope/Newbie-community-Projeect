@@ -39,13 +39,17 @@ export class ProjectPostService {
     async findAll(paginationDto: PaginationDto) {
         const { page, pageSize } = paginationDto;
 
-        const onePage = (page - 1) * pageSize;
+        console.log(page);
+        console.log(pageSize);
 
-        const sortPost = await this.projectPostRepository.find({ order: { updatedAt: 'ASC' } });
+        const skip = (page - 1) * pageSize;
 
-        const postOnPage = sortPost.slice(onePage, onePage + pageSize);
-
-        return postOnPage;
+        const sortPost = await this.projectPostRepository.find({
+            order: { updatedAt: 'ASC' },
+            skip,
+            take: pageSize,
+        });
+        return sortPost;
     }
 
     // 토이프로젝트 상세 조회
@@ -116,13 +120,36 @@ export class ProjectPostService {
         return { message: '프로젝트 지원 완료' };
     }
 
+    // 프로젝트 지원 확인
+    async findProjectApplicant(id: number, userId: number) {
+        await this.findById(id);
+
+        const projectPostUser = await this.projectPostRepository.findOne({ where: { userId } });
+
+        if (userId !== projectPostUser.userId) {
+            throw new UnauthorizedException('권한이 없습니다.');
+        }
+
+        const result = await this.projectApplicantRepository.find({ where: { projectPostId: id } });
+
+        return result;
+    }
+
     // 프로젝트 지원 삭제
     async removeProjectApplicant(id: number, userId: number) {
         await this.findById(id);
 
+        const projectApplicantUser = await this.projectApplicantRepository.findOne({
+            where: { userId },
+        });
+
+        if (userId !== projectApplicantUser.userId) {
+            throw new UnauthorizedException('권한이 없습니다');
+        }
+
         await this.projectApplicantRepository.delete({ projectPostId: id, userId: userId });
 
-        return { message: '프로젝트 지원 완료' };
+        return { message: '프로젝트 지원 삭제 완료' };
     }
 
     // Id로 찾는 함수
