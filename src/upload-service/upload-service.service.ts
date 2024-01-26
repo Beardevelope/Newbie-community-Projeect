@@ -9,13 +9,14 @@ export class UploadServiceService {
 
     constructor(private readonly configService: ConfigService) {
         this.awsS3 = new S3Client({
-            region: 'ap-northeast-2',
+            region: process.env.AWS_REGION,
             credentials: {
-                accessKeyId: 'AKIA6PH7ZQOV3ERNQBH5',
-                secretAccessKey: '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',
+                accessKeyId: process.env.AWS_ACCESS_KEY,
+                secretAccessKey: process.env.AWS_SECRET_KEY,
             },
         });
     }
+
     /**
      * s3 이미지 업로드
      * @param file
@@ -27,7 +28,7 @@ export class UploadServiceService {
             Bucket: 'nestjs-project-images',
             Key: uuid,
             Body: file.buffer,
-            // ACL: 'public-read',
+            ACL: 'public-read',
             ContentType: file.mimetype,
         });
 
