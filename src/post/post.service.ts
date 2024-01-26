@@ -26,7 +26,7 @@ export class PostService {
         private readonly dataSource: DataSource,
         @Inject(forwardRef(() => AutoReply))
         private readonly autoReply: AutoReply,
-        private readonly commenService: CommentService
+        private readonly commenService: CommentService,
     ) {}
 
     // 게시글 생성
@@ -44,17 +44,16 @@ export class PostService {
             }
             tags.push(existedTag);
         }
-        
-        const post =  await this.postRepository.save({
+
+        const post = await this.postRepository.save({
             title,
             content,
             image,
             tags,
             userId,
         });
-        
-        
-        return post
+
+        return post;
     }
 
     // 게시글 조회 기능 구현 필터까지 다 구현하기 req.query를 이용하여 구현하기
@@ -105,7 +104,7 @@ export class PostService {
             where: {
                 id: postId,
             },
-            relations: { comments: true }
+            relations: { comments: true },
         });
 
         if (!foundPost) {
@@ -226,31 +225,31 @@ export class PostService {
     async removeByAccumulatedWarning() {
         const foundPosts = await this.postRepository.find();
 
-        for(let i =0; i<foundPosts.length; i++) {
+        for (let i = 0; i < foundPosts.length; i++) {
             if (foundPosts[i].warning > 4) {
-                await this.postRepository.delete(foundPosts[i].id)
+                await this.postRepository.delete(foundPosts[i].id);
             }
         }
     }
 
-    async autoReplyComment () {
+    async autoReplyComment() {
         const posts = await this.postRepository.find({
             where: {
                 createdAt: LessThan(new Date()), // Replace with your desired date comparison
                 comments: {
-                  id: IsNull() // This ensures that the post has comments
-                }
+                    id: IsNull(), // This ensures that the post has comments
+                },
             },
             order: { createdAt: 'ASC' },
             take: 3,
-            relations: { comments: true }   
-        })
-        console.log(posts)
+            relations: { comments: true },
+        });
+        console.log(posts);
         posts.forEach(async (post) => {
             if (post.comments.length <= 0) {
-            const aiReplied = await this.autoReply.ask(post.content)
-                await this.commenService.createComment(post.id, 1, { content: aiReplied })
-            }   
-        })
+                const aiReplied = await this.autoReply.ask(post.content);
+                await this.commenService.createComment(post.id, 1, { content: aiReplied });
+            }
+        });
     }
 }

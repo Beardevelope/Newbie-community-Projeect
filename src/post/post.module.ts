@@ -8,9 +8,13 @@ import { ChatBotModule } from 'src/openai/openai.module';
 import { CommentModule } from 'src/comment/comment.module';
 
 @Module({
-    imports: [TypeOrmModule.forFeature([Post, Tag]), forwardRef(() => ChatBotModule), CommentModule],
+    imports: [
+        TypeOrmModule.forFeature([Post, Tag]),
+        forwardRef(() => ChatBotModule),
+        CommentModule,
+    ],
     controllers: [PostController],
     providers: [PostService],
-    exports: [PostService]
+    exports: [PostService],
 })
 export class PostModule {}

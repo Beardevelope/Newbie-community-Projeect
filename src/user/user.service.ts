@@ -6,12 +6,15 @@ import { User } from './entities/user.entity';
 import { Repository } from 'typeorm';
 import { DUPLICATE_EMAIL, PASSWORD_NOT_MATCH } from './const/users-error-message';
 import * as bcrypt from 'bcrypt';
+import { UploadServiceService } from 'src/upload-service/upload-service.service';
+import { error } from 'console';
 
 @Injectable()
 export class UserService {
     constructor(
         @InjectRepository(User)
         private readonly usersRepository: Repository<User>,
+        private readonly uploadService: UploadServiceService,
     ) {}
 
     /**
@@ -129,5 +132,32 @@ export class UserService {
 
         user.deletedAt = new Date();
         await this.usersRepository.save(user);
+    }
+
+    /**
+     * 이미지 추가 로직
+     */
+
+    async addProfileImage(userId: number, profileImage: Express.Multer.File) {
+        const user = await this.usersRepository.findOne({
+            where: {
+                id: userId,
+            },
+        });
+        if (!profileImage) {
+            throw new BadRequestException();
+        }
+
+        const url = await this.uploadService.uploadFile(profileImage);
+
+        if (!url) {
+            throw new BadRequestException();
+        }
+
+        user.profileImage = url;
+
+        await this.usersRepository.save(user);
+
+        return user;
     }
 }
