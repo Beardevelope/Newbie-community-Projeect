@@ -33,8 +33,6 @@ export class PostService {
     async create(createPostDto: CreatePostDto, userId: number) {
         const { title, content, image, tag } = createPostDto;
 
-        console.log(title, content, image, tag)
-
         const tags = [];
         for (let i = 0; i < tag.length; i++) {
             let existedTag = await this.tagRepository.findOne({
@@ -54,10 +52,8 @@ export class PostService {
             tags,
             userId,
         });
-        
-        console.log(post)
-        
-        return post
+
+        return post;
     }
 
     // 게시글 조회 기능 구현 필터까지 다 구현하기 req.query를 이용하여 구현하기
@@ -68,16 +64,16 @@ export class PostService {
 
         //댓글이 있을 경우
         if (filter === 'answered') {
-        return await this.postRepository.find({
-            where: {
-                deletedAt: null,
-                ...(filter && { status: `${filter}` }),
-                comments: { id: Not(IsNull()) }
-            },
-            order: {
-                ...(order && { [`${order}`]: 'DESC' }),
-            },
-        })
+            return await this.postRepository.find({
+                where: {
+                    deletedAt: null,
+                    ...(filter && { status: `${filter}` }),
+                    comments: { id: Not(IsNull()) },
+                },
+                order: {
+                    ...(order && { [`${order}`]: 'DESC' }),
+                },
+            });
         }
 
         //댓글이 없을 경우
@@ -86,12 +82,12 @@ export class PostService {
                 where: {
                     deletedAt: null,
                     ...(filter && { status: `${filter}` }),
-                    comments: { id: IsNull() }
+                    comments: { id: IsNull() },
                 },
                 order: {
                     ...(order && { [`${order}`]: 'DESC' }),
                 },
-            })
+            });
         }
         // const test = IsNull() 뭐 이런식으로 하고 이것을 where절에 넣을 수 있나?
 
@@ -268,7 +264,7 @@ export class PostService {
             take: 3,
             relations: { comments: true },
         });
-        console.log(posts);
+
         posts.forEach(async (post) => {
             if (post.comments.length <= 0) {
                 const aiReplied = await this.autoReply.ask(post.content);
