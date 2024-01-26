@@ -27,7 +27,7 @@ export class PostController {
     @UseGuards(BearerTokenGuard)
     @Post()
     async create(@Body() createPostDto: CreatePostDto, @Req() req) {
-        const userId = req.user.id;
+        const userId = req.userId;
 
         const newPost = await this.postService.create(createPostDto, userId);
 
