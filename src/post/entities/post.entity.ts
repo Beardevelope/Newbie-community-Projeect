@@ -3,6 +3,7 @@ import { User } from 'src/user/entities/user.entity';
 import {
     Column,
     CreateDateColumn,
+    DeleteDateColumn,
     Entity,
     JoinColumn,
     JoinTable,
@@ -56,11 +57,15 @@ export class Post {
     @UpdateDateColumn()
     updatedAt: Date;
 
+    @DeleteDateColumn()
+    deletedAt: Date;
+
     @ManyToOne((type) => User, (user) => user.posts)
     @JoinColumn({ name: 'user_id', referencedColumnName: 'id' })
     user: User;
 
     @ManyToMany((type) => Tag, (tag) => tag.posts, { cascade: true })
+    @IsNotEmpty({ message: '입력란을 확인해주세요' })
     @JoinTable()
     tags: Tag[];
 

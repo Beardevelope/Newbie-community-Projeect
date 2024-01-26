@@ -15,13 +15,16 @@ import { PostService } from './post.service';
 import { CreatePostDto } from './dto/create-post.dto';
 import { UpdatePostDto } from './dto/update-post.dto';
 import { AuthGuard } from '@nestjs/passport';
+import { BearerTokenGuard } from 'src/auth/guard/bearer.guard';
+import { BasicTokenGuard } from 'src/auth/guard/basic.guard';
 
 @Controller('post')
 export class PostController {
     constructor(private readonly postService: PostService) {}
 
     // 게시글 생성
-    @UseGuards(AuthGuard('jwt'))
+    // @UseGuards(AuthGuard('jwt'))
+    @UseGuards(BearerTokenGuard)
     @Post()
     async create(@Body() createPostDto: CreatePostDto, @Req() req) {
         const userId = req.user.id;
@@ -38,8 +41,8 @@ export class PostController {
     // 게시글 조회
     @Get()
     async findAll(@Query() query: string, @Req() req) {
-        const { order, filter } = req.query;
-        const posts = await this.postService.findAll(order, filter);
+        const { order, filter, tagName } = req.query;
+        const posts = await this.postService.findAll(order, filter, tagName);
 
         return {
             statusCode: HttpStatus.OK,
