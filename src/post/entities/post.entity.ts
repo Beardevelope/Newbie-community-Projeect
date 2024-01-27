@@ -42,7 +42,7 @@ export class Post {
     @IsNumber()
     likes: number;
 
-    @Column({ default: null })
+    @Column({ default: 'unfinished' })
     status: string;
 
     @Column()
