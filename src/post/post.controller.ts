@@ -102,6 +102,18 @@ export class PostController {
         };
     }
 
+    // 게시글 좋아요 추가
+    @Put(':postId/hit')
+    async addHitCount(@Param('postId') postId: string) {
+        const post = await this.postService.addHitCount(+postId);
+
+        return {
+            statusCode: HttpStatus.OK,
+            message: 'ok',
+            post,
+        };
+    }
+
     // 게시글 수정
     @UseGuards(BearerTokenGuard)
     @Put(':postId')

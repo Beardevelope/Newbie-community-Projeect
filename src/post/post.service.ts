@@ -12,9 +12,9 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Post } from './entities/post.entity';
 import { DataSource, IsNull, LessThan, Not, Repository } from 'typeorm';
 import { Cron } from '@nestjs/schedule';
-import { Tag } from './entities/tag.entity';
 import { AutoReply } from 'src/openai/openai.provider';
 import { CommentService } from 'src/comment/comment.service';
+import { Tag } from 'src/tag/entities/tag.entity';
 
 @Injectable()
 export class PostService {
@@ -224,6 +224,27 @@ export class PostService {
         });
     }
 
+    // 조회수 증가 api
+    async addHitCount(postId: number) {
+        const foundPost = await this.postRepository.findOne({
+            where: {
+                deletedAt: null,
+                id: postId,
+            },
+        });
+
+        if (!foundPost) {
+            throw new NotFoundException('해당 게시물은 존재하지 않습니다.');
+        }
+
+        let hitCount = foundPost.hitCount + 1;
+
+        await this.postRepository.save({
+            id: postId,
+            hitCount,
+        });
+    }
+
     // 게시글 수정
     async update(postId: number, updatePostDto: UpdatePostDto, userId) {
         const { title, content, image, tag } = updatePostDto;
@@ -287,14 +308,6 @@ export class PostService {
 
         return foundPost;
     }
-
-    // 태그 서비스를 만들어야하나?
-    // // 태그 전체조회
-    // async tagFindAll() {
-    //     return await this.tagRepository.find({
-    //         order: { createdAt: 'ASC' },
-    //     });
-    // }
 
     async autoReplyComment() {
         const posts = await this.postRepository.find({
