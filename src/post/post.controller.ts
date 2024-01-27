@@ -23,7 +23,6 @@ export class PostController {
     constructor(private readonly postService: PostService) {}
 
     // 게시글 생성
-    // @UseGuards(AuthGuard('jwt'))
     @UseGuards(BearerTokenGuard)
     @Post()
     async create(@Body() createPostDto: CreatePostDto, @Req() req) {
@@ -41,8 +40,8 @@ export class PostController {
     // 게시글 조회
     @Get()
     async findAll(@Query() query: string, @Req() req) {
-        const { order, filter, tagName } = req.query;
-        const posts = await this.postService.findAll(order, filter, tagName);
+        const { order, filter, tagName, tab } = req.query;
+        const posts = await this.postService.findAll(order, filter, tagName, tab);
 
         return {
             statusCode: HttpStatus.OK,
@@ -64,10 +63,10 @@ export class PostController {
     }
 
     // 게시글 채택 - 상태 변화
-    @UseGuards(AuthGuard('jwt'))
+    @UseGuards(BearerTokenGuard)
     @Put(':postId/status')
     async statusUpdate(@Param('postId') postId: string, @Req() req) {
-        const userId = req.user.id;
+        const userId = req.userId;
         const post = await this.postService.statusUpdate(+postId, userId);
 
         return {
@@ -78,7 +77,7 @@ export class PostController {
     }
 
     // 게시글 경고 - 누적제
-    @UseGuards(AuthGuard('jwt'))
+    @UseGuards(BearerTokenGuard)
     @Put(':postId/warning')
     async addWarning(@Param('postId') postId: string) {
         const post = await this.postService.addWarning(+postId);
@@ -90,15 +89,40 @@ export class PostController {
         };
     }
 
+    // 게시글 좋아요 추가
+    @UseGuards(BearerTokenGuard)
+    @Put(':postId/like')
+    async addLike(@Param('postId') postId: string) {
+        const post = await this.postService.addLike(+postId);
+
+        return {
+            statusCode: HttpStatus.OK,
+            message: 'ok',
+            post,
+        };
+    }
+
+    // 게시글 좋아요 추가
+    @Put(':postId/hit')
+    async addHitCount(@Param('postId') postId: string) {
+        const post = await this.postService.addHitCount(+postId);
+
+        return {
+            statusCode: HttpStatus.OK,
+            message: 'ok',
+            post,
+        };
+    }
+
     // 게시글 수정
-    @UseGuards(AuthGuard('jwt'))
+    @UseGuards(BearerTokenGuard)
     @Put(':postId')
     async update(
         @Param('postId') postId: string,
         @Body() updatePostDto: UpdatePostDto,
         @Req() req,
     ) {
-        const userId = req.user.id;
+        const userId = req.userId;
         const post = await this.postService.update(+postId, updatePostDto, userId);
 
         return {
@@ -109,10 +133,10 @@ export class PostController {
     }
 
     // 게시글 삭제
-    @UseGuards(AuthGuard('jwt'))
+    @UseGuards(BearerTokenGuard)
     @Delete(':postId')
     async remove(@Param('postId') postId: string, @Req() req) {
-        const userId = req.user.id;
+        const userId = req.userId;
         const post = await this.postService.remove(+postId, +userId);
 
         return {
