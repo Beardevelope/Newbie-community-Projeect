@@ -11,24 +11,17 @@ export class AlarmService {
         private readonly alarmRepository: Repository<Alarm>,
     ) {}
 
-    private comments$: Subject<any> = new Subject();
+    private alarms$: Subject<any> = new Subject();
 
-    private observer = this.comments$.asObservable();
+    private observer = this.alarms$.asObservable();
 
     // 댓글 추가 이벤트 발생 함수
-    async emitCommentAddedEvent(userId: number, commentContent: string) {
-        const reduceCommentTItle = `${commentContent.slice(0, 15)}...`;
-        this.comments$.next({ userId, reduceCommentTItle });
-
-        // 알람을 여기서 저장하는 로직 작성
-        await this.alarmRepository.save({
-            description: reduceCommentTItle,
-            userId,
-        });
+    async emitAlarmAddedEvent(userId: number, title: string, description: string) {
+        this.alarms$.next({ userId, title, description });
     }
 
     // 댓글 추가 이벤트를 구독하는 클라이언트에게 SSE 전송
-    sendCommentAddedEvent(userId: number): Observable<any> {
+    sendAlarmAddedEvent(userId: number): Observable<any> {
         return this.observer.pipe(
             // 특정 게시물의 댓글만 필터링
             filter((event) => event.userId === userId),
@@ -36,11 +29,21 @@ export class AlarmService {
             map((event) => {
                 return {
                     data: {
-                        title: `새로운 댓글이 추가되었습니다.`,
-                        description: `${event.reduceCommentTItle}`,
+                        title: `${event.title}`,
+                        description: `${event.description}`,
                     },
                 } as MessageEvent;
             }),
         );
+    }
+
+    async createAlarm(userId: number, title: string, description: string) {
+        // 알람을 여기서 저장하는 로직 작성
+        const alarm = await this.alarmRepository.save({
+            title, 
+            description,
+            userId,
+        });
+        this.emitAlarmAddedEvent(userId, alarm.title, description)
     }
 }

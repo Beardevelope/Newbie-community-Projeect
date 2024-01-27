@@ -7,6 +7,6 @@ export class AlarmController {
 
     @Sse(':userId')
     async alarm(@Param('userId') userId: number) {
-        return await this.alarmService.sendCommentAddedEvent(+userId);
+        return await this.alarmService.sendAlarmAddedEvent(+userId);
     }
 }

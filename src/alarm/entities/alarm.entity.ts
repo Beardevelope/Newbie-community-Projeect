@@ -6,7 +6,7 @@ export class Alarm {
     @PrimaryGeneratedColumn()
     id: number;
 
-    @Column({ default: '메시지가 도착하였습니다.'})
+    @Column()
     title: string;
 
     @Column()
