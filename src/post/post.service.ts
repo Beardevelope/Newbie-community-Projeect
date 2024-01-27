@@ -10,7 +10,7 @@ import { CreatePostDto } from './dto/create-post.dto';
 import { UpdatePostDto } from './dto/update-post.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Post } from './entities/post.entity';
-import { DataSource, IsNull, LessThan, MoreThan, Not, Repository } from 'typeorm';
+import { DataSource, IsNull, LessThan, Not, Repository } from 'typeorm';
 import { Cron } from '@nestjs/schedule';
 import { Tag } from './entities/tag.entity';
 import { AutoReply } from 'src/openai/openai.provider';
@@ -26,12 +26,14 @@ export class PostService {
         private readonly dataSource: DataSource,
         @Inject(forwardRef(() => AutoReply))
         private readonly autoReply: AutoReply,
-        private readonly commenService: CommentService
+        private readonly commenService: CommentService,
     ) {}
 
     // 게시글 생성
     async create(createPostDto: CreatePostDto, userId: number) {
         const { title, content, image, tag } = createPostDto;
+
+        console.log(title, content, image, tag)
 
         const tags = [];
         for (let i = 0; i < tag.length; i++) {
@@ -44,8 +46,8 @@ export class PostService {
             }
             tags.push(existedTag);
         }
-        
-        const post =  await this.postRepository.save({
+
+        const post = await this.postRepository.save({
             title,
             content,
             image,
@@ -53,50 +55,65 @@ export class PostService {
             userId,
         });
         
+        console.log(post)
         
         return post
     }
 
     // 게시글 조회 기능 구현 필터까지 다 구현하기 req.query를 이용하여 구현하기
-    async findAll(order: string, filter: string) {
+    async findAll(order: string, filter: string, tagName: string) {
         if (order !== 'hitCount' && order !== 'likes' && order !== 'createdAt') {
             throw new BadRequestException('알맞는 정렬값을 입력해주세요.');
         }
 
-        // 댓글이 있을 경우
-        // if (filter === 'answered') {
-        // return await this.postRepository.find({
-        //     where: {
-        //         ...(filter && { status: `${filter}` }),
-        //         comments: { id: Not(IsNull()) }
-        //     },
-        //     order: {
-        //         ...(order && { [`${order}`]: 'DESC' }),
-        //     },
-        // })
-        // }
-
-        // 댓글이 없을 경우
-        // if (filter === 'unAnswered') {
-        //     return await this.postRepository.find({
-        //         where: {
-        //             ...(filter && { status: `${filter}` }),
-        //             comments: { id: IsNull() }
-        //         },
-        //         order: {
-        //             ...(order && { [`${order}`]: 'DESC' }),
-        //         },
-        //     })
-        // }
-
+        //댓글이 있을 경우
+        if (filter === 'answered') {
         return await this.postRepository.find({
             where: {
+                deletedAt: null,
                 ...(filter && { status: `${filter}` }),
+                comments: { id: Not(IsNull()) }
             },
             order: {
                 ...(order && { [`${order}`]: 'DESC' }),
             },
+        })
+        }
+
+        //댓글이 없을 경우
+        if (filter === 'unAnswered') {
+            return await this.postRepository.find({
+                where: {
+                    deletedAt: null,
+                    ...(filter && { status: `${filter}` }),
+                    comments: { id: IsNull() }
+                },
+                order: {
+                    ...(order && { [`${order}`]: 'DESC' }),
+                },
+            })
+        }
+        // const test = IsNull() 뭐 이런식으로 하고 이것을 where절에 넣을 수 있나?
+
+        const posts = await this.postRepository.find({
+            where: {
+                deletedAt: null,
+                ...(filter && { status: `${filter}` }),
+            },
+            order: {
+                ...(order && { [`${order}`]: 'DESC' }),
+                createdAt: 'DESC',
+            },
+            relations: {
+                tags: true,
+            },
         });
+        if (!tagName) {
+            return posts;
+        }
+
+        const filteredPosts = posts.filter((post) => post.tags.some((tag) => tag.name === tagName));
+        return filteredPosts;
     }
 
     // 게시글 상세 조회
@@ -105,7 +122,7 @@ export class PostService {
             where: {
                 id: postId,
             },
-            relations: { comments: true }
+            relations: { comments: true },
         });
 
         if (!foundPost) {
@@ -119,6 +136,7 @@ export class PostService {
     async addWarning(postId: number) {
         const foundPost = await this.postRepository.findOne({
             where: {
+                deletedAt: null,
                 id: postId,
             },
         });
@@ -129,10 +147,16 @@ export class PostService {
 
         let warning = foundPost.warning + 1;
 
+        // orm이 2번 사용되었는데 하나로 합쳐보기
+        // save 할 때 deletedAt: new Date() 추가해보면서..
         await this.postRepository.save({
             id: postId,
             warning,
         });
+
+        if (foundPost.warning > 3) {
+            await this.postRepository.softDelete(foundPost.id);
+        }
     }
 
     // 게시글 수정
@@ -141,6 +165,7 @@ export class PostService {
 
         const foundPost = await this.postRepository.findOne({
             where: {
+                deletedAt: null,
                 id: postId,
             },
         });
@@ -180,6 +205,7 @@ export class PostService {
     async statusUpdate(postId: number, userId) {
         const foundPost = await this.postRepository.findOne({
             where: {
+                deletedAt: null,
                 id: postId,
             },
         });
@@ -204,6 +230,7 @@ export class PostService {
     async remove(postId: number, userId) {
         const foundPost = await this.postRepository.findOne({
             where: {
+                deletedAt: null,
                 id: postId,
             },
         });
@@ -221,36 +248,32 @@ export class PostService {
         return foundPost;
     }
 
-    // 게시글 신고로 인한 삭제
-    @Cron('10 * * * * *')
-    async removeByAccumulatedWarning() {
-        const foundPosts = await this.postRepository.find();
+    // 태그 서비스를 만들어야하나?
+    // // 태그 전체조회
+    // async tagFindAll() {
+    //     return await this.tagRepository.find({
+    //         order: { createdAt: 'ASC' },
+    //     });
+    // }
 
-        for(let i =0; i<foundPosts.length; i++) {
-            if (foundPosts[i].warning > 4) {
-                await this.postRepository.delete(foundPosts[i].id)
-            }
-        }
-    }
-
-    async autoReplyComment () {
+    async autoReplyComment() {
         const posts = await this.postRepository.find({
             where: {
                 createdAt: LessThan(new Date()), // Replace with your desired date comparison
                 comments: {
-                  id: IsNull() // This ensures that the post has comments
-                }
+                    id: IsNull(), // This ensures that the post has comments
+                },
             },
             order: { createdAt: 'ASC' },
             take: 3,
-            relations: { comments: true }   
-        })
-        console.log(posts)
+            relations: { comments: true },
+        });
+        console.log(posts);
         posts.forEach(async (post) => {
             if (post.comments.length <= 0) {
-            const aiReplied = await this.autoReply.ask(post.content)
-                await this.commenService.createComment(post.id, 1, { content: aiReplied })
-            }   
-        })
+                const aiReplied = await this.autoReply.ask(post.content);
+                await this.commenService.createComment(post.id, 1, { content: aiReplied });
+            }
+        });
     }
 }

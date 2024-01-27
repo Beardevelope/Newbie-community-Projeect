@@ -2,18 +2,23 @@ import { CanActivate, ExecutionContext, Injectable, UnauthorizedException } from
 import { INVALID_TOKEN, NOT_MATCH_TOKEN_TYPE } from '../const/auth.excption-message';
 import { AuthService } from '../auth.service';
 
+@Injectable()
 export class BearerTokenGuard implements CanActivate {
     constructor(private readonly authService: AuthService) {}
+
     async canActivate(context: ExecutionContext): Promise<boolean> {
         const req = context.switchToHttp().getRequest();
-
         const rawToken = req.headers.authorization;
 
         if (!rawToken) {
             throw new UnauthorizedException(INVALID_TOKEN);
         }
 
+        console.log(this.authService);
         const token = await this.authService.extractToken(rawToken, true);
+        if (!token) {
+            throw new UnauthorizedException(INVALID_TOKEN);
+        }
 
         const result = await this.authService.verifyToken(token);
 
@@ -26,7 +31,7 @@ export class BearerTokenGuard implements CanActivate {
 }
 
 @Injectable()
-export class AcessTokenGuard extends BearerTokenGuard {
+export class AccessTokenGuard extends BearerTokenGuard {
     async canActivate(context: ExecutionContext): Promise<boolean> {
         await super.canActivate(context);
 
