@@ -130,14 +130,16 @@ body {
 #post-layout {
     display: flex;
     flex-direction: row;
+    margin-bottom: 30px;
 
 }
 
 #post-cell {
+    width: 100%;
     border-width: 2px;
     border-color: black;
     border-style: solid;
-    margin: 30px;
+    margin-left: 10px;
     padding: 30px;
 }
 
@@ -170,6 +172,7 @@ body {
   }
 
   .comment-list {
+    margin-top: 10px;
     font-size: 12px;
     padding: 10px;
     border-width: 2px;
@@ -177,7 +180,14 @@ body {
     border-style: solid;
   }
   .comment-list .ul .li {
-    padding: 20pxpx;
+    padding: 20px;
+  }
+  .comment-editor{
+    border-width: 2px;
+    border-color: black;
+    border-style: solid;
+    margin-top: 10px;
+    padding: 20px;
   }
 
 /* #post-list-wrapper {

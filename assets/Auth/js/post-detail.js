@@ -82,7 +82,7 @@ const listDetailPageOfPost = async () => {
 
         // Format the relative time
         const createdAt = formatRelativeTime(timeDifferent(post.createdAt));
-        const updatedAt = formatRelativeTime(timeDifferent(post.createdAt))
+        const updatedAt = formatRelativeTime(timeDifferent(post.updatedAt))
         headline.innerHTML = `
         <div class="first-headline">
             <h1 id="headline-title">${post.title}</h1>
@@ -169,6 +169,8 @@ const listDetailPageOfPost = async () => {
         }
         
     } catch (error) {
+        alert('해당 페이지가 존재하지 않습니다.')
+        window.location.href = '/error-page'
         console.error(error)
     }
 
