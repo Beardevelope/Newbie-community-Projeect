@@ -63,7 +63,7 @@ function displayPosts(posts) {
 
         const questionElement = document.createElement('div');
         questionElement.classList.add('question');
-        questionElement.innerHTML = `<h2 style="cursor: pointer" class="post" id="${post.id}"><a href="./detail.html?id=${post.id}">${post.title}</a></h2><p>${post.content.slice(0, 20)}...</p>`;
+        questionElement.innerHTML = `<h2 style="cursor: pointer" class="post" id="${post.id}">${post.title}</h2><p>${post.content.slice(0, 20)}...</p>`;
         tags.forEach((tag) => {
             questionElement.innerHTML += `<button id="${tag.name}" class="tagButton">${tag.name}</button>`;
         });
@@ -74,7 +74,7 @@ function displayPosts(posts) {
     // 새로운 태그 버튼에 이벤트 리스너 추가
     addEventListenersToTagButtons();
 
-    // addEventListenersToPost();
+    addEventListenersToPost();
 }
 
 // 페이지네이션을 업데이트
@@ -126,102 +126,41 @@ function goToPage(page) {
     updatePagination();
 }
 
-// 이곳부터는 필터를 위한 로직들
-// 필터를 위한 버튼들
-newestButton.addEventListener('click', function () {
-    questionsList.innerHTML = '';
-    foundPosts = [];
-    currentPage = 1;
-    postList('?order=createdAt');
-});
-
-answeredButton.addEventListener('click', function () {
-    questionsList.innerHTML = '';
-    foundPosts = [];
-    currentPage = 1;
-    postList('?order=createdAt&tab=answered');
-});
-
-unAnsweredButton.addEventListener('click', function () {
-    questionsList.innerHTML = '';
-    foundPosts = [];
-    currentPage = 1;
-    postList('?order=createdAt&tab=unAnswered');
-});
-
-// filter버튼을 활용한 다중 필터링 order(정렬)
-let orderFilter = ''; // 초기화
-// newest
-orderNewestButton.addEventListener('click', function (event) {
-    orderFilter = 'createdAt';
-    inputOrderFilter(orderFilter);
-});
-// highest like
-orderLikeButton.addEventListener('click', function (event) {
-    orderFilter = 'likes';
-    inputOrderFilter(orderFilter);
-});
-// most frequent
-orderHitButton.addEventListener('click', function (event) {
-    orderFilter = 'hitCount';
-    inputOrderFilter(orderFilter);
-});
-
-let tabStatus = '';
-
-tabUnAnswered.addEventListener('click', function (event) {
-    tabStatus += '&tab=unAnswered';
-    inputOrderFilter(orderFilter);
-});
-
-statusDone.addEventListener('click', function (event) {
-    tabStatus += '&filter=done';
-    inputOrderFilter(orderFilter);
-});
-
-statusUnfinished.addEventListener('click', function (event) {
-    tabStatus += '&filter=unfinished';
-    inputOrderFilter(orderFilter);
-});
-
-// 비동기적 작업으로 인한 함수 설정
-function inputOrderFilter(orderFilter) {
-    questionsList.innerHTML = '';
-    foundPosts = [];
-    currentPage = 1;
-    postList(`?order=${orderFilter}${tabStatus}`);
-    tabStatus = '';
+// 조회수 늘리는 함수
+async function addHit(clickedPostId) {
+    try {
+        console.log(clickedPostId)
+        const newInformation = {
+            id: clickedPostId,
+        };
+        const response = await fetch(`http://localhost:3000/post/${clickedPostId}/hit`, {
+            method: 'put',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(newInformation),
+        });
+        const information = await response.json();
+        if (response.status !== 200) {
+            throw new Error(information.message);
+        }
+    } catch (error) {
+        console.log(error.message);
+    }
 }
 
-function closeFilterModal() {
-    document.getElementById('filterModal').style.display = 'none';
-}
-
-// 태크를 눌렀을 때 태그 필터 적용
-function addEventListenersToTagButtons() {
-    const tagButtons = document.querySelectorAll('.tagButton');
-    tagButtons.forEach((tagButton) => {
-        tagButton.addEventListener('click', function (event) {
-            const tagName = event.target.id;
-            questionsList.innerHTML = '';
-            foundPosts = [];
-            currentPage = 1;
-            postList(`?order=createdAt&tagName=${tagName}`);
+// 게시글 제목 클릭했을 때 실행되는 로직
+function addEventListenersToPost() {
+    const posts = document.querySelectorAll('.post');
+    posts.forEach((post) => {
+        post.addEventListener('click', function (event) {
+            const clickedPostId = event.target.id;
+            // 조회수 늘리는 함수 실행
+            addHit(clickedPostId)
+            // 상세 조회 페이지 URL을 생성하여 이동
+            const detailPageURL = `./detail.html?id=${clickedPostId}`;
+            window.location.href = detailPageURL;
         });
     });
 }
-// 여기까지가 필터 관련 로직
-
-// // 게시글 제목을 클릭하면 상세조회페이지로 이동
-// function addEventListenersToPost() {
-//     const posts = document.querySelectorAll('.post');
-//     posts.forEach((post) => {
-//         post.addEventListener('click', function (event) {
-//             const clickedPostId = event.target.id;
-//             alert(`${clickedPostId}`);
-//         });
-//     });
-// }
 
 // 페이지 로드 시 실행
 document.addEventListener('DOMContentLoaded', () => {
