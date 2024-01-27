@@ -19,6 +19,7 @@ import { LikeModule } from './like/like.module';
 import { CommentLikeModule } from './comment-like/comment-like.module';
 import { UploadServiceModule } from './upload-service/upload-service.module';
 import { AlarmModule } from './alarm/alarm.module';
+import { TagModule } from './tag/tag.module';
 @Module({
     imports: [
         UserModule,
@@ -41,6 +42,7 @@ import { AlarmModule } from './alarm/alarm.module';
             global: true,
             secret: process.env.JWT_SECRET_KEY,
         }),
+        TagModule,
         AlarmModule,
     ],
     controllers: [AppController],
