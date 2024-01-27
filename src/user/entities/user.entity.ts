@@ -44,6 +44,9 @@ export class User {
     points: number;
 
     @Column()
+    providerId: string;
+
+    @Column()
     isAdmin: boolean;
     // 권한은 isAdmin도 괜찮지만 Role이라는 string으로 받아도 ㄱㅊ다.
     // 확장성 고려. 코드상에서 enum타입을 사용시에는 확장에 대한 어려움은 없으나.
