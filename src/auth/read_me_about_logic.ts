@@ -12,7 +12,7 @@
  *      - 검증이 완료되면 accessToken과 refreshToken을 반환한다.
  *
  * 3) loginUser
- *      - (1)과 (2) 에서 필요한 acessToken과 refreshToken을 반환하는 
+ *      - (1)과 (2) 에서 필요한 acessToken과 refreshToken을 반환
  *
  * 4) signToken ( 토큰생성 로직 )
  *      -(3)에서 필요한 accessToken과 refreshToken을 sign하는 로직
@@ -35,15 +35,15 @@
 /**
  * 토큰을 사용하는 방식
  *
- * 1) 사용자 로그인 또는 회원가입 진행시 accessToken reFreshToken을 
+ * 1) 사용자 로그인 또는 회원가입 진행시 accessToken reFreshToken을
  *    발급받는다.
- * 
+ *
  * 2) 로그인 시 Basic 토큰과 함께 요청을 보낸다.
  *    Basic 토큰은 '이메일, 비밀번호'를 Base64로 인코딩한 형태.
- * 
- * 3) 아무나 접근할 수 없는 정보(private route)를 접근할 시에 
+ *
+ * 3) 아무나 접근할 수 없는 정보(private route)를 접근할 시에
  *    accessToken을 Header에 추가해서 요청과 함께보낸다.
- * 
+ *
  * 4) 토큰과 요청을 받은 서버는 토큰 검증을 통해 현재 요청을 보낸 사용자가
  *    누구인지 알 수 있다.
  *
@@ -59,3 +59,5 @@
  *    요청을 해서 새로운 토큰을 발급받고 새로운 토큰을 사용해서 private
  *    route에 접근한다.
  */
+
+// 기술문서 작성 개추
