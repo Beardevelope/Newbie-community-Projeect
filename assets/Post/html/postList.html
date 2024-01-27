@@ -1,0 +1,119 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Questions Page</title>
+        <link rel="stylesheet" href="../css/postList.css" />
+    </head>
+
+    <body>
+        <header>
+            <h1>Questions Page</h1>
+            <div class="header-buttons">
+                <button id="loginButton">Log In</button>
+                <button id="signupButton">Sign Up</button>
+            </div>
+        </header>
+        <div class="buttonsUp">
+            <button id="homeButton">Home</button>
+            <button id="qnaButton">QnA</button>
+            <button id="toyProjectButton">Toy-Project</button>
+        </div>
+        <main>
+            <div class="buttonsDown">
+                <button id="questionsButton">Questions</button>
+                <button id="tagsButton">Tags</button>
+                <button id="usersButton">Users</button>
+                <button id="askButton">Ask a Question</button>
+            </div>
+
+            <div class="buttonsDown">
+                <button id="newestButton">newest</button>
+                <button id="answeredButton">answered</button>
+                <button id="unAnsweredButton">unAnswered</button>
+                <button id="filterButton">&#8801;filter</button>
+            </div>
+
+            <div id="questionsList"></div>
+            <div id="pagination-container"></div>
+        </main>
+
+        <!-- 모달 창 필터-->
+        <div id="filterModal" class="modal">
+            <div class="filter-modal-content">
+                <h2>Filter Options</h2>
+
+                <!-- Order Options -->
+                <p>Order By:</p>
+                <label id="orderNewestButton">
+                    <input type="radio" name="orderOption" value="createdAt" /> Newest
+                </label>
+                <label id="orderLikeButton">
+                    <input type="radio" name="orderOption" value="likes" /> Highest Like
+                </label>
+                <label id="orderHitButton">
+                    <input type="radio" name="orderOption" value="hitCount" /> Most frequent
+                </label>
+                <br />
+                <!-- Filter Options -->
+                <p>Filter By:</p>
+                <label id="tabUnAnswered">
+                    <input type="checkbox" name="filterOption" value="unAnswered" /> unAnswered
+                </label>
+                <br />
+                <label id="statusDone">
+                    <input type="checkbox" name="filterOption" value="done" /> done
+                </label>
+                <br />
+                <label id="statusUnfinished">
+                    <input type="checkbox" name="filterOption" value="unfinished" /> unfinished
+                </label>
+                <br />
+
+                <button class="filter-modal-close" id="manyFilterButton" onclick="closeFilterModal()">
+                    Apply Filters
+                </button>
+            </div>
+        </div>
+
+        <!-- 모달 창 게시판 등록-->
+        <div id="askModal" class="modal">
+            <div class="modal-content">
+                <h2>Ask a Question</h2>
+                <form id="askForm">
+                    <!-- title 입력창 -->
+                    <label for="title" style="margin-bottom: 10px">Title:</label>
+                    <input type="text" id="title" name="title" required style="font-size: 20px" />
+
+                    <div>
+                        <!-- content 입력창 -->
+                        <label for="content" style="margin-top: 10px">Content:</label>
+                        <textarea
+                            id="content"
+                            name="content"
+                            rows="10"
+                            style="width: 100%"
+                            required
+                        ></textarea>
+                    </div>
+                    <label for="image">Image URL:</label>
+                    <input type="text" id="image" name="image" style="margin-bottom: 10px" />
+
+                    <label for="tags">Tags (comma-separated):</label>
+                    <input type="text" id="tags" name="tags" style="margin-bottom: 10px" />
+
+                    <!-- 필요한 다른 입력 요소들도 추가 가능 -->
+
+                    <button type="submit" class="close-button">Submit</button>
+                    <button type="button" class="close-button" onclick="closeAskModal()">
+                        Close
+                    </button>
+                </form>
+            </div>
+        </div>
+    </body>
+    <script src="../js/postList.js"></script>
+    <script src="../js/postAskModal.js"></script>
+    <script src="../js/postFilterModal.js"></script>
+</html>
