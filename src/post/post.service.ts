@@ -57,39 +57,62 @@ export class PostService {
     }
 
     // 게시글 조회 기능 구현 필터까지 다 구현하기 req.query를 이용하여 구현하기
-    async findAll(order: string, filter: string, tagName: string) {
+    async findAll(order: string, filter: string, tagName: string, tab: string) {
         if (order !== 'hitCount' && order !== 'likes' && order !== 'createdAt') {
             throw new BadRequestException('알맞는 정렬값을 입력해주세요.');
         }
 
         //댓글이 있을 경우
-        if (filter === 'answered') {
-            return await this.postRepository.find({
+        if (tab === 'answered') {
+            const posts = await this.postRepository.find({
                 where: {
                     deletedAt: null,
                     ...(filter && { status: `${filter}` }),
-                    comments: { id: Not(IsNull()) },
+                    ...(tab && { comments: { id: Not(IsNull()) } }),
                 },
                 order: {
                     ...(order && { [`${order}`]: 'DESC' }),
+                    createdAt: 'DESC',
+                },
+                relations: {
+                    tags: true,
                 },
             });
+            if (!tagName) {
+                return posts;
+            }
+
+            const filteredPosts = posts.filter((post) =>
+                post.tags.some((tag) => tag.name === tagName),
+            );
+            return filteredPosts;
         }
 
         //댓글이 없을 경우
-        if (filter === 'unAnswered') {
-            return await this.postRepository.find({
+        if (tab === 'unAnswered') {
+            const posts = await this.postRepository.find({
                 where: {
                     deletedAt: null,
                     ...(filter && { status: `${filter}` }),
-                    comments: { id: IsNull() },
+                    ...(tab && { comments: { id: (IsNull()) } }),
                 },
                 order: {
                     ...(order && { [`${order}`]: 'DESC' }),
+                    createdAt: 'DESC',
+                },
+                relations: {
+                    tags: true,
                 },
             });
+            if (!tagName) {
+                return posts;
+            }
+
+            const filteredPosts = posts.filter((post) =>
+                post.tags.some((tag) => tag.name === tagName),
+            );
+            return filteredPosts;
         }
-        // const test = IsNull() 뭐 이런식으로 하고 이것을 where절에 넣을 수 있나?
 
         const posts = await this.postRepository.find({
             where: {
@@ -118,7 +141,7 @@ export class PostService {
             where: {
                 id: postId,
             },
-            relations: { comments: true },
+            relations: { comments: true, tags: true },
         });
 
         if (!foundPost) {
@@ -126,6 +149,31 @@ export class PostService {
         }
 
         return foundPost;
+    }
+
+    // 게시글 status(해결, 미해결) 수정
+    async statusUpdate(postId: number, userId) {
+        const foundPost = await this.postRepository.findOne({
+            where: {
+                deletedAt: null,
+                id: postId,
+            },
+        });
+
+        if (!foundPost) {
+            throw new NotFoundException('해당 게시물은 존재하지 않습니다.');
+        }
+
+        if (userId !== foundPost.userId) {
+            throw new NotAcceptableException('수정할 권한이 없습니다.');
+        }
+
+        const updateStatus = foundPost.status === null ? 'done' : null;
+
+        await this.postRepository.save({
+            id: postId,
+            status: updateStatus,
+        });
     }
 
     // 게시글 경고 - 누적제
@@ -153,6 +201,27 @@ export class PostService {
         if (foundPost.warning > 3) {
             await this.postRepository.softDelete(foundPost.id);
         }
+    }
+
+    // 게시글 좋아요 증가 api
+    async addLike(postId: number) {
+        const foundPost = await this.postRepository.findOne({
+            where: {
+                deletedAt: null,
+                id: postId,
+            },
+        });
+
+        if (!foundPost) {
+            throw new NotFoundException('해당 게시물은 존재하지 않습니다.');
+        }
+
+        let likes = foundPost.likes + 1;
+
+        await this.postRepository.save({
+            id: postId,
+            likes,
+        });
     }
 
     // 게시글 수정
@@ -195,31 +264,6 @@ export class PostService {
         });
 
         return updatedPost;
-    }
-
-    // 게시글 status(해결, 미해결) 수정
-    async statusUpdate(postId: number, userId) {
-        const foundPost = await this.postRepository.findOne({
-            where: {
-                deletedAt: null,
-                id: postId,
-            },
-        });
-
-        if (!foundPost) {
-            throw new NotFoundException('해당 게시물은 존재하지 않습니다.');
-        }
-
-        if (userId !== foundPost.userId) {
-            throw new NotAcceptableException('수정할 권한이 없습니다.');
-        }
-
-        const updateStatus = foundPost.status === null ? 'done' : null;
-
-        await this.postRepository.save({
-            id: postId,
-            status: updateStatus,
-        });
     }
 
     // 게시글 삭제
