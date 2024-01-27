@@ -21,6 +21,9 @@ export class CommentLike {
     @Column()
     commentId: number;
 
+    @Column({ nullable: true })
+    parentCommentId: number;
+
     @CreateDateColumn()
     createdAt: Date;
 

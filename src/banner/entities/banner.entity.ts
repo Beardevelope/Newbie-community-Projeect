@@ -4,10 +4,13 @@ import {
     Column,
     CreateDateColumn,
     Entity,
+    JoinColumn,
     ManyToOne,
+    OneToOne,
     PrimaryGeneratedColumn,
     UpdateDateColumn,
 } from 'typeorm';
+import { BannerClick } from './banner-click.entity';
 
 @Entity({ name: 'banners' })
 export class Banner {
@@ -15,16 +18,17 @@ export class Banner {
     id: number;
 
     @Column()
-    @IsNotEmpty({ message: '입력란을 확인해주세요' })
+    userId: number;
+
+    @Column()
+    @IsNotEmpty({ message: '제목을 입력해주세요.' })
     @IsString()
     title: string;
 
-    @Column()
+    @Column({ nullable: true })
+    @IsNotEmpty({ message: '파일을 업로드 해주세요.' })
     @IsString()
-    url: string;
-
-    @Column()
-    userId: number;
+    file: string;
 
     @CreateDateColumn()
     createdAt: Date;
@@ -32,6 +36,10 @@ export class Banner {
     @UpdateDateColumn()
     updatedAt: Date;
 
-    @ManyToOne((type) => User, (user) => user.banners)
+    @ManyToOne(() => User, (user) => user.banners)
+    @JoinColumn()
     user: User;
+
+    @OneToOne(() => BannerClick, (bannerClick) => bannerClick.banner)
+    bannerClick: BannerClick;
 }

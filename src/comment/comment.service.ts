@@ -127,23 +127,4 @@ export class CommentService {
 
         const result = await this.commentRepository.delete(id);
     }
-
-    // 좋아요 추가
-    async addCommentLike(userId: number, commentId: number): Promise<number> {
-        // 좋아요를 눌렀는지 확인
-        const existingLike = await this.commentLikeRepository.findOne({
-            where: { userId, commentId },
-        });
-
-        if (existingLike) {
-            // 이미 좋아요를 눌렀으면 취소
-            await this.commentLikeRepository.delete(existingLike.id);
-            return -1;
-        } else {
-            // 좋아요 추가
-            const newLike = this.commentLikeRepository.create({ userId, commentId });
-            await this.commentLikeRepository.save(newLike);
-            return 1;
-        }
-    }
 }

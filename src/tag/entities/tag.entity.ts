@@ -6,8 +6,9 @@ import {
     PrimaryGeneratedColumn,
     UpdateDateColumn,
 } from 'typeorm';
-import { Post } from './post.entity';
+
 import { IsNotEmpty } from 'class-validator';
+import { Post } from 'src/post/entities/post.entity';
 
 @Entity()
 export class Tag {
