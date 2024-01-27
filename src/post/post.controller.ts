@@ -40,8 +40,8 @@ export class PostController {
     // 게시글 조회
     @Get()
     async findAll(@Query() query: string, @Req() req) {
-        const { order, filter, tagName } = req.query;
-        const posts = await this.postService.findAll(order, filter, tagName);
+        const { order, filter, tagName, tab } = req.query;
+        const posts = await this.postService.findAll(order, filter, tagName, tab);
 
         return {
             statusCode: HttpStatus.OK,
@@ -81,6 +81,31 @@ export class PostController {
     @Put(':postId/warning')
     async addWarning(@Param('postId') postId: string) {
         const post = await this.postService.addWarning(+postId);
+
+        return {
+            statusCode: HttpStatus.OK,
+            message: 'ok',
+            post,
+        };
+    }
+
+    // 게시글 좋아요 추가
+    @UseGuards(BearerTokenGuard)
+    @Put(':postId/like')
+    async addLike(@Param('postId') postId: string) {
+        const post = await this.postService.addLike(+postId);
+
+        return {
+            statusCode: HttpStatus.OK,
+            message: 'ok',
+            post,
+        };
+    }
+
+    // 게시글 좋아요 추가
+    @Put(':postId/hit')
+    async addHitCount(@Param('postId') postId: string) {
+        const post = await this.postService.addHitCount(+postId);
 
         return {
             statusCode: HttpStatus.OK,
