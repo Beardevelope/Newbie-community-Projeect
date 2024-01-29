@@ -17,7 +17,6 @@ export class TagService {
         return await this.tagRepository.find({
             order: {
                 ...(order && { [`${order}`]: 'DESC' }),
-                name: 'ASC'
             },
         });
     }
