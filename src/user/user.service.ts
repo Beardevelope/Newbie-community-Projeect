@@ -101,7 +101,9 @@ export class UserService {
         newUser.password = password;
         newUser.providerId = providerId;
 
-        return this.usersRepository.save(newUser);
+        this.usersRepository.save(newUser);
+
+        return newUser;
     }
 
     /** 유저 정보수정

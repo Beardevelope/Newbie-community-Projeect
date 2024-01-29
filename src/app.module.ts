@@ -1,4 +1,4 @@
-import { Module } from '@nestjs/common';
+import { Module, NestModule, MiddlewareConsumer } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { AuthModule } from './auth/auth.module';
@@ -20,8 +20,12 @@ import { CommentLikeModule } from './comment-like/comment-like.module';
 import { UploadServiceModule } from './upload-service/upload-service.module';
 import { AlarmModule } from './alarm/alarm.module';
 import { TagModule } from './tag/tag.module';
+import session from 'express-session';
+import { PassportModule } from '@nestjs/passport';
+
 @Module({
     imports: [
+        PassportModule.register({ session: true }),
         UserModule,
         AuthModule,
         PostModule,
@@ -48,4 +52,16 @@ import { TagModule } from './tag/tag.module';
     controllers: [AppController],
     providers: [AppService],
 })
-export class AppModule {}
+export class AppModule implements NestModule {
+    configure(consumer: MiddlewareConsumer) {
+        consumer
+            .apply(
+                session({
+                    secret: process.env.SESSION_SECRET || 'default-secret-key',
+                    resave: false,
+                    saveUninitialized: true,
+                }),
+            )
+            .forRoutes('*');
+    }
+}
