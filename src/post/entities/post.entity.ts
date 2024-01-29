@@ -13,8 +13,8 @@ import {
     PrimaryGeneratedColumn,
     UpdateDateColumn,
 } from 'typeorm';
-import { Tag } from './tag.entity';
 import { Comment } from 'src/comment/entities/comment.entity';
+import { Tag } from 'src/tag/entities/tag.entity';
 
 @Entity()
 export class Post {
@@ -42,7 +42,7 @@ export class Post {
     @IsNumber()
     likes: number;
 
-    @Column({ default: null })
+    @Column({ default: 'unfinished' })
     status: string;
 
     @Column()
