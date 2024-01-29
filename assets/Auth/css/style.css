@@ -128,17 +128,17 @@ form {
     justify-content: center;
 }
 
-img.github-img {
+img.google-img {
     height: 25px;
     width: 25px;
     object-fit: cover;
     margin-right: 0.5em;
 }
-a.github {
+a.google {
     border: 1px solid #cacaca;
     background-color: #686464;
 }
-a.github span {
+a.google span {
     font-weight: 500;
     opacity: 0.6;
     color: white;
