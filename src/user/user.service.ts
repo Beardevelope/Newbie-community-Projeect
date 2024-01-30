@@ -61,6 +61,13 @@ export class UserService {
     }
 
     /**
+     * 전체 유저 목록 조회
+     */
+    getUserList() {
+        return this.usersRepository.find();
+    }
+
+    /**
      * email로 유저 조회
      * @param email
      */
@@ -72,6 +79,20 @@ export class UserService {
             },
         });
     }
+
+    /**
+     * nickname으로 유저 조회
+     * @param nickname
+     */
+
+    getUserByNickName(nickname: string) {
+        return this.usersRepository.findOne({
+            where: {
+                nickname,
+            },
+        });
+    }
+
     /**
      *  구글 아이디 생성 및 검증을 위한 코드 생성
      * @param email
@@ -110,10 +131,10 @@ export class UserService {
      * @Param updateUserDto
      */
 
-    async updateUser(id: number, updateUserDto: UpdateUserDto) {
+    async updateUser(userId: number, updateUserDto: UpdateUserDto) {
         const user = await this.usersRepository.findOne({
             where: {
-                id,
+                id: userId,
             },
         });
 
