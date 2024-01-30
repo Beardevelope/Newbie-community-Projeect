@@ -10,6 +10,8 @@ import {
     Put,
     UseGuards,
     Query,
+    UseInterceptors,
+    UploadedFile,
 } from '@nestjs/common';
 import { PostService } from './post.service';
 import { CreatePostDto } from './dto/create-post.dto';
@@ -17,6 +19,7 @@ import { UpdatePostDto } from './dto/update-post.dto';
 import { AuthGuard } from '@nestjs/passport';
 import { BearerTokenGuard } from 'src/auth/guard/bearer.guard';
 import { BasicTokenGuard } from 'src/auth/guard/basic.guard';
+import { FileInterceptor } from '@nestjs/platform-express';
 
 @Controller('post')
 export class PostController {
@@ -25,10 +28,11 @@ export class PostController {
     // 게시글 생성
     @UseGuards(BearerTokenGuard)
     @Post()
-    async create(@Body() createPostDto: CreatePostDto, @Req() req) {
+    @UseInterceptors(FileInterceptor('file'))
+    async create(@Body() createPostDto: CreatePostDto, @Req() req, @UploadedFile() file,) {
         const userId = req.userId;
 
-        const newPost = await this.postService.create(createPostDto, userId);
+        const newPost = await this.postService.create(createPostDto, userId, file);
 
         return {
             statusCode: HttpStatus.CREATED,
