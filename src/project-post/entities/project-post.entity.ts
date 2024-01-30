@@ -30,7 +30,10 @@ export class ProjectPost {
     @IsString()
     content: string;
 
-    @Column()
+    @Column({
+        default:
+            'https://nestjs-project-images.s3.ap-northeast-2.amazonaws.com/d8fa67cf-5b7a-4663-a50d-08ba051bc258',
+    })
     @IsString()
     image: string;
 
@@ -57,29 +60,29 @@ export class ProjectPost {
     @IsNumber()
     hitCount: number;
 
+    @Column()
+    userId: number;
+
     @CreateDateColumn()
     createdAt: Date;
 
     @UpdateDateColumn()
     updatedAt: Date;
 
-    @OneToMany((type) => NeedInfo, (needInfo) => needInfo.projectPost, { cascade: true })
+    @OneToMany(() => NeedInfo, (needInfo) => needInfo.projectPost, { cascade: true })
     needInfo: NeedInfo[];
 
-    @OneToMany((type) => Question, (question) => question.projectPost, { cascade: true })
+    @OneToMany(() => Question, (question) => question.projectPost, { cascade: true })
     question: Question[];
 
-    @OneToMany((type) => Like, (like) => like.projectPost, { cascade: true })
+    @OneToMany(() => Like, (like) => like.projectPost, { cascade: true })
     like: Like[];
 
-    @Column()
-    userId: number;
-
-    @ManyToOne((type) => User, (user) => user.projectPost)
+    @ManyToOne(() => User, (user) => user.projectPost)
     @JoinColumn({ name: 'user_id' })
     user: User;
 
-    @OneToMany((type) => ProjectApplicant, (projectApplicant) => projectApplicant.projectPost, {
+    @OneToMany(() => ProjectApplicant, (projectApplicant) => projectApplicant.projectPost, {
         cascade: true,
     })
     projectApplicant: ProjectApplicant[];

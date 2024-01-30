@@ -6,7 +6,7 @@ import { ProjectPost } from './entities/project-post.entity';
 import { Repository } from 'typeorm';
 import _ from 'lodash';
 import { ProjectApplicant } from './entities/project-applicant.entity';
-import { PaginationDto } from './dto/paginationDto';
+import { UploadServiceService } from 'src/upload-service/upload-service.service';
 
 @Injectable()
 export class ProjectPostService {
@@ -15,17 +15,24 @@ export class ProjectPostService {
         private readonly projectPostRepository: Repository<ProjectPost>,
         @InjectRepository(ProjectApplicant)
         private readonly projectApplicantRepository: Repository<ProjectApplicant>,
+        private readonly uploadService: UploadServiceService,
     ) {}
 
     // 토이프로젝트 생성
-    async create(createProjectPostDto: CreateProjectPostDto, userId: number) {
-        const { title, content, image, applicationDeadLine, startDate, dueDate } =
-            createProjectPostDto;
-
+    async create(
+        createProjectPostDto: CreateProjectPostDto,
+        userId: number,
+        image?: Express.Multer.File,
+    ) {
+        const { title, content, applicationDeadLine, startDate, dueDate } = createProjectPostDto;
+        let uploadImage;
+        if (image) {
+            uploadImage = await this.uploadService.uploadFile(image);
+        }
         const result = await this.projectPostRepository.save({
             title,
             content,
-            image,
+            image: uploadImage,
             userId,
             applicationDeadLine: new Date(applicationDeadLine as any),
             startDate: new Date(startDate as any),
@@ -36,20 +43,19 @@ export class ProjectPostService {
     }
 
     // 토이프로젝트 목록 조회(프론트랑 연결 후 다시 확인)
-    async findAll(paginationDto: PaginationDto) {
-        const { page, pageSize } = paginationDto;
-
+    async findAll(page: number) {
+        const pageSize = 10;
         console.log(page);
         console.log(pageSize);
 
         const skip = (page - 1) * pageSize;
 
-        const sortPost = await this.projectPostRepository.find({
+        const [sortPost, total] = await this.projectPostRepository.findAndCount({
             order: { updatedAt: 'ASC' },
-            skip,
+            skip: skip,
             take: pageSize,
         });
-        return sortPost;
+        return { sortPost, total, page, lastPage: Math.ceil(total / pageSize) };
     }
 
     // 토이프로젝트 상세 조회
@@ -60,9 +66,13 @@ export class ProjectPostService {
     }
 
     // 토이프로젝트 수정
-    async update(id: number, updateProjectPostDto: UpdateProjectPostDto, userId: number) {
-        const { title, content, image, applicationDeadLine, startDate, dueDate } =
-            updateProjectPostDto;
+    async update(
+        id: number,
+        updateProjectPostDto: UpdateProjectPostDto,
+        userId: number,
+        image: Express.Multer.File,
+    ) {
+        const { title, content, applicationDeadLine, startDate, dueDate } = updateProjectPostDto;
 
         const findById = await this.findById(id);
 
@@ -70,12 +80,14 @@ export class ProjectPostService {
             throw new UnauthorizedException('수정할 권한이 없습니다.');
         }
 
+        const uploadImage = await this.uploadService.uploadFile(image);
+
         await this.projectPostRepository.update(
             { id },
             {
                 title,
                 content,
-                image,
+                image: uploadImage,
                 applicationDeadLine: new Date(applicationDeadLine as any),
                 startDate: new Date(startDate as any),
                 dueDate: new Date(dueDate as any),

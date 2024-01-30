@@ -42,7 +42,7 @@ export class AuthService {
      */
 
     async authenticate(user: Pick<User, 'email' | 'password'>) {
-        console.log(user);
+        console.log(user, '---------------------');
         const existingUser = await this.userService.getUserByEmail(user.email);
 
         if (!existingUser) {
@@ -134,6 +134,7 @@ export class AuthService {
      * @param rowToken
      * @param isRefresh
      */
+
     rotateToken(rowToken: string, isRefresh: boolean) {
         const result = this.jwtService.verify(rowToken);
 
@@ -143,5 +144,16 @@ export class AuthService {
             },
             isRefresh,
         );
+    }
+
+    googleLogin(req) {
+        if (!req.user) {
+            return ' No user from google';
+        }
+
+        return {
+            message: ' User information from google',
+            user: req.user,
+        };
     }
 }

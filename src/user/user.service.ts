@@ -8,6 +8,7 @@ import { DUPLICATE_EMAIL, PASSWORD_NOT_MATCH } from './const/users-error-message
 import * as bcrypt from 'bcrypt';
 import { UploadServiceService } from 'src/upload-service/upload-service.service';
 import { error } from 'console';
+import { find } from 'lodash';
 
 @Injectable()
 export class UserService {
@@ -70,6 +71,39 @@ export class UserService {
                 email,
             },
         });
+    }
+    /**
+     *  구글 아이디 생성 및 검증을 위한 코드 생성
+     * @param email
+     * @param nickname
+     * @param password
+     * @param providerId
+     * @returns
+     */
+
+    async createUserByGoogle(
+        email: string,
+        nickname: string,
+        password: string,
+        providerId: string,
+    ) {
+        const user = await this.usersRepository.findOne({
+            where: {
+                email,
+            },
+        });
+        if (user) {
+            throw new BadRequestException('이미 가입되어있는 유저.');
+        }
+        const newUser = new User();
+        newUser.email = email;
+        newUser.nickname = nickname;
+        newUser.password = password;
+        newUser.providerId = providerId;
+
+        this.usersRepository.save(newUser);
+
+        return newUser;
     }
 
     /** 유저 정보수정

@@ -19,8 +19,18 @@ export class LikeService {
         return projectPost;
     }
 
-    // 좋아요 목록 전체 조회
-    async findAll(userId: number) {
+    async findAll(id: number) {
+        const likes = await this.likeRepository.find({ where: { id } });
+
+        return likes.map(async (like) => {
+            return await this.projectPostRepository.findOne({
+                where: { id: like.projectPostId },
+            });
+        });
+    }
+
+    // 유저가 누른 좋아요 목록 전체 조회
+    async findAllUser(userId: number) {
         const likes = await this.likeRepository.find({ where: { userId } });
 
         return likes.map(async (like) => {
@@ -30,8 +40,8 @@ export class LikeService {
         });
     }
 
-    async findOne(id: number) {
-        const like = await this.likeRepository.findOne({ where: { id } });
+    async findOne(id: number, userId: number) {
+        const like = await this.likeRepository.findOne({ where: { id, userId } });
 
         if (_.isNil(like)) {
             throw new NotFoundException('존재하지않은 프로젝트입니다');

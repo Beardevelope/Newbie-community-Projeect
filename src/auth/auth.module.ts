@@ -5,6 +5,7 @@ import { UserModule } from 'src/user/user.module';
 import { JwtModule } from '@nestjs/jwt';
 import { AccessTokenGuard, BearerTokenGuard, RefreshTokenGuard } from './guard/bearer.guard';
 import { BasicTokenGuard } from './guard/basic.guard';
+import { GoogleStrategy } from './google.strategy';
 
 @Module({
     controllers: [AuthController],
@@ -15,6 +16,7 @@ import { BasicTokenGuard } from './guard/basic.guard';
         BasicTokenGuard,
         AccessTokenGuard,
         RefreshTokenGuard,
+        GoogleStrategy,
     ],
     exports: [AuthService, BearerTokenGuard, BasicTokenGuard, AccessTokenGuard, RefreshTokenGuard],
 })

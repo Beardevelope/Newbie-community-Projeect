@@ -10,14 +10,14 @@ export class Like {
     @Column()
     userId: number;
 
-    @ManyToOne((type) => User, (user) => user.like)
+    @ManyToOne(() => User, (user) => user.like)
     @JoinColumn({ name: 'user_id' })
     user: User;
 
     @Column()
     projectPostId: number;
 
-    @ManyToOne((type) => ProjectPost, (projectPost) => projectPost.like)
+    @ManyToOne(() => ProjectPost, (projectPost) => projectPost.like)
     @JoinColumn({ name: 'project_post_id' })
     projectPost: ProjectPost;
 }

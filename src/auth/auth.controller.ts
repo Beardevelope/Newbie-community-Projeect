@@ -1,15 +1,11 @@
-import {
-    Controller,
-    Post,
-    Body,
-    UnauthorizedException,
-    UseGuards,
-    Req,
-    Headers,
-} from '@nestjs/common';
+import { Controller, Post, UseGuards, Req, Request, Response, Get } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { BasicTokenGuard } from './guard/basic.guard';
 import { RefreshTokenGuard } from './guard/bearer.guard';
+import { AuthGuard } from '@nestjs/passport';
+import { GoogleAuthGuard } from './guard/auth.guard';
+import { UserService } from 'src/user/user.service';
+import { Token } from 'aws-sdk';
 
 @Controller('auth')
 export class AuthController {
@@ -34,5 +30,20 @@ export class AuthController {
     @UseGuards(RefreshTokenGuard)
     rotateAccessToken(@Req() req: Request) {
         return this.authService.rotateToken(req['token'], false);
+    }
+    /**
+     *
+     * @param req
+     */
+    @Get('to-google')
+    @UseGuards(GoogleAuthGuard)
+    async googleAuth(@Request() req) {}
+
+    @Get('google')
+    @UseGuards(GoogleAuthGuard)
+    googleAuthRedirect(@Request() req: Request) {
+        // return this.authService.googleLogin(req);
+        const token = this.authService.signToken(req['user'].email, false);
+        return token;
     }
 }

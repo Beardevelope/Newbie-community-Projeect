@@ -6,7 +6,9 @@ import {
     PrimaryGeneratedColumn,
     UpdateDateColumn,
 } from 'typeorm';
-import { Post } from './post.entity';
+
+import { IsNotEmpty } from 'class-validator';
+import { Post } from 'src/post/entities/post.entity';
 
 @Entity()
 export class Tag {
@@ -14,6 +16,7 @@ export class Tag {
     id: number;
 
     @Column()
+    @IsNotEmpty({ message: '입력란을 확인해주세요' })
     name: string;
 
     @CreateDateColumn()

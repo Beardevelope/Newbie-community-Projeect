@@ -11,7 +11,6 @@ import {
     CreateDateColumn,
     DeleteDateColumn,
     Entity,
-    ManyToMany,
     OneToMany,
     PrimaryGeneratedColumn,
     UpdateDateColumn,
@@ -45,6 +44,9 @@ export class User {
     @Column()
     @IsNumber()
     points: number;
+
+    @Column()
+    providerId: string;
 
     @Column()
     isAdmin: boolean;
@@ -91,9 +93,13 @@ export class User {
     @OneToMany(() => Like, (like) => like.user)
     like: Like[];
 
+    async serializeUser(): Promise<number> {
+        return this.id;
+    }
+
     @OneToMany(() => ProjectPost, (projectPost) => projectPost.user)
     projectPost: ProjectPost[];
 
-    @OneToMany((type) => ProjectApplicant, (projectApplicant) => projectApplicant.user)
+    @OneToMany(() => ProjectApplicant, (projectApplicant) => projectApplicant.user)
     projectApplicant: ProjectApplicant[];
 }

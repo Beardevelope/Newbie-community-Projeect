@@ -12,15 +12,21 @@ export class LikeController {
         return this.likeService.create(+projectPostId, +req.userId);
     }
 
-    @UseGuards(BearerTokenGuard)
-    @Get()
-    findAll(@Req() req) {
-        return this.likeService.findAll(+req.userId);
+    @Get(':id')
+    findAll(@Param('id') id: string) {
+        return this.likeService.findAll(+id);
     }
 
-    @Get(':id')
-    findOne(@Param('id') id: string) {
-        return this.likeService.findOne(+id);
+    @UseGuards(BearerTokenGuard)
+    @Get('/myLike')
+    findAllUser(@Req() req) {
+        return this.likeService.findAllUser(+req.userId);
+    }
+
+    @UseGuards(BearerTokenGuard)
+    @Get('/myLike/:id')
+    findOne(@Param('id') id: string, @Req() req) {
+        return this.likeService.findOne(+id, +req.userId);
     }
 
     @Delete(':id')

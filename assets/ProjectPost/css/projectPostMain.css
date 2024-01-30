@@ -1,0 +1,113 @@
+.mainWrap {
+    margin: 20px;
+}
+
+.mainWrap .categoryTitle {
+    font-size: 25px;
+    font-weight: 500;
+    margin-bottom: 20px;
+}
+
+.mainWrap .projectBox {
+    background-color: #e6e6e6;
+}
+
+.mainWrap .projectBox .projects {
+    padding: 20px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 15px;
+}
+
+.mainWrap .projectBox .projects .project {
+    box-sizing: border-box;
+    width: calc(20% - 12px);
+    aspect-ratio: auto 1/1;
+    background-color: white;
+    padding: 10px;
+    box-shadow: 2px 2px 2px 2px rgba(0, 0, 0, 0.3);
+    position: relative;
+}
+.mainWrap .projectBox .projects .project .projectContent {
+    display: flex;
+    gap: 10px;
+}
+
+.mainWrap .projectBox .projects .project .projectContent > div {
+    width: calc(50% - 5px);
+    aspect-ratio: auto 1/1;
+}
+
+.mainWrap .projectBox .projects .project .projectContent .projectImg {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.mainWrap .projectBox .projects .project .projectContent > div img {
+    width: 100%;
+}
+
+.mainWrap .projectBox .projects .project .projectContent .statusBox .status {
+    padding: 5px 0;
+    text-align: center;
+    font-size: 18px;
+    background-color: rgb(0, 203, 217);
+    border-radius: 15px;
+    margin-bottom: 5px;
+    font-weight: bold;
+}
+
+.mainWrap .projectBox .projects .project .projectContent .statusBox .stackBox {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 5px;
+}
+
+.mainWrap .projectBox .projects .project .projectContent .statusBox .stackBox .stack {
+    width: calc(50% - 2.5px);
+    text-align: center;
+    font-size: 12px;
+    background-color: rgb(0, 217, 47);
+    border-radius: 20px;
+    padding: 10px 0;
+    font-weight: bold;
+}
+
+.mainWrap .projectBox .projects .project .date .projectTitle {
+    font-size: 20px;
+    font-weight: bold;
+}
+
+.mainWrap .projectBox .projects .project .date .period {
+    font-size: 12px;
+}
+.mainWrap .projectBox .projects .project .date .deadLine {
+    font-size: 12px;
+}
+
+.mainWrap .projectBox .projects .project .countBox {
+    position: absolute;
+    bottom: 5px;
+    right: 5px;
+    display: flex;
+    gap: 10px;
+}
+
+.mainWrap .projectBox .projects .project .countBox > div {
+    display: flex;
+    gap: 5px;
+}
+
+.mainWrap .projectBox .pageBox {
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+}
+
+.mainWrap .projectBox .pageBox .pageNum {
+    cursor: pointer;
+}
+
+.active {
+    font-weight: bold;
+}

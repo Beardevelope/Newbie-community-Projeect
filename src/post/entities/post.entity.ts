@@ -3,6 +3,7 @@ import { User } from 'src/user/entities/user.entity';
 import {
     Column,
     CreateDateColumn,
+    DeleteDateColumn,
     Entity,
     JoinColumn,
     JoinTable,
@@ -12,8 +13,8 @@ import {
     PrimaryGeneratedColumn,
     UpdateDateColumn,
 } from 'typeorm';
-import { Tag } from './tag.entity';
 import { Comment } from 'src/comment/entities/comment.entity';
+import { Tag } from 'src/tag/entities/tag.entity';
 
 @Entity()
 export class Post {
@@ -41,7 +42,7 @@ export class Post {
     @IsNumber()
     likes: number;
 
-    @Column({ default: null })
+    @Column({ default: 'unfinished' })
     status: string;
 
     @Column()
@@ -56,11 +57,15 @@ export class Post {
     @UpdateDateColumn()
     updatedAt: Date;
 
+    @DeleteDateColumn()
+    deletedAt: Date;
+
     @ManyToOne((type) => User, (user) => user.posts)
     @JoinColumn({ name: 'user_id', referencedColumnName: 'id' })
     user: User;
 
     @ManyToMany((type) => Tag, (tag) => tag.posts, { cascade: true })
+    @IsNotEmpty({ message: '입력란을 확인해주세요' })
     @JoinTable()
     tags: Tag[];
 
