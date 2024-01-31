@@ -121,13 +121,15 @@ export class PostController {
     // 게시글 수정
     @UseGuards(BearerTokenGuard)
     @Put(':postId')
+    @UseInterceptors(FileInterceptor('file'))
     async update(
         @Param('postId') postId: string,
         @Body() updatePostDto: UpdatePostDto,
         @Req() req,
+        @UploadedFile() file,
     ) {
         const userId = req.userId;
-        const post = await this.postService.update(+postId, updatePostDto, userId);
+        const post = await this.postService.update(+postId, updatePostDto, userId, file);
 
         return {
             statusCode: HttpStatus.OK,

@@ -66,8 +66,6 @@ function applyFilters() {
     const selectedFilter = filterOptions ? filterOptions.value : undefined;
     // const selectedFilters = filterOptions ? Array.from(filterOptions).map((option) => option.value) : null;
 
-    console.log(selectedOrder, selectedTab, selectedFilter);
-
     if (!selectedOrder) {
         alert('정렬값을 선택해주세요');
         return;
