@@ -1,45 +1,146 @@
 <!doctype html>
 <html lang="en">
     <head>
-        <meta charset="UTF-8" />
-        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <title>Questions Page</title>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <title>Bootstrap demo</title>
+        <link
+            href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
+            rel="stylesheet"
+            integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN"
+            crossorigin="anonymous"
+        />
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+        <link href="https://fonts.googleapis.com/css2?family=Anton&display=swap" rel="stylesheet" />
         <link rel="stylesheet" href="../css/postList.css" />
     </head>
-
     <body>
-        <header>
-            <h1>Questions Page</h1>
-            <div class="header-buttons">
-                <button id="loginButton">Log In</button>
-                <button id="signupButton">Sign Up</button>
+        <header class="header">
+            <div class="total-header">
+                <div class="title-logo">
+                    <img src="../../Auth/images/logo.png" alt="" class="logo-img" />
+                    Roomdevelope
+                </div>
+                <form class="d-flex search-box">
+                    <input
+                        class="form-control me-2"
+                        type="search"
+                        placeholder="Search"
+                        aria-label="Search"
+                    />
+                    <button type="button" class="btn btn-outline-light">Search</button>
+                </form>
+                <div class="buttons">
+                    <button type="button" class="btn btn-outline-light">log-in</button>
+                    <button type="button" class="btn btn-outline-light">sign-up</button>
+                </div>
             </div>
         </header>
-        <div class="buttonsUp">
-            <button id="homeButton">Home</button>
-            <button id="qnaButton">QnA</button>
-            <button id="toyProjectButton">Toy-Project</button>
-        </div>
-        <main>
-            <div class="buttonsDown">
-                <button id="questionsButton">Questions</button>
-                <button id="tagsButton">Tags</button>
-                <button id="usersButton">Users</button>
-                <button id="askButton">Ask a Question</button>
+        <div class="big-box">
+            <div
+                class="d-flex flex-column flex-shrink-0 p-3 text-bg-dark totalbox"
+                style="width: 250px"
+            >
+                <a
+                    href="/"
+                    class="d-flex align-items-center mb-3 mb-md-0 me-md-auto text-white text-decoration-none"
+                >
+                    <svg class="bi pe-none me-2" width="40" height="32">
+                        <use xlink:href="#bootstrap"></use>
+                    </svg>
+                    <span class="fs-4">Menu</span>
+                </a>
+                <hr />
+                <ul class="nav nav-pills flex-column mb-auto">
+                    <li class="nav-item">
+                        <a href="../../Auth/mainpage.html" class="nav-link active" aria-current="page">
+                            <svg class="bi pe-none me-2" width="16" height="16">
+                                <use xlink:href="#home"></use>
+                            </svg>
+                            Home
+                        </a>
+                    </li>
+                    <li>
+                        <a href="../../Post/html/postList.html" class="nav-link text-white">
+                            <svg class="bi pe-none me-2" width="16" height="16">
+                                <use xlink:href="#speedometer2"></use>
+                            </svg>
+                            Q & A
+                        </a>
+                    </li>
+                    <li>
+                        <a href="../../Tag/html/tag.html" class="nav-link text-white">
+                            <svg class="bi pe-none me-2" width="16" height="16">
+                                <use xlink:href="#speedometer2"></use>
+                            </svg>
+                            Tag
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#" class="nav-link text-white">
+                            <svg class="bi pe-none me-2" width="16" height="16">
+                                <use xlink:href="#table"></use>
+                            </svg>
+                            Toy project
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#" class="nav-link text-white">
+                            <svg class="bi pe-none me-2" width="16" height="16">
+                                <use xlink:href="#grid"></use>
+                            </svg>
+                            Users
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#" class="nav-link text-white">
+                            <svg class="bi pe-none me-2" width="16" height="16">
+                                <use xlink:href="#people-circle"></use>
+                            </svg>
+                            Customers
+                        </a>
+                    </li>
+                </ul>
+                <hr />
+                <div class="dropdown">
+                    <a
+                        href="#"
+                        class="d-flex align-items-center text-white text-decoration-none dropdown-toggle"
+                        data-bs-toggle="dropdown"
+                        aria-expanded="false"
+                    >
+                        <img
+                            src="https://github.com/mdo.png"
+                            alt=""
+                            width="32"
+                            height="32"
+                            class="rounded-circle me-2"
+                        />
+                        <strong>mdo</strong>
+                    </a>
+                    <ul class="dropdown-menu dropdown-menu-dark text-small shadow">
+                        <li><a class="dropdown-item" href="#">New project...</a></li>
+                        <li><a class="dropdown-item" href="#">Settings</a></li>
+                        <li><a class="dropdown-item" href="#">Profile</a></li>
+                        <li><hr class="dropdown-divider" /></li>
+                        <li><a class="dropdown-item" href="#">Sign out</a></li>
+                    </ul>
+                </div>
             </div>
+            <main class="main">
+                <div class="buttonsDown">
+                    <button id="newestButton">newest</button>
+                    <button id="answeredButton">answered</button>
+                    <button id="unAnsweredButton">unAnswered</button>
+                    <button id="filterButton">&#8801;filter</button>
+                    <button id="askButton">Ask a Question</button>
+                </div>
 
-            <div class="buttonsDown">
-                <button id="newestButton">newest</button>
-                <button id="answeredButton">answered</button>
-                <button id="unAnsweredButton">unAnswered</button>
-                <button id="filterButton">&#8801;filter</button>
-            </div>
-
-            <div id="questionsList"></div>
-            <div id="pagination-container"></div>
-        </main>
-
-        <!-- 모달 창 필터-->
+                <div id="questionsList"></div>
+                <div id="pagination-container"></div>
+            </main>
+            <!-- 모달 창 필터-->
         <div id="filterModal" class="modal">
             <div class="filter-modal-content">
                 <h2>Filter Options</h2>
@@ -57,21 +158,28 @@
                 </label>
                 <br />
                 <!-- Filter Options -->
-                <p>Filter By:</p>
+                <p>Comment By:</p>
+                <label id="tabAnswered">
+                    <input type="radio" name="tabOption" value="answered" /> Answered
+                </label>
                 <label id="tabUnAnswered">
-                    <input type="checkbox" name="filterOption" value="unAnswered" /> unAnswered
+                    <input type="radio" name="tabOption" value="unAnswered" /> unAnswered
                 </label>
                 <br />
+                <p>Filter By:</p>
                 <label id="statusDone">
-                    <input type="checkbox" name="filterOption" value="done" /> done
+                    <input type="radio" name="filterOption" value="done" /> done
                 </label>
-                <br />
                 <label id="statusUnfinished">
-                    <input type="checkbox" name="filterOption" value="unfinished" /> unfinished
+                    <input type="radio" name="filterOption" value="unfinished" /> unfinished
                 </label>
                 <br />
 
-                <button class="filter-modal-close" id="manyFilterButton" onclick="closeFilterModal()">
+                <button
+                    class="filter-modal-close"
+                    id="manyFilterButton"
+                    onclick="closeFilterModal()"
+                >
                     Apply Filters
                 </button>
             </div>
@@ -81,37 +189,36 @@
         <div id="askModal" class="modal">
             <div class="modal-content">
                 <h2>Ask a Question</h2>
-                <form id="askForm">
-                    <!-- title 입력창 -->
+                <form id="askForm" enctype="multipart/form-data">
                     <label for="title" style="margin-bottom: 10px">Title:</label>
-                    <input type="text" id="title" name="title" required style="font-size: 20px" />
-
-                    <div>
-                        <!-- content 입력창 -->
-                        <label for="content" style="margin-top: 10px">Content:</label>
-                        <textarea
-                            id="content"
-                            name="content"
-                            rows="10"
-                            style="width: 100%"
-                            required
-                        ></textarea>
-                    </div>
-                    <label for="image">Image URL:</label>
-                    <input type="text" id="image" name="image" style="margin-bottom: 10px" />
-
-                    <label for="tags">Tags (comma-separated):</label>
-                    <input type="text" id="tags" name="tags" style="margin-bottom: 10px" />
-
-                    <!-- 필요한 다른 입력 요소들도 추가 가능 -->
-
-                    <button type="submit" class="close-button">Submit</button>
-                    <button type="button" class="close-button" onclick="closeAskModal()">
-                        Close
-                    </button>
+                    <input style="font-size: 20px" type="text" id="title" name="title" required />
+                    <br />
+                    <label for="content" style="margin-top: 10px">Content:</label>
+                    <textarea
+                        id="content"
+                        name="content"
+                        rows="10"
+                        style="width: 100%"
+                        required
+                    ></textarea>
+                    <br />
+                    <label for="tag">Tags (comma-separated):</label>
+                    <input type="text" id="tag" name="tag" style="margin-bottom: 10px"  required />
+                    <br />
+                    <label for="image">Image:</label>
+                    <input type="file" id="image" name="file" accept="image/*" style="margin-bottom: 10px" required />
+                    <br />
                 </form>
+                <button id="submitButton" type="submit" class="close-button">Submit</button>
+                <button type="button" class="close-button" onclick="closeAskModal()">Close</button>
             </div>
         </div>
+        </div>
+        <script
+            src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
+            integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
+            crossorigin="anonymous"
+        ></script>
     </body>
     <script src="../js/postList.js"></script>
     <script src="../js/postAskModal.js"></script>

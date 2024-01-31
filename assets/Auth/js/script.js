@@ -24,3 +24,75 @@ links.forEach((link) => {
         forms.classList.toggle('show-signup');
     });
 });
+
+/**회원가입 및 로그인 */
+const AUTH_API = 'http://localhost:3000';
+const signupButton = document.querySelector('#signup');
+const email = document.querySelector('.email');
+const password = document.querySelector('.signup-password');
+const confirmPassword = document.querySelector('.confirm-password');
+const nickname = document.querySelector('.nickname');
+
+const loginButton = document.querySelector('#login');
+const loginEmail = document.querySelector('.login-email');
+const loginPassword = document.querySelector('.login-password');
+
+const signup = async () => {
+    try {
+        const data = {
+            email: email.value,
+            password: password.value,
+            passwordConfirm: confirmPassword.value,
+            nickname: nickname.value,
+        };
+        const response = await fetch(`${AUTH_API}/user/signup`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(data),
+        });
+        const responseData = await response.json();
+
+        if (!response.ok) alert(`${responseData.message}`);
+        if (response.ok) {
+            alert(`회원가입 성공`);
+            window.location.href = './mainpage.html';
+        }
+    } catch (error) {
+        console.error(error);
+        alert('서버 에러');
+        window.location.href = 'server-error';
+    }
+};
+
+const login = async () => {
+    try {
+        const data = {
+            email: email.value,
+            password: loginPassword.value,
+        };
+        const credentials = btoa(`${data.email}:${data.password}`);
+        const token = `Basic ${credentials}`;
+        const response = await fetch(`${AUTH_API}/auth/login`, {
+            method: 'POST',
+            headers: {
+                Authorization: token,
+            },
+        });
+        console.log(response);
+        const responseData = await response.json();
+        if (!response.ok) alert(`${responseData.message}`);
+
+        if (response.ok) {
+            alert(`로그인 성공}`);
+            window.location.href = './mainpage.html';
+        }
+    } catch (error) {
+        alert('서버 에러');
+        window.location.href = 'server-error';
+    }
+};
+
+signupButton.addEventListener('click', signup);
+loginButton.addEventListener('click', login);
