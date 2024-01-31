@@ -206,8 +206,8 @@ export class PostService {
     }
 
     // 게시글 수정
-    async update(postId: number, updatePostDto: UpdatePostDto, userId) {
-        const { title, content, image, tag } = updatePostDto;
+    async update(postId: number, updatePostDto: UpdatePostDto, userId, file: any) {
+        const { title, content, tag } = updatePostDto;
 
         const foundPost = await this.postRepository.findOne({
             where: {
@@ -224,27 +224,30 @@ export class PostService {
             throw new NotAcceptableException('수정할 권한이 없습니다.');
         }
 
+        const url = await this.uploadService.uploadFile(file);
+        const tagArray = tag.split(',');
+
         const tags = [];
-        for (let i = 0; i < tag.length; i++) {
+        for (let i = 0; i < tagArray.length; i++) {
             let existedTag = await this.tagRepository.findOne({
-                where: { name: tag[i] },
+                where: { name: tagArray[i] },
             });
 
             if (!existedTag) {
-                tags.push({ name: tag[i] });
+                tags.push({ name: tagArray[i] });
             }
             tags.push(existedTag);
         }
 
-        const updatedPost = await this.postRepository.save({
+        const updatePost = await this.postRepository.save({
             id: postId,
             title,
             content,
-            image,
+            image: url,
             tags,
         });
 
-        return updatedPost;
+        return updatePost;
     }
 
     // 게시글 삭제
