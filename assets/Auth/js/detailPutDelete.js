@@ -4,13 +4,23 @@ const postId = StringPostId.substr(4);
 document.addEventListener('DOMContentLoaded', function () {
     const putBtn = document.getElementById('putBtn');
 
-    putBtn.addEventListener('click', function () {
+    putBtn.addEventListener('click', async function () {
         // 모달 요소 생성
         const modal = new bootstrap.Modal(document.getElementById('putModal'));
+
+        // 게시글 상세 정보 가져오기
+        await getPostDetail();
 
         // 모달 열기
         modal.show();
     });
+});
+
+const cancelBtn = document.getElementById('cancelBtn');
+cancelBtn.addEventListener('click', () => {
+    const putModal = document.getElementById('putModal');
+    putModal.style.display = 'none';
+    window.location.reload();
 });
 
 const putData = document.getElementById('putData');
@@ -27,18 +37,11 @@ async function putPost() {
         // 현재 코드
         const formData = new FormData(form);
 
-        // // 수정된 코드
-        // const formData = new FormData();
-        // formData.append('title', document.getElementById('title').value);
-        // formData.append('content', document.getElementById('content').value);
-        // formData.append('tag', document.getElementById('tag').value);
-        // formData.append('image', document.getElementById('image').files[0]);
-
         const response = await fetch(`http://localhost:3000/post/${postId}`, {
             method: 'put',
             headers: {
                 Authorization:
-                    'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6OCwidHlwZSI6ImFjY2VzcyIsImlhdCI6MTcwNjcxNjkxNiwiZXhwIjoxNzA2NzE3MjE2fQ.vtMv_w2rqKI8qf16PHsD_5CiyYlrfG70n4hL4nKV1oI',
+                    'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6OCwidHlwZSI6ImFjY2VzcyIsImlhdCI6MTcwNjcyNTcxOCwiZXhwIjoxNzA2NzI2MDE4fQ.gGQsNfaE7lipeaxvvBmHJ_U4vC_D4xUGPqH4fRLRMtQ',
             },
             body: formData,
         });
@@ -57,11 +60,32 @@ async function putPost() {
     }
 }
 
+async function getPostDetail() {
+    try {
+        const response = await fetch(`http://localhost:3000/post/${postId}`);
+        const postData = await response.json();
+        console.log(postData);
+
+        // 폼에 기존 게시글 내용 채우기
+        document.getElementById('title').value = postData.post.title;
+        document.getElementById('content').value = postData.post.content;
+        const tags = postData.post.tags;
+        for (let i = 0; i < tags.length; i++) {
+            if (i === tags.length - 1) {
+                document.getElementById('tag').value += `${tags[i].name}`;
+                return;
+            }
+            document.getElementById('tag').value += `${tags[i].name},`;
+        }
+        // 이미지 업로드를 위한 코드는 필요에 따라 추가
+    } catch (err) {
+        console.error(err);
+    }
+}
+
 // 게시글 삭제
 
-// 마우스로 클릭하여 정보수정완료하기
 deleteBtn.addEventListener('click', () => {
-    console.log('안녕하세요 ');
     deletePost();
 });
 
