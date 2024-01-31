@@ -1,47 +1,47 @@
 const POST_API = 'http://localhost:3000/post';
 const COMMENT_API = 'http://localhost:3000/comment';
-const POST_ID = 1
-const USER_ID = 1
-const TOKEN = 'sdf'
+const USER_ID = 1;
+const TOKEN = 'sdf';
+let StringPostId = window.location.search;
+const POST_ID = StringPostId.substr(4);
 
-import { marked } from "https://cdn.jsdelivr.net/npm/marked/lib/marked.esm.js"
 
-const headline = document.getElementById("headline")
-const mainbar = document.getElementById("mainbar")
-const postLayout = document.getElementById("post-layout")
-const sidebar = document.getElementById("sidebar")
-const commentList = document.querySelector(".comment-list")
-const commentEditor = document.querySelector(".comment-editory")
-const commentSubmitBtn = document.querySelector(".commentSubmit")
-const commentTextArea = document.querySelector("#commentInput")
+import { marked } from 'https://cdn.jsdelivr.net/npm/marked/lib/marked.esm.js';
+
+const headline = document.getElementById('headline');
+const mainbar = document.getElementById('mainbar');
+const postLayout = document.getElementById('post-layout');
+const sidebar = document.getElementById('sidebar');
+const commentList = document.querySelector('.comment-list');
+const commentEditor = document.querySelector('.comment-editory');
+const commentSubmitBtn = document.querySelector('.commentSubmit');
+const commentTextArea = document.querySelector('#commentInput');
 
 const getPost = async () => {
     const response = await fetch(`${POST_API}/${POST_ID}`, {
-        method: "GET",
-    })
-    const data = await response.json()
+        method: 'GET',
+    });
+    const data = await response.json();
     if (!response.ok) {
-        alert(`${data.message}`)
-        throw new Error('서버 오류')
+        alert(`${data.message}`);
+        throw new Error('서버 오류');
     }
-    return data.post
-}
+    return data.post;
+};
 
 const listDetailPageOfPost = async () => {
     try {
-        const post = await getPost()
-        const comments = post.comments
-        console.log(comments)
+        const post = await getPost();
+        const comments = post.comments;
 
         const timeDifferent = (initialDate) => {
-            const date = new Date(initialDate)
+            const date = new Date(initialDate);
             const currentDate = new Date();
 
             const timeDifference = currentDate - date;
 
             return Math.floor(timeDifference / 1000);
-        }
-
+        };
 
         const minute = 60;
         const hour = 60 * minute;
@@ -82,12 +82,14 @@ const listDetailPageOfPost = async () => {
 
         // Format the relative time
         const createdAt = formatRelativeTime(timeDifferent(post.createdAt));
-        const updatedAt = formatRelativeTime(timeDifferent(post.updatedAt))
+        const updatedAt = formatRelativeTime(timeDifferent(post.updatedAt));
+
+        const tags = post.tags;
+
         headline.innerHTML = `
         <div class="first-headline">
             <h1 id="headline-title">${post.title}</h1>
             <div id="headline-question">
-                <a class="btn btn-secondary" href="#" role="button">질문</a>
             </div>
         </div>
         <div class="sub-headline">
@@ -114,24 +116,27 @@ const listDetailPageOfPost = async () => {
             <div id="post-cell">
                 <div id="post-body">${marked(post.content)}</div>
             </div>
-    `
+    `;
+        tags.forEach((tag) => {
+            postLayout.innerHTML += `<button type="button" id="${tag.name}" class="tagButton" onclick="location.href='./postList.html?tagName=${tag.name}'">${tag.name}</button>`;
+        });
+
         /**좋아요 싫어요 api 없는 거 같아서 우선 안했습니다. */
-        const voteUp = document.querySelector(".arrow-up")
-        const voteDown = document.querySelector(".arrow-down")
+        const voteUp = document.querySelector('.arrow-up');
+        const voteDown = document.querySelector('.arrow-down');
 
         const listComments = async (comments) => {
-            commentList.innerHTML =``
+            commentList.innerHTML = ``;
             const ul = document.createElement('ul');
-            comments.forEach(comment => {
+            comments.forEach((comment) => {
                 const li = document.createElement('li');
                 li.textContent = `${comment.userId}: ${comment.content}`;
                 ul.appendChild(li);
             });
 
             commentList.appendChild(ul);
-        }
-        listComments(comments)
-
+        };
+        listComments(comments);
 
         const writeComment = async () => {
             const commentInput = document.getElementById('commentInput');
@@ -141,38 +146,38 @@ const listDetailPageOfPost = async () => {
             } else {
                 alert('항목이 비어 있습니다.');
             }
-        }
-        
-        commentSubmitBtn.addEventListener('click', writeComment)
+        };
+
+        commentSubmitBtn.addEventListener('click', writeComment);
 
         const registerComment = async (comment) => {
             const response = await fetch(`${COMMENT_API}/${POST_ID}`, {
-                method: "POST",
+                method: 'POST',
                 headers: {
-                    'Content-Type': 'application/json'        
+                    'Content-Type': 'application/json',
                 },
                 body: JSON.stringify({
                     userId: USER_ID,
                     postId: POST_ID,
-                    content: comment
-                })
-            })
+                    content: comment,
+                }),
+            });
             if (!response.ok) {
-                alert(`${data.message}`)
-                throw new Error('서버 오류')
+                alert(`${data.message}`);
+                throw new Error('서버 오류');
             }
-            const newComment = await response.json()
-            comments.push(newComment.comment)
-            alert('댓글 작성 완료')
-            commentTextArea.value = ""
-            listComments(comments)
-        }
-        
+            const newComment = await response.json();
+            comments.push(newComment.comment);
+            alert('댓글 작성 완료');
+            commentTextArea.value = '';
+            listComments(comments);
+        };
     } catch (error) {
-        alert('해당 페이지가 존재하지 않습니다.')
-        window.location.href = '/error-page'
-        console.error(error)
+        alert('해당 페이지가 존재하지 않습니다.');
+        window.location.href = '/error-page';
+        console.error(error);
     }
+};
+listDetailPageOfPost();
 
-}
-listDetailPageOfPost()
+

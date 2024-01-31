@@ -166,7 +166,8 @@ function addEventListenersToPost() {
             // 조회수 늘리는 함수 실행
             addHit(clickedPostId);
             // 상세 조회 페이지 URL을 생성하여 이동
-            const detailPageURL = `./detail.html?id=${clickedPostId}`;
+            // const detailPageURL = `./detail.html?id=${clickedPostId}`;
+            const detailPageURL = `../../Auth/post-detail.html?id=${clickedPostId}`;
             window.location.href = detailPageURL;
         });
     });
