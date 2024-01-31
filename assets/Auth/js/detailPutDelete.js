@@ -46,7 +46,6 @@ async function putPost() {
             body: formData,
         });
         const information = await response.json();
-        console.log(information.message);
         if (response.status !== 200) {
             //cry catch 구문에서 throw는 에러가 발생했을 때 catch에다가 error를 던져준다.
             window.location.reload();
@@ -64,7 +63,6 @@ async function getPostDetail() {
     try {
         const response = await fetch(`http://localhost:3000/post/${postId}`);
         const postData = await response.json();
-        console.log(postData);
 
         // 폼에 기존 게시글 내용 채우기
         document.getElementById('title').value = postData.post.title;
