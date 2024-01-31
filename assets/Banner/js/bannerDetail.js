@@ -1,9 +1,9 @@
 function updateBannerDetails(banner) {
+    document.getElementById('bannerId').innerText = banner.id;
     document.getElementById('bannerTitle').innerText = banner.title;
-
     const bannerImage = document.getElementById('bannerImage');
     bannerImage.src = banner.file;
-    bannerImage.style.maxWidth = '10%'; // 이미지 크기 조절
+    bannerImage.style.maxWidth = '30%'; // 이미지 크기 조절
 }
 
 // bannerId 가져오는 함수
@@ -11,6 +11,7 @@ function getBannerIdFromUrl() {
     const queryString = window.location.search;
     const urlParams = new URLSearchParams(queryString);
     const bannerId = urlParams.get('bannerId');
+
     return bannerId;
 }
 
@@ -26,25 +27,21 @@ async function getBannerById() {
         console.error('Error fetching banner details:', error);
     }
 }
-
 getBannerById();
 
-
-
-// 수정 버튼 클릭하면 수정 페이지로 이동
-function editBanner(bannerId) {
-    // document.location.href = `bannerModify.html?bannerId=${bannerId};`
-    document.location.href = '../html/bannerUpdate.html'
-
+// 수정 페이지로 이동
+function editBanner() {
+    const bannerId = getBannerIdFromUrl();
+    document.location.href = `bannerModify.html?bannerId=${bannerId}`;
 }
 
-// 삭제 버튼 클릭하면 배너 삭제
+// 배너 삭제
 async function deleteBanner() {
     const queryString = window.location.search;
     const urlParams = new URLSearchParams(queryString);
     const bannerId = urlParams.get('bannerId');
 
-    const accessToken = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MzYsInR5cGUiOiJhY2Nlc3MiLCJpYXQiOjE3MDY2OTE5MjgsImV4cCI6MTcwNjY5MjIyOH0.39DCL66k-KrJkRfJIGyQJFWRy13OMvrauEwogJ-OG9k";
+    const accessToken = "토큰";
     // const accessToken = localStorage.getItem('accessToken');
 
     try {
@@ -65,4 +62,9 @@ async function deleteBanner() {
     } catch (error) {
         console.error('Error deleting the banner:', error);
     }
+}
+
+// 목록으로 이동
+function goToList() {
+    document.location.href = '../html/bannerList.html'
 }

@@ -7,10 +7,10 @@ document.addEventListener("DOMContentLoaded", async function () {
     const data = await response.json();
 
     // 데이터를 테이블에 추가
-    data.forEach(banner => {
+    data.forEach((banner, index) => {
         const row = document.createElement("tr");
         row.innerHTML = `
-            <td>${banner.id}</td>
+            <td>${index + 1}</td>
             <td>${banner.title}</td>
             <td>${banner.createdAt}</td>
         `;
@@ -19,7 +19,6 @@ document.addEventListener("DOMContentLoaded", async function () {
             goToBannerDetailPage(banner.id);
         });
 
-        // 행 추가
         bannerList.appendChild(row);
     });
 });

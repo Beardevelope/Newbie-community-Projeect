@@ -3,7 +3,7 @@ async function saveBanner() {
     const image = document.getElementById('image').files[0];
 
     // 토큰 가져오기 >> 구글 로그인 토큰 정보 확인 후 결정.
-    const accessToken = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MzYsInR5cGUiOiJhY2Nlc3MiLCJpYXQiOjE3MDY2OTYwMjcsImV4cCI6MTcwNjY5NjMyN30.RPwb3wydMGO53ZRNgcp-WuJtP-XTAEw1O1hKOsNyNls";
+    const accessToken = "토큰";
     // const accessToken = localStorage.getItem('accessToken');
 
     // 필수값 설정
@@ -19,7 +19,6 @@ async function saveBanner() {
         const response = await fetch('http://localhost:3000/banner/create', {
             method: 'POST',
             headers: {
-                // 'Content-Type': 'application/json',
                 'Authorization': `Bearer ${accessToken}`,
             },
             body: formData,
@@ -38,4 +37,9 @@ async function saveBanner() {
     } catch (error) {
         console.error(error);
     }
+}
+
+// 목록으로 이동
+function goToList() {
+    document.location.href = '../html/bannerList.html'
 }

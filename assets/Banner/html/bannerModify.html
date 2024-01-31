@@ -105,14 +105,18 @@
                 <label for="title">제목:</label>
                 <input type="text" id="title" required>
                 <br>
-                <label for="image">이미지 업로드:</label>
+                <label for="image">이미지 수정:</label>
                 <input type="file" id="file" accept="file/*" required>
-                <br>
-                <button onclick="updateBanner()">저장</button>
-
-                <script src="../js/bannerUpdate.js"></script>
+                <br>현재 이미지 </br>
+                <img id="bannerImage" alt="현재 이미지" style="max-width: 100%; height: auto;">
             </div>
-        </main>
+            <br>
+            <button onclick="cancelModify()">취소</button>
+            <button onclick="modifyBanner()">저장</button>
+
+            <script src="../js/bannerModify.js"></script>
+    </div>
+    </main>
     </div>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
