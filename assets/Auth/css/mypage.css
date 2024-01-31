@@ -4,6 +4,7 @@
 .totalbox {
     background-color: #212529;
     width: 100px;
+    min-height: 100vh;
 }
 
 .main {
@@ -35,6 +36,7 @@
 
 .big-box {
     display: flex;
+    min-height: 100vh;
 }
 body,
 html {
