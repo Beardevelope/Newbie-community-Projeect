@@ -38,14 +38,13 @@ function editBanner(bannerId) {
 
 }
 
-
 // 삭제 버튼 클릭하면 배너 삭제
 async function deleteBanner() {
     const queryString = window.location.search;
     const urlParams = new URLSearchParams(queryString);
     const bannerId = urlParams.get('bannerId');
 
-    const accessToken = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MzYsInR5cGUiOiJhY2Nlc3MiLCJpYXQiOjE3MDY2Mjg3ODQsImV4cCI6MTcwNjYyOTA4NH0.8cM7JksGCpUIXhnYdFk7CH2YhfJI5sZxP64t3yWNwo8";
+    const accessToken = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MzYsInR5cGUiOiJhY2Nlc3MiLCJpYXQiOjE3MDY2OTE5MjgsImV4cCI6MTcwNjY5MjIyOH0.39DCL66k-KrJkRfJIGyQJFWRy13OMvrauEwogJ-OG9k";
     // const accessToken = localStorage.getItem('accessToken');
 
     try {
