@@ -14,17 +14,17 @@
         <link href="https://unpkg.com/boxicons@2.1.2/css/boxicons.min.css" rel="stylesheet" />
     </head>
     <body>
-        <section class="container forms">
+        <section class="container forms" id="loginPage">
             <div class="form login">
                 <div class="form-content">
                     <header>Login</header>
                     <form action="#">
                         <div class="field input-field">
-                            <input type="email" placeholder="Email" class="input" />
+                            <input type="email" placeholder="Email" class="login-email" />
                         </div>
 
                         <div class="field input-field">
-                            <input type="password" placeholder="Password" class="password" />
+                            <input type="password" placeholder="Password" class="login-password" />
                             <i class="bx bx-hide eye-icon"></i>
                         </div>
 
@@ -33,14 +33,16 @@
                         </div>
 
                         <div class="field button-field">
-                            <button>Login</button>
+                            <button id="login">Login</button>
                         </div>
                     </form>
 
                     <div class="form-link">
                         <span
                             >Don't have an account?
-                            <a href="#" class="link signup-link">Signup</a></span
+                            <a href="auth.html" class="link signup-link" id="signup"
+                                >Signup</a
+                            ></span
                         >
                     </div>
                 </div>
@@ -48,12 +50,9 @@
                 <div class="line"></div>
 
                 <div class="media-options">
-                    <a
-                        href="https://github.com/login/oauth/authorize?client_id=c8998d580eff3cc1df4e=&redirect_uri=http://localhost:3000"
-                        class="field github"
-                    >
-                        <img src="images/github.png" alt="" class="github-img" />
-                        <span>Login with github</span>
+                    <a href="http://localhost:3000/auth/to-google" class="field google">
+                        <img src="images/google__2_1000.png" alt="" class="google-img" />
+                        <span>Login with google</span>
                     </a>
                 </div>
             </div>
@@ -61,35 +60,43 @@
             <!-- Signup Form -->
 
             <div class="form signup">
-                <div class="form-content">
+                <div class="form-content" id="signupPage">
                     <header>Signup</header>
                     <form action="#">
                         <div class="field input-field">
-                            <input type="email" placeholder="Email" class="input" />
+                            <input type="email" placeholder="Email" class="email" />
                         </div>
 
                         <div class="field input-field">
-                            <input type="password" placeholder="Create password" class="password" />
+                            <input
+                                type="password"
+                                placeholder="Create password"
+                                class="signup-password"
+                            />
+                            <i class="bx bx-hide eye-icon"></i>
                         </div>
 
                         <div class="field input-field">
                             <input
                                 type="password"
                                 placeholder="Confirm password"
-                                class="password"
+                                class="confirm-password"
                             />
                             <i class="bx bx-hide eye-icon"></i>
                         </div>
+                        <div class="field input-field">
+                            <input type="nickname" placeholder="nickname" class="nickname" />
+                        </div>
 
                         <div class="field button-field">
-                            <button>Signup</button>
+                            <button id="signup">Signup</button>
                         </div>
                     </form>
 
                     <div class="form-link">
                         <span
                             >Already have an account?
-                            <a href="#" class="link login-link">Login</a></span
+                            <a href="#" class="link login-link" id="login">Login</a></span
                         >
                     </div>
                 </div>
@@ -97,9 +104,9 @@
                 <div class="line"></div>
 
                 <div class="media-options">
-                    <a href="#" class="field github">
-                        <img src="images/github.png" alt="" class="github-img" />
-                        <span>Login with github</span>
+                    <a href="http://localhost:3000/auth/to-google" class="field google">
+                        <img src="images/google__2_1000.png" alt="" class="google-img" />
+                        <span>Login with google</span>
                     </a>
                 </div>
             </div>

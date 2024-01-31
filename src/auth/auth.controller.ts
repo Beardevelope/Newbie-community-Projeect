@@ -1,27 +1,12 @@
-import {
-    Controller,
-    Post,
-    Body,
-    UnauthorizedException,
-    UseGuards,
-    Req,
-    Request,
-    Response,
-    Get,
-} from '@nestjs/common';
+import { Controller, Post, UseGuards, Req, Request, Response, Get } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { BasicTokenGuard } from './guard/basic.guard';
 import { RefreshTokenGuard } from './guard/bearer.guard';
 import { AuthGuard } from '@nestjs/passport';
 import { GoogleAuthGuard } from './guard/auth.guard';
+import { UserService } from 'src/user/user.service';
+import { Token } from 'aws-sdk';
 
-interface IOAuthUser {
-    user: {
-        name: string;
-        email: string;
-        password: string;
-    };
-}
 @Controller('auth')
 export class AuthController {
     constructor(private readonly authService: AuthService) {}
@@ -46,16 +31,19 @@ export class AuthController {
     rotateAccessToken(@Req() req: Request) {
         return this.authService.rotateToken(req['token'], false);
     }
-
+    /**
+     *
+     * @param req
+     */
     @Get('to-google')
     @UseGuards(GoogleAuthGuard)
     async googleAuth(@Request() req) {}
 
     @Get('google')
     @UseGuards(GoogleAuthGuard)
-    async googleAuthRedirect(@Request() req, @Response() res) {
-        const { user } = req;
-        res.redirect('http://localhost:3000/auth/test-guard2');
-        return res.send(user);
+    googleAuthRedirect(@Request() req: Request) {
+        // return this.authService.googleLogin(req);
+        const token = this.authService.signToken(req['user'].email, false);
+        return token;
     }
 }

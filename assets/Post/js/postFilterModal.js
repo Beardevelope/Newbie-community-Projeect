@@ -18,82 +18,28 @@ function openFilterModal() {
     document.getElementById('filterModal').style.display = 'flex';
 }
 
-// // 이곳부터는 필터를 위한 로직들
-// // 필터를 위한 버튼들
-// newestButton.addEventListener('click', function () {
-//     questionsList.innerHTML = '';
-//     foundPosts = [];
-//     currentPage = 1;
-//     postList('?order=createdAt');
-// });
+// 이곳부터는 필터를 위한 로직들
+// 필터를 위한 버튼들
+newestButton.addEventListener('click', function () {
+    questionsList.innerHTML = '';
+    foundPosts = [];
+    currentPage = 1;
+    postList('?order=createdAt');
+});
 
-// answeredButton.addEventListener('click', function () {
-//     questionsList.innerHTML = '';
-//     foundPosts = [];
-//     currentPage = 1;
-//     postList('?order=createdAt&tab=answered');
-// });
+answeredButton.addEventListener('click', function () {
+    questionsList.innerHTML = '';
+    foundPosts = [];
+    currentPage = 1;
+    postList('?order=createdAt&tab=answered');
+});
 
-// unAnsweredButton.addEventListener('click', function () {
-//     questionsList.innerHTML = '';
-//     foundPosts = [];
-//     currentPage = 1;
-//     postList('?order=createdAt&tab=unAnswered');
-// });
-
-// // filter버튼을 활용한 다중 필터링 order(정렬)
-// let orderFilter = ''; // 초기화
-// // newest
-// orderNewestButton.addEventListener('click', function (event) {
-//     orderFilter = 'createdAt';
-//     inputOrderFilter(orderFilter);
-// });
-// // highest like
-// orderLikeButton.addEventListener('click', function (event) {
-//     orderFilter = 'likes';
-//     inputOrderFilter(orderFilter);
-// });
-// // most frequent
-// orderHitButton.addEventListener('click', function (event) {
-//     orderFilter = 'hitCount';
-//     inputOrderFilter(orderFilter);
-// });
-
-// let tabStatus = '';
-
-// tabUnAnswered.addEventListener('click', function (event) {
-//     tabStatus += '&tab=unAnswered';
-//     inputOrderFilter(tabStatus);
-// });
-
-// statusDone.addEventListener('click', function (event) {
-//     tabStatus += '&filter=done';
-//     inputOrderFilter(tabStatus);
-// });
-
-// statusUnfinished.addEventListener('click', function (event) {
-//     tabStatus += '&filter=unfinished';
-//     inputOrderFilter(tabStatus);
-// });
-
-// // 비동기적 작업으로 인한 함수 설정
-// function inputOrderFilter(orderFilter) {
-    
-// }
-
-// // // 비동기적 작업으로 인한 함수 설정
-// // function inputOrderFilter(orderFilter) {
-// //     questionsList.innerHTML = '';
-// //     foundPosts = [];
-// //     currentPage = 1;
-// //     postList(`?order=${orderFilter}${tabStatus}`);
-// //     tabStatus = '';
-// // }
-
-// 필터 모달 닫기
-function closeFilterModal() {
-    document.getElementById('filterModal').style.display = 'none';
-}
+unAnsweredButton.addEventListener('click', function () {
+    questionsList.innerHTML = '';
+    foundPosts = [];
+    currentPage = 1;
+    postList('?order=createdAt&tab=unAnswered');
+});
 
 // 태크를 눌렀을 때 태그 필터 적용
 function addEventListenersToTagButtons() {
@@ -108,4 +54,49 @@ function addEventListenersToTagButtons() {
         });
     });
 }
-// 여기까지가 필터 관련 로직
+
+function applyFilters() {
+    const orderOption = document.querySelector('input[name="orderOption"]:checked');
+    const tabOption = document.querySelector('input[name="tabOption"]:checked');
+    const filterOptions = document.querySelector('input[name="filterOption"]:checked');
+    // const filterOptions = document.querySelectorAll('input[name="filterOption"]:checked');
+
+    const selectedOrder = orderOption ? orderOption.value : null;
+    const selectedTab = tabOption ? tabOption.value : undefined;
+    const selectedFilter = filterOptions ? filterOptions.value : undefined;
+    // const selectedFilters = filterOptions ? Array.from(filterOptions).map((option) => option.value) : null;
+
+    console.log(selectedOrder, selectedTab, selectedFilter);
+
+    if (!selectedOrder) {
+        alert('정렬값을 선택해주세요');
+        return;
+    }
+
+    questionsList.innerHTML = '';
+    foundPosts = [];
+    currentPage = 1;
+
+    if (!selectedTab && selectedFilter) {
+        postList(`?order=${selectedOrder}&filter=${selectedFilter}`);
+        return;
+    }
+
+    if (!selectedFilter && selectedTab) {
+        postList(`?order=${selectedOrder}&tab=${selectedTab}`);
+        return;
+    }
+
+    if(!selectedFilter && !selectedTab) {
+        postList(`?order=${selectedOrder}`);
+        return;
+    }
+
+    postList(`?order=${selectedOrder}&tab=${selectedTab}&filter=${selectedFilter}`);
+}
+
+// 필터 모달 닫기
+function closeFilterModal() {
+    applyFilters();
+    document.getElementById('filterModal').style.display = 'none';
+}

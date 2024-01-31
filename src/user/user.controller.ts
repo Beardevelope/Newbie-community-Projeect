@@ -11,6 +11,7 @@ import {
     ParseIntPipe,
     Req,
     UnauthorizedException,
+    Put,
 } from '@nestjs/common';
 import { UserService } from './user.service';
 import { CreateUserDto } from './dto/create-user.dto';
@@ -45,8 +46,6 @@ export class UserController {
         @UploadedFile() file: Express.Multer.File,
         @Req() request: Request,
     ) {
-        // request.userId를 사용하였으나 오류가 발생함. 이유 확인하기.
-        // 투터님께 여쭤보기.
         const authenticatedUser = request['userId'];
 
         if (authenticatedUser !== userId) {
@@ -55,5 +54,53 @@ export class UserController {
         const result = await this.userService.addProfileImage(userId, file);
 
         return result;
+    }
+
+    /**
+     * 유저 정보 조회
+     */
+
+    @Get('list')
+    async getUserInfo() {
+        return await this.userService.getUserList();
+    }
+
+    /**
+     * 유저 정보 수정
+     * @param userId
+     * @param updateUserDto
+     * @returns
+     */
+
+    @Put(':userId/update')
+    @UseGuards(AccessTokenGuard)
+    async updateUser(
+        @Param('userId', ParseIntPipe) userId: number,
+        @Body() updateUserDto: UpdateUserDto,
+    ) {
+        return this.userService.updateUser(userId, updateUserDto);
+    }
+
+    /**
+     * 유저 정보 삭제 soft delete
+     * @param id
+     * @returns
+     */
+
+    @Delete(':id/soft-delite')
+    @UseGuards(AccessTokenGuard)
+    async sofrDeleteUser(@Param('id') id: number) {
+        return this.userService.softDeleteUser(id);
+    }
+
+    /**
+     * 닉네임으로 유저 찾기
+     * @param nickname
+     * @returns
+     */
+
+    @Get('by-nickname/:nickname')
+    async getUserByNickName(@Param('nickname') nickname: string) {
+        return this.userService.getUserByNickName(nickname);
     }
 }

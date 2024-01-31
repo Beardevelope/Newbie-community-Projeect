@@ -90,4 +90,8 @@ export class User {
 
     @OneToMany(() => Like, (like) => like.user)
     like: Like[];
+
+    async serializeUser(): Promise<number> {
+        return this.id;
+    }
 }
