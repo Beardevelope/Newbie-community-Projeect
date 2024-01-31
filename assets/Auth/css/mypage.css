@@ -2,9 +2,9 @@
     --gap: 20px;
 }
 .totalbox {
-    height: 100%;
     background-color: #212529;
     width: 100px;
+    min-height: 100vh;
 }
 
 .main {
@@ -163,33 +163,134 @@ img {
     width: 100%;
 }
 
-.like {
-    width: 30px;
+.infobox {
+    background-color: #3b5064;
+    border-radius: 10px;
+    padding: 30px 20px;
+    display: flex;
+    width: 100%;
+    justify-content: space-between;
+    margin-bottom: 50px;
 }
 
-.likes {
+.circleImage {
+    width: 270px;
+    border-radius: 10%;
+    overflow: hidden;
+}
+
+/* userInfo 컨테이너에 대한 스타일 */
+.userInfo {
+    background-color: #f8f8f8;
+    border: 2px solid #333;
+    border-radius: 10px;
+    padding: 20px;
+    margin: 20px;
+    font-family: 'Helvetica', sans-serif;
     display: flex;
-    gap: 5px;
+    flex-wrap: wrap;
+    justify-content: space-between;
+}
+
+.infoAndButton {
+    width: calc(100% - 290px);
+}
+
+/* 라벨 스타일 */
+label {
+    display: block;
+    margin-bottom: 5px;
+    font-size: 14px;
+    color: white;
+    font-weight: bolder;
+}
+
+/* 입력 필드 스타일 */
+input {
+    width: 100%;
+    padding: 8px;
+    margin-bottom: 15px;
+    box-sizing: border-box;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+/* 버튼 스타일 */
+button {
+    grid-column: span 2;
+    background-color: #212529;
+    color: white;
+    padding: 10px 15px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+/* 버튼 호버 효과 */
+button:hover {
+    background-color: black;
+}
+
+.infoform {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+}
+
+.infoform > div {
+    width: calc(50% - 10px);
+}
+
+.boxes {
+    border-radius: 10px;
+    background-color: rgb(235, 233, 228);
+    border: 1px solid white;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.box1 {
+    display: flex;
+    gap: 20px;
+}
+
+.imgBox {
+    width: 90px;
+    height: 90px;
+    overflow: hidden;
+    border-radius: 10px;
+}
+
+.posts {
+    width: 100%;
+}
+
+.post {
+    display: flex;
+    height: 100%;
+    justify-content: space-between;
     align-items: center;
 }
 
-.views {
-    display: flex;
-    gap: 5px;
-    align-items: center;
-}
-
-.view {
-    width: 30px;
-}
-
-.boxline {
+.boxBox {
     display: flex;
     flex-direction: column;
     gap: 20px;
-    margin-top: 30px;
 }
 
-.profileIamge {
+.likeAndview {
     display: flex;
+    gap: 10px;
+}
+
+.likeAndview > div {
+    width: 30px;
+}
+
+.boxTitle {
+    font-weight: 900;
+    font-size: 25px;
+    text-align: center;
 }
