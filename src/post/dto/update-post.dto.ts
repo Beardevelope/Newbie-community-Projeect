@@ -5,8 +5,8 @@ import { IsString } from 'class-validator';
 export class UpdatePostDto extends PickType(Post, [
   'title',
   'content',
-  'image',
 ]) {
   @IsString({ each: true })
-  tag: string[];
+  // tag: string[];
+  tag: string;
 }
