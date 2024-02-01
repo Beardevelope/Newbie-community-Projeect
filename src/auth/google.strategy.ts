@@ -30,8 +30,8 @@ export class GoogleStrategy extends PassportStrategy(Strategy) {
         const { id, name, emails } = profile;
         console.log(accessToken, '+++++++++++++++++++++++++++++++++++');
         console.log(refreshToken, '----------------------------------');
-
         const providerId = id;
+
         const email = emails[0].value;
 
         // nickname = Google name 치환

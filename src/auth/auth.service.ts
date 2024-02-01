@@ -66,10 +66,12 @@ export class AuthService {
     signToken(user: Pick<User, 'email' | 'id'>, isRefreshToken: boolean) {
         const token = this.jwtService.sign(
             {
+                sub: user.id,
+                email: user.email,
                 id: user.id,
                 type: isRefreshToken ? 'refresh' : 'access',
             },
-            { expiresIn: isRefreshToken ? '1h' : 300 },
+            { expiresIn: isRefreshToken ? '1h' : '1h' },
         );
 
         return token;
