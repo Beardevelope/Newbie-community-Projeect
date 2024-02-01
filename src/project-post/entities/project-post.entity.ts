@@ -34,7 +34,6 @@ export class ProjectPost {
         default:
             'https://nestjs-project-images.s3.ap-northeast-2.amazonaws.com/d8fa67cf-5b7a-4663-a50d-08ba051bc258',
     })
-    @IsString()
     image: string;
 
     @Column({ default: '모집중' })
