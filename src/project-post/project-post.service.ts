@@ -42,20 +42,18 @@ export class ProjectPostService {
         return result;
     }
 
-    // 토이프로젝트 목록 조회(프론트랑 연결 후 다시 확인)
+    // 토이프로젝트 목록 조회
     async findAll(page: number) {
         const pageSize = 10;
-        console.log(page);
-        console.log(pageSize);
 
         const skip = (page - 1) * pageSize;
 
         const [sortPost, total] = await this.projectPostRepository.findAndCount({
-            order: { updatedAt: 'ASC' },
+            order: { createdAt: 'ASC' },
             skip: skip,
             take: pageSize,
         });
-        return { sortPost, total, page, lastPage: Math.ceil(total / pageSize) };
+        return { sortPost, total, page, pageSize, lastPage: Math.ceil(total / pageSize) };
     }
 
     // 토이프로젝트 상세 조회
@@ -117,6 +115,8 @@ export class ProjectPostService {
         const projectPost = await this.findById(id);
 
         projectPost.hitCount += 1;
+
+        console.log(projectPost.hitCount, 'Dddddddddddddd');
 
         await this.projectPostRepository.save(projectPost);
 

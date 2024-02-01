@@ -46,25 +46,32 @@ async function fetchLike(projectPostId) {
     }
 }
 
-async function getProject() {
+async function getProject(page) {
     try {
-        const data = await fetchProject(1);
+        const data = await fetchProject(page);
 
-        await getPages(data);
+        const projects = document.querySelector('.projects');
 
-        const { sortPost } = data;
+        projects.innerHTML = '';
 
-        console.log(data);
+        console.log(page, '페이지입니다');
+        if (page === 1) {
+            await getPages(data);
+        }
+        const { sortPost, pageSize } = data;
+
+        console.log(sortPost.length, '솔페렝');
+
         for (let i = 0; i < sortPost.length; i++) {
             const stack = await fetchStack(sortPost[i].id);
             const like = await fetchLike(sortPost[i].id);
 
-            console.log(like);
+            console.log(stack, '스택입니다');
 
             const project = document.createElement('div');
             project.className = 'project';
 
-            project.innerHTML = `
+            project.innerHTML = `<a href="projectPostDetail.html?id=${sortPost[i].id}">
         <div class="projectContent">
             <div class="projectImg">
                 <img src="${sortPost[i].image}"/>
@@ -77,8 +84,8 @@ async function getProject() {
         </div>
         <div class="date">
             <div class="projectTitle">${sortPost[i].title}</div>
-            <div class="period">기간 : ${sortPost[i].startDate} ~ ${sortPost[i].dueDate}</div>
-            <div class="deadLine">마감일 : ~${sortPost[i].applicationDeadLine}</div>
+            <div class="period">기간 : ${sortPost[i].startDate.split('T')[0]} ~ ${sortPost[i].dueDate.split('T')[0]}</div>
+            <div class="deadLine">마감일 : ~${sortPost[i].applicationDeadLine.split('T')[0]}</div>
         </div>
         <div class="countBox">
             <div class="hitCount">
@@ -90,22 +97,22 @@ async function getProject() {
                 <div class="likeCounts">${like}</div>
             </div>
         </div>
+        </a>
         `;
 
+            projects.appendChild(project);
             for (let j = 0; j < stack.length; j++) {
                 const getStack = document.createElement('div');
                 getStack.className = 'stack';
 
                 getStack.innerHTML = `${stack[j].stack}`;
 
+                console.log(getStack.innerHTML, '추출한 스택입니다');
+
                 const stackBox = document.querySelector('.stackBox');
 
                 stackBox.appendChild(getStack);
             }
-
-            const projects = document.querySelector('.projects');
-
-            projects.appendChild(project);
         }
     } catch (error) {
         console.error('에러 --- ', error);
@@ -124,7 +131,7 @@ async function getPages(data) {
             pageNum.className = 'pageNum';
 
             if (i === 1) {
-                pageNum[i].className += 'active';
+                pageNum.className = 'pageNum active';
             }
 
             pageNum.onclick = function (event) {
@@ -149,6 +156,10 @@ async function movePage(clickedDiv) {
         pageNum[i].className = 'pageNum';
     }
     clickedDiv.className += ' active';
+
+    console.log(clickedDiv);
+
+    await getProject(clickedDiv.innerHTML);
 }
 
-getProject();
+getProject(1);

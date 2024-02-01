@@ -122,7 +122,46 @@
                 </div>
             </div>
             <main class="main">
-                <div class="mainWrap"></div>
+                <div class="mainWrap">
+                    <h2>프로젝트 게시물 생성</h2>
+                    <form id="dataForm">
+                        <label for="stack">스택:</label><br />
+                        <input type="text" id="stack" name="stack" required /><br /><br />
+
+                        <label for="numberOfPeople">인원 수:</label><br />
+                        <input
+                            type="number"
+                            id="numberOfPeople"
+                            name="numberOfPeople"
+                            required
+                        /><br /><br />
+
+                        <label for="title">제목:</label><br />
+                        <input type="text" id="title" name="title" required /><br /><br />
+
+                        <label for="content">내용:</label><br />
+                        <textarea id="content" name="content" required></textarea><br /><br />
+
+                        <label for="image">이미지:</label><br />
+                        <input type="file" id="image" name="image" /><br /><br />
+
+                        <label for="applicationDeadLine">신청 마감일:</label><br />
+                        <input
+                            type="date"
+                            id="applicationDeadLine"
+                            name="applicationDeadLine"
+                            required
+                        /><br /><br />
+
+                        <label for="startDate">시작일:</label><br />
+                        <input type="date" id="startDate" name="startDate" required /><br /><br />
+
+                        <label for="dueDate">마감일:</label><br />
+                        <input type="date" id="dueDate" name="dueDate" required /><br /><br />
+
+                        <input type="submit" value="데이터 전송" />
+                    </form>
+                </div>
             </main>
         </div>
         <script
