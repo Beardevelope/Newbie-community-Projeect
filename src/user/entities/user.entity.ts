@@ -5,6 +5,7 @@ import { Comment } from 'src/comment/entities/comment.entity';
 import { CommentLike } from 'src/comment-like/entitis/comment-like.entity';
 import { Like } from 'src/like/entities/like.entity';
 import { Post } from 'src/post/entities/post.entity';
+import { ProjectPost } from 'src/project-post/entities/project-post.entity';
 import {
     Column,
     CreateDateColumn,
@@ -14,6 +15,7 @@ import {
     PrimaryGeneratedColumn,
     UpdateDateColumn,
 } from 'typeorm';
+import { ProjectApplicant } from 'src/project-post/entities/project-applicant.entity';
 
 @Entity({ name: 'user' })
 export class User {
@@ -94,4 +96,10 @@ export class User {
     async serializeUser(): Promise<number> {
         return this.id;
     }
+
+    @OneToMany(() => ProjectPost, (projectPost) => projectPost.user)
+    projectPost: ProjectPost[];
+
+    @OneToMany(() => ProjectApplicant, (projectApplicant) => projectApplicant.user)
+    projectApplicant: ProjectApplicant[];
 }

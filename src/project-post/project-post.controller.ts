@@ -1,20 +1,41 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import {
+    Controller,
+    Get,
+    Post,
+    Body,
+    Patch,
+    Param,
+    Delete,
+    Req,
+    Query,
+    UseGuards,
+    UploadedFile,
+    UseInterceptors,
+} from '@nestjs/common';
 import { ProjectPostService } from './project-post.service';
 import { CreateProjectPostDto } from './dto/create-project-post.dto';
 import { UpdateProjectPostDto } from './dto/update-project-post.dto';
+import { BearerTokenGuard } from 'src/auth/guard/bearer.guard';
+import { FileInterceptor } from '@nestjs/platform-express';
 
 @Controller('project-post')
 export class ProjectPostController {
     constructor(private readonly projectPostService: ProjectPostService) {}
 
+    @UseGuards(BearerTokenGuard)
     @Post()
-    create(@Body() createProjectPostDto: CreateProjectPostDto) {
-        return this.projectPostService.create(createProjectPostDto);
+    @UseInterceptors(FileInterceptor('image'))
+    create(
+        @Body() createProjectPostDto: CreateProjectPostDto,
+        @Req() req,
+        @UploadedFile() file: Express.Multer.File,
+    ) {
+        return this.projectPostService.create(createProjectPostDto, +req.userId, file);
     }
 
     @Get()
-    findAll() {
-        return this.projectPostService.findAll();
+    findAll(@Query('page') page: number) {
+        return this.projectPostService.findAll(page);
     }
 
     @Get(':id')
@@ -22,18 +43,44 @@ export class ProjectPostController {
         return this.projectPostService.findOne(+id);
     }
 
+    @UseGuards(BearerTokenGuard)
     @Patch(':id')
-    update(@Param('id') id: string, @Body() updateProjectPostDto: UpdateProjectPostDto) {
-        return this.projectPostService.update(+id, updateProjectPostDto);
+    @UseInterceptors(FileInterceptor('image'))
+    update(
+        @Param('id') id: string,
+        @Body() updateProjectPostDto: UpdateProjectPostDto,
+        @Req() req,
+        @UploadedFile() file: Express.Multer.File,
+    ) {
+        return this.projectPostService.update(+id, updateProjectPostDto, +req.userId, file);
     }
 
+    @UseGuards(BearerTokenGuard)
     @Delete(':id')
-    remove(@Param('id') id: string) {
-        return this.projectPostService.remove(+id);
+    remove(@Param('id') id: string, @Req() req) {
+        return this.projectPostService.remove(+id, +req.userId);
     }
 
     @Patch(':id/increaseHitCount')
     increaseHitCount(@Param('id') id: string) {
         return this.projectPostService.increaseHitCount(+id);
+    }
+
+    @UseGuards(BearerTokenGuard)
+    @Post(':id/projectApplicant')
+    createProjectApplicant(@Param('id') id: string, @Req() req) {
+        return this.projectPostService.createProjectApplicant(+id, +req.userId);
+    }
+
+    @UseGuards(BearerTokenGuard)
+    @Get(':id/projectApplicant')
+    findProjectApplicant(@Param('id') id: string, @Req() req) {
+        return this.projectPostService.findProjectApplicant(+id, +req.userId);
+    }
+
+    @UseGuards(BearerTokenGuard)
+    @Delete(':id/ProjectApplicant')
+    removeProjectApplicant(@Param('id') id: string, @Req() req) {
+        return this.projectPostService.removeProjectApplicant(+id, +req.userId);
     }
 }

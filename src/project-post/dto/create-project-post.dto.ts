@@ -5,7 +5,7 @@ import { IsDateString } from 'class-validator';
 export class CreateProjectPostDto extends PartialType(ProjectPost) {
     title: string;
     content: string;
-    image: string;
+    image?: string;
     @IsDateString()
     applicationDeadLine: Date;
     @IsDateString()

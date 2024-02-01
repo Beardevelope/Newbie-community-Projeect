@@ -6,10 +6,14 @@ import {
     Column,
     CreateDateColumn,
     Entity,
+    JoinColumn,
+    ManyToOne,
     OneToMany,
     PrimaryGeneratedColumn,
     UpdateDateColumn,
 } from 'typeorm';
+import { ProjectApplicant } from './project-applicant.entity';
+import { User } from 'src/user/entities/user.entity';
 
 @Entity({ name: 'project_post' })
 export class ProjectPost {
@@ -26,9 +30,16 @@ export class ProjectPost {
     @IsString()
     content: string;
 
-    @Column()
+    @Column({
+        default:
+            'https://nestjs-project-images.s3.ap-northeast-2.amazonaws.com/d8fa67cf-5b7a-4663-a50d-08ba051bc258',
+    })
     @IsString()
     image: string;
+
+    @Column({ default: '모집중' })
+    @IsString()
+    status: string;
 
     @Column()
     @IsNotEmpty({ message: '마감 일자를 입력해주세요' })
@@ -49,18 +60,30 @@ export class ProjectPost {
     @IsNumber()
     hitCount: number;
 
+    @Column()
+    userId: number;
+
     @CreateDateColumn()
     createdAt: Date;
 
     @UpdateDateColumn()
     updatedAt: Date;
 
-    @OneToMany((type) => NeedInfo, (needInfo) => needInfo.projectPost)
+    @OneToMany(() => NeedInfo, (needInfo) => needInfo.projectPost, { cascade: true })
     needInfo: NeedInfo[];
 
-    @OneToMany((type) => Question, (question) => question.projectPost)
+    @OneToMany(() => Question, (question) => question.projectPost, { cascade: true })
     question: Question[];
 
-    @OneToMany((type) => Like, (like) => like.projectPost)
+    @OneToMany(() => Like, (like) => like.projectPost, { cascade: true })
     like: Like[];
+
+    @ManyToOne(() => User, (user) => user.projectPost)
+    @JoinColumn({ name: 'user_id' })
+    user: User;
+
+    @OneToMany(() => ProjectApplicant, (projectApplicant) => projectApplicant.projectPost, {
+        cascade: true,
+    })
+    projectApplicant: ProjectApplicant[];
 }

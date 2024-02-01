@@ -2,6 +2,7 @@
     "compilerOptions": {
         "types": ["express-session"],
         "module": "commonjs",
+        "typeRoots": ["node_modules/@types", "path/to/your/types"],
         "declaration": true,
         "removeComments": true,
         "emitDecoratorMetadata": true,
@@ -18,6 +19,6 @@
         "strictBindCallApply": false,
         "forceConsistentCasingInFileNames": false,
         "noFallthroughCasesInSwitch": false,
-        "esModuleInterop": true
-    }
+        "esModuleInterop": true,
+    },
 }

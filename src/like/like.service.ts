@@ -13,17 +13,28 @@ export class LikeService {
         private readonly projectPostRepository: Repository<ProjectPost>,
     ) {}
 
-    async create(projectPostId: number) {
-        //userId 넣기
-        const projectPost = await this.likeRepository.save({ projectPostId });
+    async create(projectPostId: number, userId: number) {
+        const getLike = await this.likeRepository.findOne({ where: { userId, projectPostId } });
 
-        return projectPost;
+        if (getLike) {
+            await this.remove(projectPostId, userId);
+            return { message: '게시물 좋아요 취소' };
+        }
+
+        const projectPost = await this.likeRepository.save({ userId, projectPostId });
+
+        return { message: '게시물 좋아요 성공' };
     }
 
-    // 좋아요 목록 전체 조회 (userId에 따라 projectPost 조회 예정)
-    async findAll() {
-        //userId 넣기
-        const likes = await this.likeRepository.find({});
+    async findAll(projectPostId: number) {
+        const likes = await this.likeRepository.find({ where: { projectPostId } });
+
+        return likes;
+    }
+
+    // 유저가 누른 좋아요 목록 전체 조회
+    async findAllUser(userId: number) {
+        const likes = await this.likeRepository.find({ where: { userId } });
 
         return likes.map(async (like) => {
             return await this.projectPostRepository.findOne({
@@ -32,8 +43,8 @@ export class LikeService {
         });
     }
 
-    async findOne(id: number) {
-        const like = await this.likeRepository.findOne({ where: { id } });
+    async findOne(id: number, userId: number) {
+        const like = await this.likeRepository.findOne({ where: { id, userId } });
 
         if (_.isNil(like)) {
             throw new NotFoundException('존재하지않은 프로젝트입니다');
@@ -45,14 +56,14 @@ export class LikeService {
         return projectPost;
     }
 
-    async remove(id: number) {
-        const projectPost = await this.likeRepository.findOne({ where: { id } });
+    async remove(projectPostId: number, userId: number) {
+        const projectPost = await this.likeRepository.findOne({ where: { projectPostId, userId } });
 
         if (_.isNil(projectPost)) {
             throw new NotFoundException('존재하지않은 프로젝트입니다');
         }
 
-        await this.likeRepository.delete({ id });
+        await this.likeRepository.delete({ projectPostId, userId });
         return { message: '좋아요 삭제 성공' };
     }
 }

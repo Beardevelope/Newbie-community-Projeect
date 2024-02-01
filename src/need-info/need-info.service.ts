@@ -1,20 +1,44 @@
-import { BadRequestException, Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable, UnauthorizedException } from '@nestjs/common';
 import { CreateNeedInfoDto } from './dto/create-need-info.dto';
 import { UpdateNeedInfoDto } from './dto/update-need-info.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { NeedInfo } from './entities/need-info.entity';
 import { Repository } from 'typeorm';
 import _ from 'lodash';
+import { ProjectPost } from 'src/project-post/entities/project-post.entity';
 
 @Injectable()
 export class NeedInfoService {
     constructor(
         @InjectRepository(NeedInfo) private readonly needInfoRepository: Repository<NeedInfo>,
+        @InjectRepository(ProjectPost)
+        private readonly projectPostRepository: Repository<ProjectPost>,
     ) {}
 
     // 필요 기술 스택 생성
-    async create(projectPostId: number, createNeedInfoDto: CreateNeedInfoDto) {
+    async create(projectPostId: number, createNeedInfoDto: CreateNeedInfoDto, userId: number) {
         const { stack, numberOfPeople } = createNeedInfoDto;
+
+        const project = await this.projectPostRepository.findOne({ where: { id: projectPostId } });
+
+        if (userId !== project.userId) {
+            throw new UnauthorizedException('권한이 없습니다.');
+        }
+
+        const existStack = await this.needInfoRepository.findOne({
+            where: { projectPostId, stack },
+        });
+
+        if (existStack) {
+            await this.needInfoRepository.update(
+                { stack },
+                { numberOfPeople: existStack.numberOfPeople + numberOfPeople },
+            );
+
+            const findProject = await this.needInfoRepository.find({ where: { projectPostId } });
+
+            return findProject;
+        }
 
         const result = await this.needInfoRepository.save({
             projectPostId,
@@ -34,10 +58,23 @@ export class NeedInfoService {
     }
 
     // 필요 기술 스택 인원 변경
-    async update(projectPostId: number, id: number, updateNeedInfoDto: UpdateNeedInfoDto) {
+    async update(
+        projectPostId: number,
+        id: number,
+        updateNeedInfoDto: UpdateNeedInfoDto,
+        userId: number,
+    ) {
         const { numberOfPeople } = updateNeedInfoDto;
 
+        const project = await this.projectPostRepository.findOne({ where: { id: projectPostId } });
+
+        if (userId !== project.userId) {
+            throw new UnauthorizedException('권한이 없습니다.');
+        }
+
         await this.needInfoRepository.update({ projectPostId, id }, { numberOfPeople });
+
+        await this.applicantDone(projectPostId);
 
         const result = await this.findById(projectPostId, id);
 
@@ -45,11 +82,20 @@ export class NeedInfoService {
     }
 
     // 필요 기술 스택 삭제
-    async remove(projectPostId: number, id: number) {
+    async remove(projectPostId: number, id: number, userId: number) {
         await this.findById(projectPostId, id);
 
+        const project = await this.projectPostRepository.findOne({ where: { id: projectPostId } });
+
+        if (userId !== project.userId) {
+            throw new UnauthorizedException('권한이 없습니다.');
+        }
+
         await this.needInfoRepository.delete({ projectPostId, id });
-        return { message: '답변 삭제 완료' };
+
+        await this.applicantDone(projectPostId);
+
+        return { message: '기술 삭제 완료' };
     }
 
     // Id로 찾는 함수
@@ -61,5 +107,23 @@ export class NeedInfoService {
         }
 
         return result;
+    }
+
+    // 스택이 없을 시 모집완료로 변환
+    async applicantDone(projectPostId: number) {
+        const findAllStacks = await this.findAll(projectPostId);
+
+        const existStacks = findAllStacks.some((stack) => {
+            console.log(stack.numberOfPeople);
+            return stack.numberOfPeople !== 0;
+        });
+
+        console.log(existStacks);
+
+        if (!existStacks) {
+            await this.projectPostRepository.update({ id: projectPostId }, { status: '모집완료' });
+        } else {
+            await this.projectPostRepository.update({ id: projectPostId }, { status: '모집중' });
+        }
     }
 }

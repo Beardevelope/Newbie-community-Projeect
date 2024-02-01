@@ -1,27 +1,39 @@
-import { BadRequestException, Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable, UnauthorizedException } from '@nestjs/common';
 import { CreateProjectPostDto } from './dto/create-project-post.dto';
 import { UpdateProjectPostDto } from './dto/update-project-post.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { ProjectPost } from './entities/project-post.entity';
 import { Repository } from 'typeorm';
 import _ from 'lodash';
+import { ProjectApplicant } from './entities/project-applicant.entity';
+import { UploadServiceService } from 'src/upload-service/upload-service.service';
 
 @Injectable()
 export class ProjectPostService {
     constructor(
         @InjectRepository(ProjectPost)
         private readonly projectPostRepository: Repository<ProjectPost>,
+        @InjectRepository(ProjectApplicant)
+        private readonly projectApplicantRepository: Repository<ProjectApplicant>,
+        private readonly uploadService: UploadServiceService,
     ) {}
 
     // 토이프로젝트 생성
-    async create(createProjectPostDto: CreateProjectPostDto) {
-        const { title, content, image, applicationDeadLine, startDate, dueDate } =
-            createProjectPostDto;
-
+    async create(
+        createProjectPostDto: CreateProjectPostDto,
+        userId: number,
+        image?: Express.Multer.File,
+    ) {
+        const { title, content, applicationDeadLine, startDate, dueDate } = createProjectPostDto;
+        let uploadImage;
+        if (image) {
+            uploadImage = await this.uploadService.uploadFile(image);
+        }
         const result = await this.projectPostRepository.save({
             title,
             content,
-            image,
+            image: uploadImage,
+            userId,
             applicationDeadLine: new Date(applicationDeadLine as any),
             startDate: new Date(startDate as any),
             dueDate: new Date(dueDate as any),
@@ -31,10 +43,17 @@ export class ProjectPostService {
     }
 
     // 토이프로젝트 목록 조회
-    async findAll() {
-        const result = await this.projectPostRepository.find();
+    async findAll(page: number) {
+        const pageSize = 10;
 
-        return result;
+        const skip = (page - 1) * pageSize;
+
+        const [sortPost, total] = await this.projectPostRepository.findAndCount({
+            order: { createdAt: 'ASC' },
+            skip: skip,
+            take: pageSize,
+        });
+        return { sortPost, total, page, pageSize, lastPage: Math.ceil(total / pageSize) };
     }
 
     // 토이프로젝트 상세 조회
@@ -45,18 +64,28 @@ export class ProjectPostService {
     }
 
     // 토이프로젝트 수정
-    async update(id: number, updateProjectPostDto: UpdateProjectPostDto) {
-        const { title, content, image, applicationDeadLine, startDate, dueDate } =
-            updateProjectPostDto;
+    async update(
+        id: number,
+        updateProjectPostDto: UpdateProjectPostDto,
+        userId: number,
+        image: Express.Multer.File,
+    ) {
+        const { title, content, applicationDeadLine, startDate, dueDate } = updateProjectPostDto;
 
-        await this.findById(id);
+        const findById = await this.findById(id);
+
+        if (userId !== findById.userId) {
+            throw new UnauthorizedException('수정할 권한이 없습니다.');
+        }
+
+        const uploadImage = await this.uploadService.uploadFile(image);
 
         await this.projectPostRepository.update(
             { id },
             {
                 title,
                 content,
-                image,
+                image: uploadImage,
                 applicationDeadLine: new Date(applicationDeadLine as any),
                 startDate: new Date(startDate as any),
                 dueDate: new Date(dueDate as any),
@@ -69,8 +98,15 @@ export class ProjectPostService {
     }
 
     // 토이프로젝트 삭제
-    async remove(id: number) {
+    async remove(id: number, userId: number) {
+        const findById = await this.findById(id);
+
+        if (userId !== findById.userId) {
+            throw new UnauthorizedException('삭제할 권한이 없습니다.');
+        }
+
         await this.projectPostRepository.delete({ id });
+
         return { message: '프로젝트 삭제 완료' };
     }
 
@@ -80,9 +116,52 @@ export class ProjectPostService {
 
         projectPost.hitCount += 1;
 
+        console.log(projectPost.hitCount, 'Dddddddddddddd');
+
         await this.projectPostRepository.save(projectPost);
 
         return projectPost.hitCount;
+    }
+
+    // 프로젝트 지원 생성
+    async createProjectApplicant(id: number, userId: number) {
+        await this.findById(id);
+
+        await this.projectApplicantRepository.save({ projectPostId: id, userId: userId });
+
+        return { message: '프로젝트 지원 완료' };
+    }
+
+    // 프로젝트 지원 확인
+    async findProjectApplicant(id: number, userId: number) {
+        await this.findById(id);
+
+        const projectPostUser = await this.projectPostRepository.findOne({ where: { userId } });
+
+        if (userId !== projectPostUser.userId) {
+            throw new UnauthorizedException('권한이 없습니다.');
+        }
+
+        const result = await this.projectApplicantRepository.find({ where: { projectPostId: id } });
+
+        return result;
+    }
+
+    // 프로젝트 지원 삭제
+    async removeProjectApplicant(id: number, userId: number) {
+        await this.findById(id);
+
+        const projectApplicantUser = await this.projectApplicantRepository.findOne({
+            where: { userId },
+        });
+
+        if (userId !== projectApplicantUser.userId) {
+            throw new UnauthorizedException('권한이 없습니다');
+        }
+
+        await this.projectApplicantRepository.delete({ projectPostId: id, userId: userId });
+
+        return { message: '프로젝트 지원 삭제 완료' };
     }
 
     // Id로 찾는 함수

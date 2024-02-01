@@ -1,0 +1,106 @@
+img {
+    width: 100%;
+}
+
+.mainWrap {
+    width: 80%;
+    margin: 0 auto;
+}
+
+.mainWrap .mainBox {
+    display: flex;
+    gap: 30px;
+    margin: 30px 0;
+}
+
+.mainWrap .mainBox > div {
+    width: calc(50% - 15px);
+    aspect-ratio: auto 1/1;
+    background-color: white;
+}
+
+.mainWrap .mainBox .detailBox {
+    padding: 20px;
+    position: relative;
+}
+
+.mainWrap .mainBox .detailBox .title {
+    font-size: 22px;
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+
+.mainWrap .mainBox .detailBox .needStackBox {
+    display: flex;
+    margin-bottom: 20px;
+}
+
+.mainWrap .mainBox .detailBox .needStackBox > div {
+    width: 50%;
+    font-size: 15px;
+}
+
+.mainWrap .mainBox .detailBox .needStackBox > div .stackTitle,
+.needPeopleTitle {
+    font-weight: bold;
+    font-size: 16px;
+}
+
+.mainWrap .mainBox .detailBox .dateBox {
+    display: flex;
+    justify-content: center;
+}
+
+.mainWrap .mainBox .detailBox .dateBox .date {
+    font-size: 13px;
+    width: 33.33%;
+}
+
+.mainWrap .mainBox .detailBox .dateBox .date .dateTitle {
+    font-weight: bold;
+}
+
+.mainWrap .mainBox .detailBox .applicantBox {
+    position: absolute;
+    bottom: 20px;
+    right: 20px;
+}
+
+.mainWrap .mainBox .detailBox .applicantBox .likeBtn {
+    display: inline-block;
+    padding: 8px;
+    border-radius: 10px;
+    border: 1px solid rgb(255, 114, 114);
+    background-color: white;
+    color: rgb(255, 114, 114);
+    cursor: pointer;
+}
+
+.mainWrap .mainBox .detailBox .applicantBox .likeBtn:hover {
+    background-color: rgb(255, 114, 114);
+    color: white;
+    transition: all 0.3s;
+}
+.mainWrap .mainBox .detailBox .applicantBox .applicantBtn {
+    display: inline-block;
+    padding: 8px;
+    border-radius: 10px;
+    border: 1px solid rgb(0, 207, 138);
+    background-color: white;
+    color: rgb(0, 207, 138);
+    cursor: pointer;
+}
+
+.mainWrap .mainBox .detailBox .applicantBox .applicantBtn:hover {
+    background-color: rgb(0, 207, 138);
+    color: white;
+    transition: all 0.3s;
+}
+
+.mainWrap .contentBox {
+    background-color: white;
+}
+
+.mainWrap .contentBox > div {
+    padding: 20px;
+}
