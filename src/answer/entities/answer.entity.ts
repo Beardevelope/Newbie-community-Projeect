@@ -37,14 +37,14 @@ export class Answer {
     @Column()
     questionId: number;
 
-    @OneToOne((type) => Question, (question) => question.answer)
+    @OneToOne((type) => Question, (question) => question.answer, { onDelete: 'CASCADE' })
     @JoinColumn({ name: 'question_id' })
     question: Question;
 
     @Column()
     userId: number;
 
-    @ManyToOne((type) => User, (user) => user.answer)
+    @ManyToOne((type) => User, (user) => user.answer, { onDelete: 'CASCADE' })
     @JoinColumn({ name: 'user_id' })
     user: User;
 }

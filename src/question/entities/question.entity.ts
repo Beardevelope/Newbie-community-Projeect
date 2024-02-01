@@ -30,7 +30,9 @@ export class Question {
     @Column()
     projectPostId: number;
 
-    @ManyToOne((type) => ProjectPost, (projectPost) => projectPost.question)
+    @ManyToOne((type) => ProjectPost, (projectPost) => projectPost.question, {
+        onDelete: 'CASCADE',
+    })
     @JoinColumn({ name: 'project_post_id' })
     projectPost: ProjectPost;
 
