@@ -37,7 +37,6 @@ async function fetchLike(projectPostId) {
         });
 
         const data = await response.json();
-        console.log(data, '라이크입니다');
 
         return data.length;
     } catch (error) {

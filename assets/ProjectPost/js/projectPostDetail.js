@@ -1,6 +1,8 @@
 const urlParams = new URLSearchParams(window.location.search);
 const projectId = urlParams.get('id');
 
+const accessToken = `eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjEsImVtYWlsIjoiOTg4NzZAbmF2ZXIuY29tIiwiaWQiOjEsInR5cGUiOiJhY2Nlc3MiLCJpYXQiOjE3MDY3NjQ5NTYsImV4cCI6MTcwNjc2ODU1Nn0.8ObMgUPNb3LT8KHenW7qtgWnH7fdIbvGVvSGe_gudPg`;
+
 async function fetchProjectDetail(projectId) {
     try {
         const response = await fetch(`http://localhost:3000/project-post/${projectId}`, {
@@ -44,6 +46,25 @@ async function increaseHitCount(projectId) {
     } catch (error) {
         console.error('에러 --- ', error);
         throw new error(error);
+    }
+}
+
+async function postLike(projectId) {
+    try {
+        const response = await fetch(`http://localhost:3000/like/${projectId}`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                Authorization: `Bearer ${accessToken}`,
+            },
+        });
+
+        const data = await response.json();
+
+        return data.message;
+    } catch (error) {
+        console.error('에러 --- ', error);
+        throw new Error(error);
     }
 }
 
@@ -93,6 +114,7 @@ async function getProjectDetail() {
                             </div>
                         </div>
                         <div class="applicantBox">
+                            <div class="likeBtn">좋아요</div>
                             <div class="applicantBtn">지원하기</div>
                         </div>
                     </div>
@@ -105,6 +127,12 @@ async function getProjectDetail() {
         const main = document.querySelector('.main');
 
         main.appendChild(mainWrap);
+
+        const likeBtn = document.querySelector('.likeBtn');
+
+        likeBtn.addEventListener('click', () => {
+            postLike(projectId);
+        });
 
         const stacks = document.querySelector('.stacks');
         const needPeoples = document.querySelector('.needPeoples');

@@ -14,19 +14,22 @@ export class LikeService {
     ) {}
 
     async create(projectPostId: number, userId: number) {
+        const getLike = await this.likeRepository.findOne({ where: { userId, projectPostId } });
+
+        if (getLike) {
+            await this.remove(projectPostId, userId);
+            return { message: '게시물 좋아요 취소' };
+        }
+
         const projectPost = await this.likeRepository.save({ userId, projectPostId });
 
-        return projectPost;
+        return { message: '게시물 좋아요 성공' };
     }
 
-    async findAll(id: number) {
-        const likes = await this.likeRepository.find({ where: { id } });
+    async findAll(projectPostId: number) {
+        const likes = await this.likeRepository.find({ where: { projectPostId } });
 
-        return likes.map(async (like) => {
-            return await this.projectPostRepository.findOne({
-                where: { id: like.projectPostId },
-            });
-        });
+        return likes;
     }
 
     // 유저가 누른 좋아요 목록 전체 조회
@@ -53,14 +56,14 @@ export class LikeService {
         return projectPost;
     }
 
-    async remove(id: number) {
-        const projectPost = await this.likeRepository.findOne({ where: { id } });
+    async remove(projectPostId: number, userId: number) {
+        const projectPost = await this.likeRepository.findOne({ where: { projectPostId, userId } });
 
         if (_.isNil(projectPost)) {
             throw new NotFoundException('존재하지않은 프로젝트입니다');
         }
 
-        await this.likeRepository.delete({ id });
+        await this.likeRepository.delete({ projectPostId, userId });
         return { message: '좋아요 삭제 성공' };
     }
 }

@@ -66,6 +66,21 @@ img {
     right: 20px;
 }
 
+.mainWrap .mainBox .detailBox .applicantBox .likeBtn {
+    display: inline-block;
+    padding: 8px;
+    border-radius: 10px;
+    border: 1px solid rgb(255, 114, 114);
+    background-color: white;
+    color: rgb(255, 114, 114);
+    cursor: pointer;
+}
+
+.mainWrap .mainBox .detailBox .applicantBox .likeBtn:hover {
+    background-color: rgb(255, 114, 114);
+    color: white;
+    transition: all 0.3s;
+}
 .mainWrap .mainBox .detailBox .applicantBox .applicantBtn {
     display: inline-block;
     padding: 8px;
