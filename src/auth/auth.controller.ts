@@ -42,8 +42,9 @@ export class AuthController {
     @Get('google')
     @UseGuards(GoogleAuthGuard)
     googleAuthRedirect(@Request() req: Request) {
+        console.log(req['user']);
         // return this.authService.googleLogin(req);
-        const token = this.authService.signToken(req['user'].email, false);
+        const token = this.authService.signToken(req['user'], false);
         return token;
     }
 }
