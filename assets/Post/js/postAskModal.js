@@ -21,36 +21,39 @@ function closeAskModal() {
 }
 
 // 폼 제출 시 동작할 함수
-function submitForm(event) {
-    event.preventDefault();
+function submitForm() {
     createPost();
     closeAskModal();
 }
 
 // 폼 제출 이벤트 리스너 추가
-const askForm = document.getElementById('askForm');
-askForm.addEventListener('submit', submitForm);
+const submitButton = document.getElementById('submitButton');
+submitButton.addEventListener('click', function (event) {
+    submitForm();
+});
 
 // 게시글 생성
 async function createPost() {
     try {
-        const refinedTags = tags.value.split(',');
-        const newInformation = {
-            title: title.value,
-            content: content.value,
-            image: image.value,
-            tag: refinedTags,
-        };
+        const form = document.getElementById('askForm');
+        const formData = new FormData(form);
+        // const refinedTags = tags.value.split(',');
+        // const newInformation = {
+        //     title: title.value,
+        //     content: content.value,
+        //     image: image.value,
+        //     tag: refinedTags,
+        // };
 
         const response = await fetch(`http://localhost:3000/post`, {
             method: 'post',
             headers: {
-                Authorization: `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImRvZ0BnbWFpbC5jb20iLCJpYXQiOjE3MDYyNzQ3NjN9.btoC6m0FxE2VqMCazz6MMAyzD6w19mzon3CO3kfJgSE`,
-                'Content-Type': 'application/json',
+                Authorization: `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6OCwidHlwZSI6ImFjY2VzcyIsImlhdCI6MTcwNjU0MzYwMSwiZXhwIjoxNzA2NTQzOTAxfQ.Q7yHj3o7kSFnh8mMmWvQmlvQYhkbp_0KtsYdIQ4BavE`,
+                // 'Content-Type': 'application/json',
             },
-            body: JSON.stringify(newInformation),
+            // body: JSON.stringify(newInformation),
+            body: formData,
         });
-        console.log(response);
         if (response.status !== 201) {
             //cry catch 구문에서 throw는 에러가 발생했을 때 catch에다가 error를 던져준다.
             throw new Error('게시글 등록에 실패하였습니다.');

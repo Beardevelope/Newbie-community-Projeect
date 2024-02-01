@@ -15,7 +15,7 @@ const statusUnfinished = document.getElementById('statusUnfinished');
 let foundPosts = [];
 
 // 페이지와 관련된 변수
-const itemsPerPage = 5; // 페이지당 아이템 수
+const itemsPerPage = 3; // 페이지당 아이템 수
 let currentPage = 1;
 const maxPagesToShow = 5; // 표시할 최대 페이지 수
 
@@ -37,7 +37,7 @@ async function postList(orderAndFilter) {
             return;
         }
 
-        const response = await fetch(`http://localhost:3000/post?order=createdAt`, {
+        const response = await fetch(`http://localhost:3000/post`, {
             accept: 'application/json',
         });
         const jsonData = await response.json();
@@ -62,12 +62,21 @@ function displayPosts(posts) {
         const tags = post.tags;
 
         const questionElement = document.createElement('div');
+        questionElement.style.width = '820px';
         questionElement.classList.add('question');
         questionElement.innerHTML = `<h2 style="cursor: pointer" class="post" id="${post.id}">${post.title}</h2><p>${post.content.slice(0, 20)}...</p>`;
-        tags.forEach((tag) => {
-            questionElement.innerHTML += `<button id="${tag.name}" class="tagButton">${tag.name}</button>`;
-        });
-        questionElement.innerHTML += `<h5 class="commentHitLike">댓글: 조회수: ${post.hitCount} 좋아요: ${post.likes}</h5>`;
+        for (let i = 0; i < tags.length; i++) {
+            if (i > 3) {
+                break;
+            }
+            // continue를 사용하면 쓸데없는 반복문을 실행한다.
+            // if (i > 3) {
+            //     continue;
+            // }
+            questionElement.innerHTML += `<button id="${tags[i].name}" class="tagButton">${tags[i].name}</button>`;
+           
+        }
+        questionElement.innerHTML += `<h5 class="commentHitLike">댓글: ${post.comments.length} 조회수: ${post.hitCount} 좋아요: ${post.likes}</h5>`;
         questionsList.appendChild(questionElement);
     });
 
@@ -129,7 +138,6 @@ function goToPage(page) {
 // 조회수 늘리는 함수
 async function addHit(clickedPostId) {
     try {
-        console.log(clickedPostId)
         const newInformation = {
             id: clickedPostId,
         };
@@ -154,9 +162,10 @@ function addEventListenersToPost() {
         post.addEventListener('click', function (event) {
             const clickedPostId = event.target.id;
             // 조회수 늘리는 함수 실행
-            addHit(clickedPostId)
+            addHit(clickedPostId);
             // 상세 조회 페이지 URL을 생성하여 이동
-            const detailPageURL = `./detail.html?id=${clickedPostId}`;
+            // const detailPageURL = `./detail.html?id=${clickedPostId}`;
+            const detailPageURL = `../../Auth/post-detail.html?id=${clickedPostId}`;
             window.location.href = detailPageURL;
         });
     });

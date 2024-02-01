@@ -30,8 +30,8 @@ export class GoogleStrategy extends PassportStrategy(Strategy) {
         const { id, name, emails } = profile;
         console.log(accessToken, '+++++++++++++++++++++++++++++++++++');
         console.log(refreshToken, '----------------------------------');
-
         const providerId = id;
+
         const email = emails[0].value;
 
         // nickname = Google name 치환
@@ -46,5 +46,6 @@ export class GoogleStrategy extends PassportStrategy(Strategy) {
         }
 
         done(null, user);
+        // question : gmail로 이미 가입을 했음(일반가입) 근데 password를 받기 싫고 다음에 로그인해야할 상황이 생기면 구글 로그인 버튼을 눌러서 로그인을 하고싶음 (연동을 할 수 있는 logic이 필요하다.)
     }
 }

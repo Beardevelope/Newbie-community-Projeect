@@ -15,6 +15,7 @@ import { Cron } from '@nestjs/schedule';
 import { AutoReply } from 'src/openai/openai.provider';
 import { CommentService } from 'src/comment/comment.service';
 import { Tag } from 'src/tag/entities/tag.entity';
+import { UploadServiceService } from 'src/upload-service/upload-service.service';
 
 @Injectable()
 export class PostService {
@@ -27,20 +28,23 @@ export class PostService {
         @Inject(forwardRef(() => AutoReply))
         private readonly autoReply: AutoReply,
         private readonly commenService: CommentService,
+        private readonly uploadService: UploadServiceService,
     ) {}
 
     // 게시글 생성
-    async create(createPostDto: CreatePostDto, userId: number) {
-        const { title, content, image, tag } = createPostDto;
+    async create(createPostDto: CreatePostDto, userId: number, file: any) {
+        const { title, content, tag } = createPostDto;
+        const url = await this.uploadService.uploadFile(file);
+        const tagArray = tag.split(',');
 
         const tags = [];
-        for (let i = 0; i < tag.length; i++) {
+        for (let i = 0; i < tagArray.length; i++) {
             let existedTag = await this.tagRepository.findOne({
-                where: { name: tag[i] },
+                where: { name: tagArray[i] },
             });
 
             if (!existedTag) {
-                tags.push({ name: tag[i] });
+                tags.push({ name: tagArray[i] });
             }
             tags.push(existedTag);
         }
@@ -48,7 +52,7 @@ export class PostService {
         const post = await this.postRepository.save({
             title,
             content,
-            image,
+            image: url,
             tags,
             userId,
         });
@@ -58,75 +62,31 @@ export class PostService {
 
     // 게시글 조회 기능 구현 필터까지 다 구현하기 req.query를 이용하여 구현하기
     async findAll(order: string, filter: string, tagName: string, tab: string) {
-        if (order !== 'hitCount' && order !== 'likes' && order !== 'createdAt') {
+        if (
+            order !== 'hitCount' &&
+            order !== 'likes' &&
+            order !== 'createdAt' &&
+            order !== undefined
+        ) {
             throw new BadRequestException('알맞는 정렬값을 입력해주세요.');
-        }
-
-        //댓글이 있을 경우
-        if (tab === 'answered') {
-            const posts = await this.postRepository.find({
-                where: {
-                    deletedAt: null,
-                    ...(filter && { status: `${filter}` }),
-                    ...(tab && { comments: { id: Not(IsNull()) } }),
-                },
-                order: {
-                    ...(order && { [`${order}`]: 'DESC' }),
-                    createdAt: 'DESC',
-                },
-                relations: {
-                    tags: true,
-                },
-            });
-            if (!tagName) {
-                return posts;
-            }
-
-            const filteredPosts = posts.filter((post) =>
-                post.tags.some((tag) => tag.name === tagName),
-            );
-            return filteredPosts;
-        }
-
-        //댓글이 없을 경우
-        if (tab === 'unAnswered') {
-            const posts = await this.postRepository.find({
-                where: {
-                    deletedAt: null,
-                    ...(filter && { status: `${filter}` }),
-                    ...(tab && { comments: { id: (IsNull()) } }),
-                },
-                order: {
-                    ...(order && { [`${order}`]: 'DESC' }),
-                    createdAt: 'DESC',
-                },
-                relations: {
-                    tags: true,
-                },
-            });
-            if (!tagName) {
-                return posts;
-            }
-
-            const filteredPosts = posts.filter((post) =>
-                post.tags.some((tag) => tag.name === tagName),
-            );
-            return filteredPosts;
         }
 
         const posts = await this.postRepository.find({
             where: {
                 deletedAt: null,
                 ...(filter && { status: `${filter}` }),
+                ...(tab === 'answered' && { comments: { id: Not(IsNull()) } }),
+                ...(tab === 'unAnswered' && { comments: { id: IsNull() } }),
             },
             order: {
                 ...(order && { [`${order}`]: 'DESC' }),
-                createdAt: 'DESC',
             },
             relations: {
                 tags: true,
+                comments: true,
             },
         });
+
         if (!tagName) {
             return posts;
         }
@@ -246,8 +206,8 @@ export class PostService {
     }
 
     // 게시글 수정
-    async update(postId: number, updatePostDto: UpdatePostDto, userId) {
-        const { title, content, image, tag } = updatePostDto;
+    async update(postId: number, updatePostDto: UpdatePostDto, userId, file: any) {
+        const { title, content, tag } = updatePostDto;
 
         const foundPost = await this.postRepository.findOne({
             where: {
@@ -264,27 +224,30 @@ export class PostService {
             throw new NotAcceptableException('수정할 권한이 없습니다.');
         }
 
+        const url = await this.uploadService.uploadFile(file);
+        const tagArray = tag.split(',');
+
         const tags = [];
-        for (let i = 0; i < tag.length; i++) {
+        for (let i = 0; i < tagArray.length; i++) {
             let existedTag = await this.tagRepository.findOne({
-                where: { name: tag[i] },
+                where: { name: tagArray[i] },
             });
 
             if (!existedTag) {
-                tags.push({ name: tag[i] });
+                tags.push({ name: tagArray[i] });
             }
             tags.push(existedTag);
         }
 
-        const updatedPost = await this.postRepository.save({
+        const updatePost = await this.postRepository.save({
             id: postId,
             title,
             content,
-            image,
+            image: url,
             tags,
         });
 
-        return updatedPost;
+        return updatePost;
     }
 
     // 게시글 삭제
