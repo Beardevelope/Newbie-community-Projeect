@@ -61,7 +61,7 @@ async function postLike(projectId) {
 
         const data = await response.json();
 
-        return data.message;
+        alert(data.message);
     } catch (error) {
         console.error('에러 --- ', error);
         throw new Error(error);
