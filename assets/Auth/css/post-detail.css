@@ -1,0 +1,261 @@
+:root {
+    --gap: 20px;
+}
+.totalbox {
+    height: 100%;
+    background-color: #212529;
+    width: 100px;
+}
+
+.main {
+    background-color: gray;
+    width: 100%;
+}
+
+.title-logo {
+    padding-left: 40px;
+    color: white;
+    font-family: 'Anton', sans-serif;
+    font-size: 27px;
+}
+.container {
+    max-width: 1200px;
+    margin: 50px auto;
+}
+
+.header {
+    background-color: #212529;
+    display: flex;
+    padding: 15px;
+    /* justify-content:; */
+}
+.logo-img {
+    height: 40px;
+}
+
+.big-box {
+    display: flex;
+    height: 100%;
+}
+body,
+html {
+    height: 100%;
+    margin: 0;
+}
+
+body {
+    background-color: #efefef;
+}
+
+.total-header {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+}
+
+.search-box {
+    align-items: center;
+    width: 1500px;
+}
+.box {
+    background-color: #ddd;
+    padding: var(--gap);
+    display: flex;
+    gap: var(--gap);
+    min-height: 400px;
+    flex-direction: row;
+}
+
+.box.align_right {
+    flex-direction: row-reverse;
+}
+
+.box-sidebar,
+.box-contents {
+    background-color: rgba(0, 0, 0, 0.1);
+    padding: var(--gap);
+}
+
+.box-sidebar {
+    width: 140px;
+    flex-shrink: 0;
+}
+
+.box-contents {
+    flex-grow: 1;
+    min-width: 0;
+}
+/* main */
+#content {
+    padding: 100px;
+}
+/*mainbar*/
+#mainbar {
+    padding: 20px;
+    width:726px
+}
+
+/* headline */
+.first-headline {
+    display: flex;
+    flex-direction: row;
+}
+
+#headline-question {
+    margin-left: auto;
+
+}
+
+.sub-headline {
+    margin-bottom: 30px;
+    padding-bottom: 20px;
+    display: flex;
+    flex-direction: row;
+    border-bottom-color: black;
+    border-bottom-width: 1px;
+    border-bottom-style: solid;
+
+}
+#sub-headline-created,
+#sub-headline-updatedAt,
+#sub-headline-hitcounts {
+    padding-right: 30px;
+}
+.second-headline .category {
+    margin-left: auto;
+}
+/* postList */
+
+
+#post-layout {
+    display: flex;
+    flex-direction: row;
+    margin-bottom: 30px;
+
+}
+
+#post-cell {
+    width: 100%;
+    border-width: 2px;
+    border-color: black;
+    border-style: solid;
+    margin-left: 10px;
+    padding: 30px;
+}
+
+.votebar {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+}
+.vote-count {
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+.arrow-up {
+    width: 0; 
+    height: 0; 
+    border-left: 20px solid gray;
+    border-right: 20px solid gray;
+    
+    border-bottom: 30px solid black;
+  }
+  
+  .arrow-down {
+    width: 0; 
+    height: 0; 
+    border-left: 20px solid gray;
+    border-right: 20px solid gray;
+    
+    border-top: 30px solid #f00;
+  }
+
+  .comment-list {
+    margin-top: 10px;
+    font-size: 12px;
+    padding: 10px;
+    border-width: 2px;
+    border-color: black;
+    border-style: solid;
+  }
+  .comment-list .ul .li {
+    padding: 20px;
+  }
+  .comment-editor{
+    border-width: 2px;
+    border-color: black;
+    border-style: solid;
+    margin-top: 10px;
+    padding: 20px;
+  }
+
+/* #post-list-wrapper {
+    clear: both
+}
+
+@media screen and (max-width: 980px) {
+    .flush-left {
+        margin-left: calc(var(--su16))
+    }
+} */
+
+/* #post-mini-list {
+    margin-bottom: 30px;
+} */
+
+/* .s-post-summary {
+        height: 106px;
+        width: auto;
+        background-color: rgba(0, 0, 0, 0);
+        flex-direction: row;
+        border-bottom-style: solid;
+        border-bottom-width: 0.666667px;
+        border-bottom-color: black;
+        display: flex;
+        position: relative;
+        padding-bottom: 16px;
+        padding-left: 16px;
+        padding-right: 16px;
+        padding-top: 16px;
+        margin: 0px;
+} */
+
+/* .p
+.s-post-summary-stats  {
+    align-items: flex-end;
+    flex-shrink: 0;
+    flex-direction: row;
+
+    width: 108px;
+    display: flex;
+    flex-shrink: 0;
+    flex-wrap: wrap;
+    font-size: 13px;
+    height: 19px;
+    gap: auto;
+    margin-right: 16px;
+    box-sizing: border-box;
+    column-gap: 6px;
+
+}
+
+.s-post-summary-content {
+    display: block;
+    display: flex;
+    flex-wrap: column;
+    width: 489px;
+    flex-grow: 1;
+    max-width: 100%;
+}
+
+.s-post-summary-content-title {
+    border-bottom: 79px;
+    font-size: 32px;
+}
+
+.s-post-summary-content-title a {
+    color:black;
+    display: inline;
+    
+} */

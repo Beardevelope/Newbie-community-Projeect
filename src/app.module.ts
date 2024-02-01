@@ -22,6 +22,8 @@ import { AlarmModule } from './alarm/alarm.module';
 import { TagModule } from './tag/tag.module';
 import session from 'express-session';
 import { PassportModule } from '@nestjs/passport';
+import { ServeStaticModule } from '@nestjs/serve-static';
+import { join } from 'path';
 
 @Module({
     imports: [
@@ -48,6 +50,9 @@ import { PassportModule } from '@nestjs/passport';
         }),
         TagModule,
         AlarmModule,
+        ServeStaticModule.forRoot({
+            rootPath: join(__dirname, '..', 'assets'),
+        }),
     ],
     controllers: [AppController],
     providers: [AppService],
