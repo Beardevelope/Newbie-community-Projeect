@@ -29,7 +29,7 @@ export class PostController {
     @UseGuards(BearerTokenGuard)
     @Post()
     @UseInterceptors(FileInterceptor('file'))
-    async create(@Body() createPostDto: CreatePostDto, @Req() req, @UploadedFile() file,) {
+    async create(@Body() createPostDto: CreatePostDto, @Req() req, @UploadedFile() file) {
         const userId = req.userId;
 
         const newPost = await this.postService.create(createPostDto, userId, file);
@@ -52,6 +52,14 @@ export class PostController {
             message: 'ok',
             posts,
         };
+    }
+
+    // 특정 User의 게시글 조회하기
+    @UseGuards(BearerTokenGuard)
+    @Get('myposts')
+    async getMyPosts(@Req() req) {
+        const userId = req.userId;
+        return await this.postService.findByUserId(userId);
     }
 
     // 게시글 상세 조회

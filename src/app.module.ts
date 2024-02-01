@@ -52,8 +52,8 @@ import { join } from 'path';
         AlarmModule,
         ServeStaticModule.forRoot({
             rootPath: join(__dirname, '..', 'assets'),
-          }),
-        ],
+        }),
+    ],
     controllers: [AppController],
     providers: [AppService],
 })
