@@ -10,6 +10,7 @@ import {
     Put,
     UseGuards,
     Query,
+    ParseIntPipe,
 } from '@nestjs/common';
 import { PostService } from './post.service';
 import { CreatePostDto } from './dto/create-post.dto';
@@ -48,6 +49,14 @@ export class PostController {
             message: 'ok',
             posts,
         };
+    }
+
+    // 특정 User의 게시글 조회하기
+    @UseGuards(BearerTokenGuard)
+    @Get('myposts')
+    async getMyPosts(@Req() req) {
+        const userId = req.userId;
+        return await this.postService.findByUserId(userId);
     }
 
     // 게시글 상세 조회

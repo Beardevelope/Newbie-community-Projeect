@@ -94,7 +94,7 @@ export class PostService {
                 where: {
                     deletedAt: null,
                     ...(filter && { status: `${filter}` }),
-                    ...(tab && { comments: { id: (IsNull()) } }),
+                    ...(tab && { comments: { id: IsNull() } }),
                 },
                 order: {
                     ...(order && { [`${order}`]: 'DESC' }),
@@ -328,5 +328,20 @@ export class PostService {
                 await this.commenService.createComment(post.id, 1, { content: aiReplied });
             }
         });
+    }
+
+    async findByUserId(userId: number): Promise<Post[]> {
+        const posts = await this.postRepository.find({
+            where: {
+                userId: userId,
+            },
+            relations: { comments: true, tags: true },
+        });
+        if (!posts.length) {
+            throw new BadRequestException('게시글이 없습니다.');
+        }
+
+        console.log(posts);
+        return posts;
     }
 }
