@@ -97,6 +97,43 @@ img {
     transition: all 0.3s;
 }
 
+.mainWrap .mainBox .detailBox .editBox {
+    position: absolute;
+    bottom: 20px;
+    left: 20px;
+}
+
+.mainWrap .mainBox .detailBox .editBox .editBtn {
+    display: inline-block;
+    padding: 8px;
+    border-radius: 10px;
+    border: 1px solid rgb(255, 114, 114);
+    background-color: white;
+    color: rgb(255, 114, 114);
+    cursor: pointer;
+}
+
+.mainWrap .mainBox .detailBox .editBox .editBtn:hover {
+    background-color: rgb(255, 114, 114);
+    color: white;
+    transition: all 0.3s;
+}
+.mainWrap .mainBox .detailBox .editBox .deleteBtn {
+    display: inline-block;
+    padding: 8px;
+    border-radius: 10px;
+    border: 1px solid rgb(0, 207, 138);
+    background-color: white;
+    color: rgb(0, 207, 138);
+    cursor: pointer;
+}
+
+.mainWrap .mainBox .detailBox .editBox .deleteBtn:hover {
+    background-color: rgb(0, 207, 138);
+    color: white;
+    transition: all 0.3s;
+}
+
 .mainWrap .contentBox {
     background-color: white;
 }

@@ -1,7 +1,7 @@
 const urlParams = new URLSearchParams(window.location.search);
 const projectId = urlParams.get('id');
 
-const accessToken = `eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjEsImVtYWlsIjoiOTg4NzZAbmF2ZXIuY29tIiwiaWQiOjEsInR5cGUiOiJhY2Nlc3MiLCJpYXQiOjE3MDY3NjQ5NTYsImV4cCI6MTcwNjc2ODU1Nn0.8ObMgUPNb3LT8KHenW7qtgWnH7fdIbvGVvSGe_gudPg`;
+const accessToken = `eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjEsImVtYWlsIjoiOTg4NzZAbmF2ZXIuY29tIiwiaWQiOjEsInR5cGUiOiJhY2Nlc3MiLCJpYXQiOjE3MDY3ODg2MzEsImV4cCI6MTcwNjc5MjIzMX0.yn2brvJ60f8OmM1mmPXTNVrfRUCHR4uFER-qa74FMGg`;
 
 async function fetchProjectDetail(projectId) {
     try {
@@ -68,6 +68,25 @@ async function postLike(projectId) {
     }
 }
 
+async function deleteProjectPost(projectId) {
+    try {
+        const response = await fetch(`http://localhost:3000/project-post/${projectId}`, {
+            method: 'DELETE',
+            headers: {
+                'Content-Type': 'application/json',
+                Authorization: `Bearer ${accessToken}`,
+            },
+        });
+
+        const data = await response.json();
+
+        alert(data.message);
+    } catch (error) {
+        console.error('에러 --- ', error);
+        throw new error(error);
+    }
+}
+
 async function getProjectDetail() {
     try {
         const data = await fetchProjectDetail(projectId);
@@ -113,6 +132,10 @@ async function getProjectDetail() {
                                 <div class="dueDate">${data.dueDate.split('T')[0]}</div>
                             </div>
                         </div>
+                        <div class="editBox">
+                            <div class='editBtn'>수정</div>
+                            <div class='deleteBtn'>삭제</div>
+                        </div>
                         <div class="applicantBox">
                             <div class="likeBtn">좋아요</div>
                             <div class="applicantBtn">지원하기</div>
@@ -127,6 +150,13 @@ async function getProjectDetail() {
         const main = document.querySelector('.main');
 
         main.appendChild(mainWrap);
+
+        const deleteBtn = document.querySelector('.deleteBtn');
+
+        deleteBtn.addEventListener('click', () => {
+            deleteProjectPost(projectId);
+            window.location.href = './projectPostMain.html';
+        });
 
         const likeBtn = document.querySelector('.likeBtn');
 
