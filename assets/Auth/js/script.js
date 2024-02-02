@@ -57,7 +57,7 @@ const signup = async () => {
         if (!response.ok) alert(`${responseData.message}`);
         if (response.ok) {
             alert(`회원가입 성공`);
-            window.location.href = './mainpage.html';
+            forms.classList.toggle('show-signup');
         }
     } catch (error) {
         console.error(error);
@@ -69,7 +69,7 @@ const signup = async () => {
 const login = async () => {
     try {
         const data = {
-            email: email.value,
+            email: loginEmail.value,
             password: loginPassword.value,
         };
         const credentials = btoa(`${data.email}:${data.password}`);
@@ -85,7 +85,8 @@ const login = async () => {
         if (!response.ok) alert(`${responseData.message}`);
 
         if (response.ok) {
-            alert(`로그인 성공}`);
+            alert(`로그인 성공`);
+            sessionStorage.setItem('accessToken', responseData.accessToken)
             window.location.href = './mainpage.html';
         }
     } catch (error) {
