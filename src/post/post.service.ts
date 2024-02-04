@@ -71,58 +71,6 @@ export class PostService {
             throw new BadRequestException('알맞는 정렬값을 입력해주세요.');
         }
 
-        //댓글이 있을 경우
-        if (tab === 'answered') {
-            const posts = await this.postRepository.find({
-                where: {
-                    deletedAt: null,
-                    ...(filter && { status: `${filter}` }),
-                    ...(tab && { comments: { id: Not(IsNull()) } }),
-                },
-                order: {
-                    ...(order && { [`${order}`]: 'DESC' }),
-                    createdAt: 'DESC',
-                },
-                relations: {
-                    tags: true,
-                },
-            });
-            if (!tagName) {
-                return posts;
-            }
-
-            const filteredPosts = posts.filter((post) =>
-                post.tags.some((tag) => tag.name === tagName),
-            );
-            return filteredPosts;
-        }
-
-        //댓글이 없을 경우
-        if (tab === 'unAnswered') {
-            const posts = await this.postRepository.find({
-                where: {
-                    deletedAt: null,
-                    ...(filter && { status: `${filter}` }),
-                    ...(tab && { comments: { id: IsNull() } }),
-                },
-                order: {
-                    ...(order && { [`${order}`]: 'DESC' }),
-                    createdAt: 'DESC',
-                },
-                relations: {
-                    tags: true,
-                },
-            });
-            if (!tagName) {
-                return posts;
-            }
-
-            const filteredPosts = posts.filter((post) =>
-                post.tags.some((tag) => tag.name === tagName),
-            );
-            return filteredPosts;
-        }
-
         const posts = await this.postRepository.find({
             where: {
                 deletedAt: null,
