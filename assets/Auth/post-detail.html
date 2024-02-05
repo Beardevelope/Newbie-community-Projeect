@@ -14,7 +14,6 @@
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
         <link href="https://fonts.googleapis.com/css2?family=Anton&display=swap" rel="stylesheet" />
         <link rel="stylesheet" href="./css/mainpage.css" />
-        <link rel="stylesheet" href="./css/header.css" />
     </head>
     <body>
         <header class="header">
@@ -55,7 +54,7 @@
                 <hr />
                 <ul class="nav nav-pills flex-column mb-auto">
                     <li class="nav-item">
-                        <a href="#" class="nav-link active" aria-current="page">
+                        <a href="../Auth/mainpage.html" class="nav-link active" aria-current="page">
                             <svg class="bi pe-none me-2" width="16" height="16">
                                 <use xlink:href="#home"></use>
                             </svg>
@@ -63,7 +62,7 @@
                         </a>
                     </li>
                     <li>
-                        <a href="#" class="nav-link text-white">
+                        <a href="../Post/html/postList.html" class="nav-link text-white">
                             <svg class="bi pe-none me-2" width="16" height="16">
                                 <use xlink:href="#speedometer2"></use>
                             </svg>
@@ -167,45 +166,29 @@
                         ></button>
                     </div>
                     <div class="modal-body">
-                        <form id="putForm" enctype="multipart/form-data">
-                            <label for="title" class="form-label">제목</label>
-                            <input
-                                type="text"
-                                class="form-control"
-                                id="title"
-                                name="title"
-                                required
-                            />
 
-                            <label for="content" class="form-label">내용</label>
-                            <textarea
-                                class="form-control"
-                                id="content"
-                                name="content"
-                                rows="3"
-                                required
-                            ></textarea>
+                <form id="putForm" enctype="multipart/form-data">
+                   
+                        <label for="title" class="form-label">제목</label>
+                        <input type="text" class="form-control" id="title" name="title" required>
+                
+                
+                        <label for="content" class="form-label">내용</label>
+                        <textarea class="form-control" id="content" name="content" rows="3" required></textarea>
+              
+                  
+                        <label for="tag" class="form-label">태그 (comma-separated)</label>
+                        <input type="text" class="form-control" id="tag" name="tag">
+                
+                
+                        <label for="image" class="form-label">이미지 업로드</label>
+                        <input type="file" class="form-control" id="image" name="file" accept="image/*">
+              
+                </form>
 
-                            <label for="tag" class="form-label">태그 (comma-separated)</label>
-                            <input type="text" class="form-control" id="tag" name="tag" />
-
-                            <label for="image" class="form-label">이미지 업로드</label>
-                            <input
-                                type="file"
-                                class="form-control"
-                                id="image"
-                                name="file"
-                                accept="image/*"
-                            />
-                        </form>
                     </div>
                     <div class="modal-footer">
-                        <button
-                            id="cancelBtn"
-                            type="button"
-                            class="btn btn-secondary"
-                            data-bs-dismiss="modal"
-                        >
+                        <button id="cancelBtn" type="button" class="btn btn-secondary" data-bs-dismiss="modal">
                             취소
                         </button>
                         <button id="putData" type="submit" class="btn btn-primary">저장</button>

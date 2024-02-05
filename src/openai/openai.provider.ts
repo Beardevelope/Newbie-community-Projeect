@@ -37,7 +37,7 @@ export class AutoReply {
         return completion.choices[0].message.content;
     }
 
-    @Cron(CronExpression.EVERY_MINUTE, {
+    @Cron('0 * * * * *', {
         name: 'autoReply',
     })
     async autoReplyWithChatBotHandeler() {

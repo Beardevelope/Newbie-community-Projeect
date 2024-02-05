@@ -3,6 +3,7 @@ const title = document.querySelector('#title');
 const content = document.querySelector('#content');
 const image = document.querySelector('#image');
 const tags = document.querySelector('#tags');
+const TOKEN = sessionStorage.getItem('accessToken')
 
 // askButton에 이벤트 리스너 추가
 const askButton = document.getElementById('askButton');
@@ -44,11 +45,10 @@ async function createPost() {
         //     image: image.value,
         //     tag: refinedTags,
         // };
-
         const response = await fetch(`http://localhost:3000/post`, {
             method: 'post',
             headers: {
-                Authorization: `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6OCwidHlwZSI6ImFjY2VzcyIsImlhdCI6MTcwNjU0MzYwMSwiZXhwIjoxNzA2NTQzOTAxfQ.Q7yHj3o7kSFnh8mMmWvQmlvQYhkbp_0KtsYdIQ4BavE`,
+                Authorization: `Bearer ${TOKEN}`,
                 // 'Content-Type': 'application/json',
             },
             // body: JSON.stringify(newInformation),
