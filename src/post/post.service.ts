@@ -61,7 +61,7 @@ export class PostService {
     }
 
     // 게시글 조회 기능 구현 필터까지 다 구현하기 req.query를 이용하여 구현하기
-    async findAll(order: string, filter: string, tagName: string, tab: string) {
+    async findAll(order: string, filter: string, tagName: string, tab: string, page: number) {
         if (
             order !== 'hitCount' &&
             order !== 'likes' &&
@@ -71,57 +71,47 @@ export class PostService {
             throw new BadRequestException('알맞는 정렬값을 입력해주세요.');
         }
 
-        //댓글이 있을 경우
-        if (tab === 'answered') {
-            const posts = await this.postRepository.find({
-                where: {
-                    deletedAt: null,
-                    ...(filter && { status: `${filter}` }),
-                    ...(tab && { comments: { id: Not(IsNull()) } }),
-                },
-                order: {
-                    ...(order && { [`${order}`]: 'DESC' }),
-                    createdAt: 'DESC',
-                },
-                relations: {
-                    tags: true,
-                },
-            });
-            if (!tagName) {
-                return posts;
-            }
+        // const take: number = 3;
+        // const skip: number = (page - 1) * take;
+        // const [posts, total] = await this.postRepository.findAndCount({
+        //     where: {
+        //         deletedAt: null,
+        //         ...(filter && { status: `${filter}` }),
+        //         ...(tab === 'answered' && { comments: { id: Not(IsNull()) } }),
+        //         ...(tab === 'unAnswered' && { comments: { id: IsNull() } }),
+        //     },
+        //     order: {
+        //         ...(order && { [`${order}`]: 'DESC' }),
+        //     },
+        //     relations: {
+        //         tags: true,
+        //         comments: true,
+        //     },
+        //     take,
+        //     skip,
+        // });
 
-            const filteredPosts = posts.filter((post) =>
-                post.tags.some((tag) => tag.name === tagName),
-            );
-            return filteredPosts;
-        }
+        // if (!tagName) {
+        //     return {
+        //         data: posts,
+        //         meta: {
+        //             total,
+        //             page,
+        //             last_page: Math.ceil(total / take),
+        //         },
+        //     };
+        // }
 
-        //댓글이 없을 경우
-        if (tab === 'unAnswered') {
-            const posts = await this.postRepository.find({
-                where: {
-                    deletedAt: null,
-                    ...(filter && { status: `${filter}` }),
-                    ...(tab && { comments: { id: IsNull() } }),
-                },
-                order: {
-                    ...(order && { [`${order}`]: 'DESC' }),
-                    createdAt: 'DESC',
-                },
-                relations: {
-                    tags: true,
-                },
-            });
-            if (!tagName) {
-                return posts;
-            }
+        // const filteredPosts = posts.filter((post) => post.tags.some((tag) => tag.name === tagName));
 
-            const filteredPosts = posts.filter((post) =>
-                post.tags.some((tag) => tag.name === tagName),
-            );
-            return filteredPosts;
-        }
+        // return {
+        //     data: filteredPosts,
+        //     meta: {
+        //         total,
+        //         page,
+        //         last_page: Math.ceil(total / take),
+        //     },
+        // };
 
         const posts = await this.postRepository.find({
             where: {
