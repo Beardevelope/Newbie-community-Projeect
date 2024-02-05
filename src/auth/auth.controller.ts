@@ -1,4 +1,4 @@
-import { Controller, Post, UseGuards, Req, Request, Response, Get } from '@nestjs/common';
+import { Controller, Post, UseGuards, Req, Request, Response, Get, Res, Query } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { BasicTokenGuard } from './guard/basic.guard';
 import { RefreshTokenGuard } from './guard/bearer.guard';
@@ -41,10 +41,11 @@ export class AuthController {
 
     @Get('google')
     @UseGuards(GoogleAuthGuard)
-    googleAuthRedirect(@Request() req: Request) {
+    googleAuthRedirect(@Request() req: Request, @Res() res) {
         console.log(req['user']);
         // return this.authService.googleLogin(req);
         const token = this.authService.signToken(req['user'], false);
+        res.redirect(`http://localhost:3000/Auth/save-token.html?accessToken=${token}`)
         return token;
     }
 }

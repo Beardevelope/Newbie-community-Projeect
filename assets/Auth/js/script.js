@@ -37,6 +37,8 @@ const loginButton = document.querySelector('#login');
 const loginEmail = document.querySelector('.login-email');
 const loginPassword = document.querySelector('.login-password');
 
+const googleButton = document.querySelector('.field.google')
+
 const signup = async () => {
     try {
         const data = {
@@ -95,5 +97,17 @@ const login = async () => {
     }
 };
 
+const googleLogin = async () => {
+    try {
+        window.location.href = 'http://localhost:3000/auth/to-google'       
+    } catch (error) {
+        console.error(error)
+        alert('사바 에러')
+    }
+}
+
 signupButton.addEventListener('click', signup);
 loginButton.addEventListener('click', login);
+googleButton.addEventListener('click', googleLogin)
+
+
