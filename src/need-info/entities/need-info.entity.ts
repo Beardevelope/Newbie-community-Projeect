@@ -35,7 +35,9 @@ export class NeedInfo {
     @Column()
     projectPostId: number;
 
-    @ManyToOne((type) => ProjectPost, (projectPost) => projectPost.needInfo)
+    @ManyToOne((type) => ProjectPost, (projectPost) => projectPost.needInfo, {
+        onDelete: 'CASCADE',
+    })
     @JoinColumn({ name: 'project_post_id' })
     projectPost: ProjectPost;
 }

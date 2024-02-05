@@ -24,14 +24,16 @@ export class ProjectApplicant {
     @Column()
     userId: number;
 
-    @ManyToOne((type) => User, (user) => user.projectApplicant)
+    @ManyToOne((type) => User, (user) => user.projectApplicant, { onDelete: 'CASCADE' })
     @JoinColumn({ name: 'user_id' })
     user: User;
 
     @Column()
     projectPostId: number;
 
-    @ManyToOne((type) => ProjectPost, (projectPost) => projectPost.projectApplicant)
+    @ManyToOne((type) => ProjectPost, (projectPost) => projectPost.projectApplicant, {
+        onDelete: 'CASCADE',
+    })
     @JoinColumn({ name: 'project_post_id' })
     projectPost: ProjectPost;
 }

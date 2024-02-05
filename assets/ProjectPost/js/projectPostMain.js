@@ -63,6 +63,8 @@ async function getProject(page) {
 
         for (let i = 0; i < sortPost.length; i++) {
             const stack = await fetchStack(sortPost[i].id);
+            console.log(stack, `${i}프로젝트`);
+            console.log(stack.length, `${i}프로젝트길이`);
             const like = await fetchLike(sortPost[i].id);
 
             console.log(stack, '스택입니다');
@@ -100,6 +102,7 @@ async function getProject(page) {
         `;
 
             projects.appendChild(project);
+
             for (let j = 0; j < stack.length; j++) {
                 const getStack = document.createElement('div');
                 getStack.className = 'stack';
@@ -108,9 +111,9 @@ async function getProject(page) {
 
                 console.log(getStack.innerHTML, '추출한 스택입니다');
 
-                const stackBox = document.querySelector('.stackBox');
+                const stackBox = document.querySelectorAll('.stackBox');
 
-                stackBox.appendChild(getStack);
+                stackBox[i].appendChild(getStack);
             }
         }
     } catch (error) {

@@ -37,6 +37,8 @@ const loginButton = document.querySelector('#login');
 const loginEmail = document.querySelector('.login-email');
 const loginPassword = document.querySelector('.login-password');
 
+const googleButton = document.querySelector('.field.google')
+
 const signup = async () => {
     try {
         const data = {
@@ -57,7 +59,7 @@ const signup = async () => {
         if (!response.ok) alert(`${responseData.message}`);
         if (response.ok) {
             alert(`회원가입 성공`);
-            window.location.href = './mainpage.html';
+            forms.classList.toggle('show-signup');
         }
     } catch (error) {
         console.error(error);
@@ -69,7 +71,7 @@ const signup = async () => {
 const login = async () => {
     try {
         const data = {
-            email: email.value,
+            email: loginEmail.value,
             password: loginPassword.value,
         };
         const credentials = btoa(`${data.email}:${data.password}`);
@@ -85,7 +87,8 @@ const login = async () => {
         if (!response.ok) alert(`${responseData.message}`);
 
         if (response.ok) {
-            alert(`로그인 성공}`);
+            alert(`로그인 성공`);
+            sessionStorage.setItem('accessToken', responseData.accessToken)
             window.location.href = './mainpage.html';
         }
     } catch (error) {
@@ -94,5 +97,17 @@ const login = async () => {
     }
 };
 
+const googleLogin = async () => {
+    try {
+        window.location.href = 'http://localhost:3000/auth/to-google'       
+    } catch (error) {
+        console.error(error)
+        alert('사바 에러')
+    }
+}
+
 signupButton.addEventListener('click', signup);
 loginButton.addEventListener('click', login);
+googleButton.addEventListener('click', googleLogin)
+
+
