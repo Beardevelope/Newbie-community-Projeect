@@ -28,7 +28,7 @@ async function postList(orderAndFilter) {
                 accept: 'application/json',
             });
             const jsonData = await response.json();
-            let posts = jsonData.posts;
+            let posts = jsonData.posts.data;
 
             posts.forEach((post) => {
                 foundPosts.push(post);
@@ -41,7 +41,9 @@ async function postList(orderAndFilter) {
             accept: 'application/json',
         });
         const jsonData = await response.json();
-        let posts = jsonData.posts;
+        let posts = jsonData.posts.data;
+
+        console.log(jsonData.posts.meta.total)
 
         posts.forEach((post) => {
             foundPosts.push(post);

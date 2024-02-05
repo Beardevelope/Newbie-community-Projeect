@@ -44,9 +44,10 @@ export class PostController {
     // 게시글 조회
     @Get()
     async findAll(@Query() query: string, @Req() req) {
-        const { order, filter, tagName, tab } = req.query;
-        const posts = await this.postService.findAll(order, filter, tagName, tab);
+        const { order, filter, tagName, tab, page } = req.query;
+        const posts = await this.postService.findAll(order, filter, tagName, tab, +page);
 
+        console.log(posts)
         return {
             statusCode: HttpStatus.OK,
             message: 'ok',
