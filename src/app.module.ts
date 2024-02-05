@@ -26,6 +26,7 @@ import { ServeStaticModule } from '@nestjs/serve-static';
 import { join } from 'path';
 import { ChatBotModule } from './openai/openai.module';
 import { ScheduleModule } from '@nestjs/schedule';
+import { PostLikeModule } from './post-like/post-like.module';
 
 @Module({
     imports: [
@@ -57,6 +58,7 @@ import { ScheduleModule } from '@nestjs/schedule';
         ServeStaticModule.forRoot({
             rootPath: join(__dirname, '..', 'assets'),
         }),
+        PostLikeModule,
     ],
     controllers: [AppController],
     providers: [AppService],

@@ -16,6 +16,7 @@ import {
     UpdateDateColumn,
 } from 'typeorm';
 import { ProjectApplicant } from 'src/project-post/entities/project-applicant.entity';
+import { PostLike } from 'src/post-like/entities/post-like.entity';
 
 @Entity({ name: 'user' })
 export class User {
@@ -83,6 +84,9 @@ export class User {
 
     @OneToMany(() => Post, (post) => post.user)
     posts: Post[];
+
+    @OneToMany((type) => PostLike, (postLike) => postLike.user)
+    postLikes: PostLike[];
 
     @OneToMany(() => Banner, (banner) => banner.user)
     banners: Banner[];
