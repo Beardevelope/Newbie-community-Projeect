@@ -68,7 +68,7 @@ export class ProjectPostService {
         id: number,
         updateProjectPostDto: UpdateProjectPostDto,
         userId: number,
-        image: Express.Multer.File,
+        image?: Express.Multer.File,
     ) {
         const { title, content, applicationDeadLine, startDate, dueDate } = updateProjectPostDto;
 
@@ -78,7 +78,10 @@ export class ProjectPostService {
             throw new UnauthorizedException('수정할 권한이 없습니다.');
         }
 
-        const uploadImage = await this.uploadService.uploadFile(image);
+        let uploadImage;
+        if (image) {
+            uploadImage = await this.uploadService.uploadFile(image);
+        }
 
         await this.projectPostRepository.update(
             { id },

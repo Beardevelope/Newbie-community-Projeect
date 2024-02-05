@@ -17,7 +17,7 @@ export class Question {
     @PrimaryGeneratedColumn()
     id: number;
 
-    @Column({ default: '프로젝트에 대한 포부' })
+    @Column()
     @IsString()
     question: string;
 
