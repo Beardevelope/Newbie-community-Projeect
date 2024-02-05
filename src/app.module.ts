@@ -24,6 +24,8 @@ import session from 'express-session';
 import { PassportModule } from '@nestjs/passport';
 import { ServeStaticModule } from '@nestjs/serve-static';
 import { join } from 'path';
+import { ChatBotModule } from './openai/openai.module';
+import { ScheduleModule } from '@nestjs/schedule';
 
 @Module({
     imports: [
@@ -39,6 +41,8 @@ import { join } from 'path';
         AnswerModule,
         LikeModule,
         CommentLikeModule,
+        ChatBotModule,
+        ScheduleModule.forRoot(),
         ConfigModule.forRoot({
             isGlobal: true,
             validationSchema: configModuleValidationSchema,

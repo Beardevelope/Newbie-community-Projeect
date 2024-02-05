@@ -1,7 +1,7 @@
 document.getElementById('dataForm').addEventListener('submit', async function (event) {
     event.preventDefault();
 
-    const accessToken =
+    const accessToken = sessionStorage.getItem('accessToken') ||
         'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjEsImVtYWlsIjoiOTg4NzZAbmF2ZXIuY29tIiwiaWQiOjEsInR5cGUiOiJhY2Nlc3MiLCJpYXQiOjE3MDY3ODY0NzcsImV4cCI6MTcwNjc5MDA3N30.RQ0VPbPO9xwRPeYo--vGyuoHW8vc8U-3ZfP6_NePfgw';
 
     const formData = new FormData();

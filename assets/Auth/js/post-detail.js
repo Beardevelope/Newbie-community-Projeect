@@ -1,7 +1,7 @@
 const POST_API = 'http://localhost:3000/post';
 const COMMENT_API = 'http://localhost:3000/comment';
 const USER_ID = 1;
-const TOKEN = 'sdf';
+const TOKEN = sessionStorage.getItem('accessToken');
 let StringPostId = window.location.search;
 const POST_ID = StringPostId.substr(4);
 
@@ -155,6 +155,7 @@ const listDetailPageOfPost = async () => {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${TOKEN}`
                 },
                 body: JSON.stringify({
                     userId: USER_ID,
@@ -162,11 +163,12 @@ const listDetailPageOfPost = async () => {
                     content: comment,
                 }),
             });
+  
+            const newComment = await response.json();
             if (!response.ok) {
-                alert(`${data.message}`);
+                alert(`${newComment.message}`);
                 throw new Error('서버 오류');
             }
-            const newComment = await response.json();
             comments.push(newComment.comment);
             alert('댓글 작성 완료');
             commentTextArea.value = '';
