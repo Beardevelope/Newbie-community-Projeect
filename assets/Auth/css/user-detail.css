@@ -1,0 +1,8 @@
+#userInfoForm {
+    display: flex;
+    flex-direction: column;
+}
+
+#modify-button {
+    margin-top: 10px;
+}
