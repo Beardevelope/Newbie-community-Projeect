@@ -130,8 +130,17 @@ const listDetailPageOfPost = async () => {
             const ul = document.createElement('ul');
             comments.forEach((comment) => {
                 const li = document.createElement('li');
-                li.textContent = `${comment.userId}: ${comment.content}`;
+                li.textContent = ``;
                 ul.appendChild(li);
+                li.id = `comment-id-${comment.id}`
+                li.innerHTML = `
+                ${comment.userId}: ${comment.content}
+                <button class="commentButton" id="${comment.id}">Write a Comment</button>
+                <form class="commentForm" id="form-${comment.id}">
+                  <textarea class="commentText" rows="4" cols="50" placeholder="Type your comment here..."></textarea>
+                  <button type="button" onclick="submitComment()">Submit</button>
+                </form>`
+
             });
 
             commentList.appendChild(ul);
@@ -163,7 +172,7 @@ const listDetailPageOfPost = async () => {
                     content: comment,
                 }),
             });
-  
+
             const newComment = await response.json();
             if (!response.ok) {
                 alert(`${newComment.message}`);
@@ -180,6 +189,19 @@ const listDetailPageOfPost = async () => {
         console.error(error);
     }
 };
-listDetailPageOfPost();
+
+function toggleCommentForm(id) {
+    const commentList = document.querySelector(".comment-list ul")
+    console.log(id)
+    const commentForm = commentList.querySelector(`#form-${id}`)
+    commentForm.style.display = (commentForm.style.display === "none") ? "block" : "none"
+}
+
+document.addEventListener('DOMContentLoaded', async () => {
+    await listDetailPageOfPost();
+    document.querySelectorAll('.comment-list ul li .commentButton').forEach((button) => {
+        button.addEventListener('click', () => toggleCommentForm(button.id))
+    })
+});
 
 

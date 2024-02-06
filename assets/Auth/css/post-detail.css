@@ -182,6 +182,11 @@ body {
   .comment-list .ul .li {
     padding: 20px;
   }
+
+  .commentForm {
+    display: none;
+  }
+
   .comment-editor{
     border-width: 2px;
     border-color: black;
