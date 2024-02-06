@@ -17,6 +17,7 @@ import {
 } from 'typeorm';
 import { ProjectApplicant } from 'src/project-post/entities/project-applicant.entity';
 import { PostLike } from 'src/post-like/entities/post-like.entity';
+import { Warning } from 'src/warning/entities/warning.entity';
 
 @Entity({ name: 'user' })
 export class User {
@@ -77,6 +78,9 @@ export class User {
 
     @OneToMany((type) => PostLike, (postLike) => postLike.user)
     postLikes: PostLike[];
+
+    @OneToMany((type) => Warning, (warning) => warning.user)
+    warnings: Warning[];
 
     @OneToMany(() => Banner, (banner) => banner.user)
     banners: Banner[];
