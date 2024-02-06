@@ -7,6 +7,7 @@ import { Repository } from 'typeorm';
 import { DUPLICATE_EMAIL, PASSWORD_NOT_MATCH } from './const/users-error-message';
 import * as bcrypt from 'bcrypt';
 import { UploadServiceService } from 'src/upload-service/upload-service.service';
+import { TrustedAdvisor } from 'aws-sdk';
 
 @Injectable()
 export class UserService {
@@ -144,27 +145,6 @@ export class UserService {
         } catch (error) {
             throw new BadRequestException('Failed to update user');
         }
-    }
-
-    /** 유저 상세정보 추가
-     *@param userId : number, name : string, contact : string
-     */
-
-    async updateUserDetails(userId: number, name: string, contact: string) {
-        const user = await this.usersRepository.findOne({
-            where: {
-                id: userId,
-            },
-        });
-
-        if (!user) {
-            throw new NotFoundException('User not found');
-        }
-
-        user.name = name;
-        user.contact = contact;
-
-        await this.usersRepository.save(user);
     }
 
     /**
