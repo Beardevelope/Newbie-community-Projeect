@@ -23,6 +23,9 @@ export class User {
     @PrimaryGeneratedColumn()
     id: number;
 
+    @Column({ default: false })
+    isVerified: boolean;
+
     @IsNotEmpty()
     @IsEmail()
     @Column({ unique: true })
