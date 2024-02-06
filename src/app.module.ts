@@ -27,7 +27,8 @@ import { join } from 'path';
 import { ChatBotModule } from './openai/openai.module';
 import { ScheduleModule } from '@nestjs/schedule';
 import { PostLikeModule } from './post-like/post-like.module';
-import { WarningModule } from './warning/warning.module';
+import { MailerModule } from '@nestjs-modules/mailer';
+import { EmailModule } from './mailer/mailer.module';
 
 @Module({
     imports: [
@@ -56,11 +57,20 @@ import { WarningModule } from './warning/warning.module';
         }),
         TagModule,
         AlarmModule,
-        ServeStaticModule.forRoot({
-            rootPath: join(__dirname, '..', 'assets'),
-        }),
+        // ServeStaticModule.forRoot({
+        //     rootPath: join(__dirname, '..', 'assets'),
+        // }),
         PostLikeModule,
-        WarningModule,
+        EmailModule,
+        MailerModule.forRoot({
+            transport: {
+                service: 'Gmail',
+                auth: {
+                    user: process.env.GOOGLE_APP_EMAIL,
+                    pass: process.env.GOOGLE_APP_PASSWORD,
+                },
+            },
+        }),
     ],
     controllers: [AppController],
     providers: [AppService],

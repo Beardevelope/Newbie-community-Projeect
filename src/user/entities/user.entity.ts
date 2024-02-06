@@ -24,6 +24,9 @@ export class User {
     @PrimaryGeneratedColumn()
     id: number;
 
+    @Column({ default: false })
+    isVerified: boolean;
+
     @IsNotEmpty()
     @IsEmail()
     @Column({ unique: true })
@@ -40,13 +43,6 @@ export class User {
     @Column()
     nickname: string;
 
-    @Column({ nullable: true })
-    role: string;
-
-    @Column()
-    @IsNumber()
-    points: number;
-
     @Column()
     providerId: string;
 
@@ -57,13 +53,7 @@ export class User {
     // DB에서의 Enum은 문제가 될 수 있다.
 
     @Column()
-    techType: string;
-
-    @Column({ default: null, nullable: true })
-    name: string;
-
-    @Column({ default: null, nullable: true })
-    contact: string;
+    isBan: boolean;
 
     @CreateDateColumn()
     createdAt: Date;

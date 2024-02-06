@@ -16,7 +16,12 @@ export class WarningService {
         private readonly dataSource: DataSource,
     ) {}
 
-    // 사용자가 게시글을 신고하는 api
+    /**
+     * 사용자가 게시글을 신고하는 api
+     * @param userId
+     * @param postId
+     * @returns
+     */
     async createWarning(userId: number, postId: number) {
         const post = await this.postRepository.findOne({
             where: { id: postId },
@@ -56,7 +61,10 @@ export class WarningService {
         return warningCount;
     }
 
-    // admin 신고횟수가 5회 이상인 게시글 조회 api
+    /**
+     * admin 신고횟수가 5회 이상인 게시글 조회 api
+     * @returns
+     */
     async findAllPosts() {
         return await this.postRepository.find({
             where: {
@@ -66,12 +74,19 @@ export class WarningService {
         });
     }
 
-    // 경고 전체 조회 api
+    /**
+     * 경고 전체 조회 api
+     * @returns
+     */
     async findAll() {
         return await this.warningRepository.find({});
     }
 
-    // 담당자가 유저별로 게시글을 신고한 것을 볼 수 있게 하는 api
+    /**
+     * 담당자가 유저별로 게시글을 신고한 것을 볼 수 있게 하는 api
+     * @param userId
+     * @returns
+     */
     async findAllByUser(userId: number) {
         return await this.warningRepository.find({
             where: {
@@ -92,9 +107,7 @@ export class WarningService {
     //         throw new NotFoundException('해당 유저는 존재하지 않습니다.');
     //     }
 
-    //     if (user.warningCount > 3) {
-    //         return await this.usersRepository.increment(Post, { id: userId }, 'warningCount', 1)
-    //     }
+    //     return await this.usersRepository.increment({ id: userId }, 'warningCount', 1);
     // }
 
     // 유저 엔티티에 warningCount가 있다는 가정하에 유저에게 서비스 이용 제한을 거는 api
@@ -115,6 +128,7 @@ export class WarningService {
 
     //     if (user.warningCount > 3) {
     //         return await this.usersRepository.save({
+    //             id: userId,
     //             is_ban: true,
     //         });
     //     }
