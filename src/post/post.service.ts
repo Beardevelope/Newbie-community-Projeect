@@ -205,27 +205,6 @@ export class PostService {
         }
     }
 
-    // 게시글 좋아요 증가 api
-    async addLike(postId: number) {
-        const foundPost = await this.postRepository.findOne({
-            where: {
-                deletedAt: null,
-                id: postId,
-            },
-        });
-
-        if (!foundPost) {
-            throw new NotFoundException('해당 게시물은 존재하지 않습니다.');
-        }
-
-        let likes = foundPost.likes + 1;
-
-        await this.postRepository.save({
-            id: postId,
-            likes,
-        });
-    }
-
     // 조회수 증가 api
     async addHitCount(postId: number) {
         const foundPost = await this.postRepository.findOne({
