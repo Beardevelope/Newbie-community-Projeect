@@ -179,10 +179,14 @@ body {
     border-color: black;
     border-style: solid;
   }
-  .comment-list .ul .li {
-    padding: 20px;
+  .comment-list ul li {
+    border-top: 2px solid black;
   }
 
+  .commentButton {
+    margin-left: 87%;
+    margin-bottom: 10px;
+  }
   .commentForm {
     display: none;
   }

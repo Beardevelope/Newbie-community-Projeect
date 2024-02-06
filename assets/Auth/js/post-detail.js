@@ -128,28 +128,52 @@ const listDetailPageOfPost = async () => {
         const listComments = async (comments) => {
             commentList.innerHTML = ``;
             const ul = document.createElement('ul');
+        
+            const commentsMap = new Map();
+        
             comments.forEach((comment) => {
-                const li = document.createElement('li');
-                li.textContent = ``;
-                ul.appendChild(li);
-                li.id = `comment-id-${comment.id}`
-                li.innerHTML = `
-                ${comment.userId}: ${comment.content}
-                <button class="commentButton" id="${comment.id}">Write a Comment</button>
-                <form class="commentForm" id="form-${comment.id}">
-                  <textarea class="commentText" rows="4" cols="50" placeholder="Type your comment here..."></textarea>
-                  <button type="button" onclick="submitComment()">Submit</button>
-                </form>`
-
+                const parentId = comment.parentId || 0; 
+                if (!commentsMap.has(parentId)) {
+                    commentsMap.set(parentId, []);
+                }
+                commentsMap.get(parentId).push(comment);
             });
-
+        
+            const generateCommentList = (parentComments, parentElement) => {
+                parentComments.forEach((comment) => {
+                    const li = document.createElement('li');
+                    parentElement.appendChild(li);
+                    li.id = `comment-id-${comment.id}`;
+                    li.innerHTML = `
+                        ${comment.userId}: ${comment.content}
+                        <button class="commentButton" id="${comment.id}">댓글 작성</button>
+                        <form class="commentForm" id="form-${comment.id}">
+                            <textarea class="commentText" rows="4" cols="50" placeholder="댓글 작성란"></textarea>
+                            <button class="submitButton" id="${comment.id}" type="button">댓글 제출</button>
+                        </form>`;
+        
+                    if (commentsMap.has(comment.id)) {
+                        const childUl = document.createElement('ul');
+                        li.appendChild(childUl);
+                        generateCommentList(commentsMap.get(comment.id), childUl);
+                    }
+                });
+            };
+        
+            generateCommentList(commentsMap.get(0) || [], ul); 
+        
             commentList.appendChild(ul);
         };
         listComments(comments);
 
         const writeComment = async () => {
             const commentInput = document.getElementById('commentInput');
-            const comment = commentInput.value.trim();
+            const content = commentInput.value.trim();
+            const comment = {
+                userId: USER_ID,
+                postID: POST_ID,
+                content: content
+            }
             if (comment) {
                 registerComment(comment);
             } else {
@@ -159,30 +183,8 @@ const listDetailPageOfPost = async () => {
 
         commentSubmitBtn.addEventListener('click', writeComment);
 
-        const registerComment = async (comment) => {
-            const response = await fetch(`${COMMENT_API}/${POST_ID}`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${TOKEN}`
-                },
-                body: JSON.stringify({
-                    userId: USER_ID,
-                    postId: POST_ID,
-                    content: comment,
-                }),
-            });
 
-            const newComment = await response.json();
-            if (!response.ok) {
-                alert(`${newComment.message}`);
-                throw new Error('서버 오류');
-            }
-            comments.push(newComment.comment);
-            alert('댓글 작성 완료');
-            commentTextArea.value = '';
-            listComments(comments);
-        };
+
     } catch (error) {
         alert('해당 페이지가 존재하지 않습니다.');
         window.location.href = '/error-page';
@@ -192,16 +194,54 @@ const listDetailPageOfPost = async () => {
 
 function toggleCommentForm(id) {
     const commentList = document.querySelector(".comment-list ul")
-    console.log(id)
     const commentForm = commentList.querySelector(`#form-${id}`)
     commentForm.style.display = (commentForm.style.display === "none") ? "block" : "none"
 }
 
+const submitButton = async (id) => {
+    console.log(id)
+    const textArea = document.querySelector(`#form-${id} textarea`)
+    console.log(textArea)
+    const comment = {
+        userId: USER_ID,
+        postId: POST_ID,
+        content: textArea.value,
+        parentId: id
+    }
+    await registerComment(comment)
+}
+
+const registerComment = async (comment) => {
+    const response = await fetch(`${COMMENT_API}/${POST_ID}`, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${TOKEN}`
+        },
+        body: JSON.stringify(comment),
+    });
+
+    const newComment = await response.json();
+    if (!response.ok) {
+        alert(`${newComment.message}`);
+        throw new Error('서버 오류');
+    }
+    alert('댓글 작성 완료');
+    commentTextArea.value = '';
+    location.reload()
+};
+
+
 document.addEventListener('DOMContentLoaded', async () => {
     await listDetailPageOfPost();
     document.querySelectorAll('.comment-list ul li .commentButton').forEach((button) => {
+        console.log()
         button.addEventListener('click', () => toggleCommentForm(button.id))
-    })
-});
 
+    })
+    document.querySelectorAll('.comment-list ul li .submitButton').forEach((button) => {
+        const commentId = button.id; 
+        button.addEventListener('click', () => submitButton(commentId));
+    });
+});
 
