@@ -7,8 +7,6 @@ import { Repository } from 'typeorm';
 import { DUPLICATE_EMAIL, PASSWORD_NOT_MATCH } from './const/users-error-message';
 import * as bcrypt from 'bcrypt';
 import { UploadServiceService } from 'src/upload-service/upload-service.service';
-import { error } from 'console';
-import { find } from 'lodash';
 
 @Injectable()
 export class UserService {

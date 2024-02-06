@@ -18,6 +18,8 @@ async function bootstrap() {
         preflightContinue: false,
         optionsSuccessStatus: 204,
     });
+
     await app.listen(parseInt(process.env.PORT) || 3000);
 }
+
 bootstrap();
