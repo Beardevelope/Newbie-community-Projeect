@@ -62,23 +62,40 @@ export class WarningService {
             where: {
                 warning: MoreThan(3),
             },
-            relations: { warnings: true }
+            relations: { warnings: true },
         });
     }
 
     // 경고 전체 조회 api
     async findAll() {
-        return await this.warningRepository.find({})
+        return await this.warningRepository.find({});
     }
 
     // 담당자가 유저별로 게시글을 신고한 것을 볼 수 있게 하는 api
     async findAllByUser(userId: number) {
         return await this.warningRepository.find({
             where: {
-                userId
+                userId,
             },
         });
     }
+
+    // // 유저에게 경고를 주는 api
+    // async warningUser(userId: number) {
+    //     const user = await this.usersRepository.findOne({
+    //         where: {
+    //             id: userId,
+    //         },
+    //     });
+
+    //     if (!user) {
+    //         throw new NotFoundException('해당 유저는 존재하지 않습니다.');
+    //     }
+
+    //     if (user.warningCount > 3) {
+    //         return await this.usersRepository.increment(Post, { id: userId }, 'warningCount', 1)
+    //     }
+    // }
 
     // 유저 엔티티에 warningCount가 있다는 가정하에 유저에게 서비스 이용 제한을 거는 api
     // 유저쪽에 컬럼을 생성 is_ban 이라는 것을 새로 만들어서 true면 게시글조회를 제외한
