@@ -16,11 +16,16 @@ import {
     UpdateDateColumn,
 } from 'typeorm';
 import { ProjectApplicant } from 'src/project-post/entities/project-applicant.entity';
+import { PostLike } from 'src/post-like/entities/post-like.entity';
+import { Warning } from 'src/warning/entities/warning.entity';
 
 @Entity({ name: 'user' })
 export class User {
     @PrimaryGeneratedColumn()
     id: number;
+
+    @Column({ default: false })
+    isVerified: boolean;
 
     @IsNotEmpty()
     @IsEmail()
@@ -38,13 +43,6 @@ export class User {
     @Column()
     nickname: string;
 
-    @Column({ nullable: true })
-    role: string;
-
-    @Column()
-    @IsNumber()
-    points: number;
-
     @Column()
     providerId: string;
 
@@ -55,13 +53,7 @@ export class User {
     // DB에서의 Enum은 문제가 될 수 있다.
 
     @Column()
-    techType: string;
-
-    @Column({ default: null, nullable: true })
-    name: string;
-
-    @Column({ default: null, nullable: true })
-    contact: string;
+    isBan: boolean;
 
     @CreateDateColumn()
     createdAt: Date;
@@ -83,6 +75,12 @@ export class User {
 
     @OneToMany(() => Post, (post) => post.user)
     posts: Post[];
+
+    @OneToMany((type) => PostLike, (postLike) => postLike.user)
+    postLikes: PostLike[];
+
+    @OneToMany((type) => Warning, (warning) => warning.user)
+    warnings: Warning[];
 
     @OneToMany(() => Banner, (banner) => banner.user)
     banners: Banner[];
