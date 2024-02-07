@@ -14,11 +14,14 @@ console.log({ bannerId })
 async function modifyBanner() {
     const bannerId = getBannerIdFromUrl();
     const title = document.getElementById('title').value;
+    const pageUrl = document.getElementById('pageUrl').value;
     const fileInput = document.getElementById('file');
+
 
     try {
         const formData = new FormData();
         formData.append('title', title);
+        formData.append('pageUrl', pageUrl);
         formData.append('file', fileInput.files[0]);
 
         const accessToken = "토큰";
@@ -79,6 +82,7 @@ async function populateBannerDetails() {
 
     if (bannerDetails) {
         document.getElementById('title').value = bannerDetails.title;
+        document.getElementById('pageUrl').value = bannerDetails.pageUrl;
 
         const bannerImage = document.getElementById('bannerImage');
         bannerImage.src = bannerDetails.file;
