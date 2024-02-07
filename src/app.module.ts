@@ -15,7 +15,7 @@ import { ProjectPostModule } from './project-post/project-post.module';
 import { QuestionModule } from './question/question.module';
 import { NeedInfoModule } from './need-info/need-info.module';
 import { AnswerModule } from './answer/answer.module';
-import { LikeModule } from './like/like.module';
+import { ProjectLikeModule } from './project-like/project-like.module';
 import { CommentLikeModule } from './comment-like/comment-like.module';
 import { UploadServiceModule } from './upload-service/upload-service.module';
 import { AlarmModule } from './alarm/alarm.module';
@@ -43,7 +43,7 @@ import { WarningModule } from './warning/warning.module';
         QuestionModule,
         NeedInfoModule,
         AnswerModule,
-        LikeModule,
+        ProjectLikeModule,
         CommentLikeModule,
         ChatBotModule,
         ScheduleModule.forRoot(),
