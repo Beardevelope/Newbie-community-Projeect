@@ -328,4 +328,12 @@ export class PostService {
         console.log(posts);
         return posts;
     }
+
+    // async findPostsWithWarning() {
+    //     return await this.postRepository
+    //         .createQueryBuilder('post')
+    //         .leftJoinAndSelect('post.warning', 'warning')
+    //         .where('post.warningCount > :count', { count: 3 })
+    //         .getMany();
+    // }
 }

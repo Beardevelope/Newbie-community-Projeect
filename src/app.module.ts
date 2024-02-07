@@ -29,6 +29,7 @@ import { ScheduleModule } from '@nestjs/schedule';
 import { PostLikeModule } from './post-like/post-like.module';
 import { MailerModule } from '@nestjs-modules/mailer';
 import { EmailModule } from './mailer/mailer.module';
+import { WarningModule } from './warning/warning.module';
 
 @Module({
     imports: [
@@ -71,6 +72,7 @@ import { EmailModule } from './mailer/mailer.module';
                 },
             },
         }),
+        WarningModule,
     ],
     controllers: [AppController],
     providers: [AppService],
