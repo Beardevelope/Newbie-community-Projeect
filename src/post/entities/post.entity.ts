@@ -15,6 +15,8 @@ import {
 } from 'typeorm';
 import { Comment } from 'src/comment/entities/comment.entity';
 import { Tag } from 'src/tag/entities/tag.entity';
+import { PostLike } from 'src/post-like/entities/post-like.entity';
+import { Warning } from 'src/warning/entities/warning.entity';
 
 @Entity()
 export class Post {
@@ -36,7 +38,7 @@ export class Post {
 
     @Column()
     @IsString()
-    image: string;
+    image?: string;
 
     @Column()
     @IsNumber()
@@ -71,4 +73,10 @@ export class Post {
 
     @OneToMany((type) => Comment, (comment) => comment.post)
     comments: Comment[];
+
+    @OneToMany((type) => PostLike, (postLike) => postLike.post)
+    postLikes: PostLike[];
+
+    @OneToMany((type) => Warning, (warning) => warning.post)
+    warnings: Warning[];
 }

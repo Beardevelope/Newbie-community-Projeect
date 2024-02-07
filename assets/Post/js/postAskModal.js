@@ -38,24 +38,14 @@ async function createPost() {
     try {
         const form = document.getElementById('askForm');
         const formData = new FormData(form);
-        // const refinedTags = tags.value.split(',');
-        // const newInformation = {
-        //     title: title.value,
-        //     content: content.value,
-        //     image: image.value,
-        //     tag: refinedTags,
-        // };
         const response = await fetch(`http://localhost:3000/post`, {
             method: 'post',
             headers: {
                 Authorization: `Bearer ${TOKEN}`,
-                // 'Content-Type': 'application/json',
             },
-            // body: JSON.stringify(newInformation),
             body: formData,
         });
         if (response.status !== 201) {
-            //cry catch 구문에서 throw는 에러가 발생했을 때 catch에다가 error를 던져준다.
             throw new Error('게시글 등록에 실패하였습니다.');
         }
 

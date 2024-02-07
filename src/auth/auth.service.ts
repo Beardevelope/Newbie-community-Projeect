@@ -9,6 +9,7 @@ import {
     INVALID_TOKEN,
     NOT_EQUALS_PASSWORD,
 } from './const/auth.excption-message';
+import { UpdateUserDto } from 'src/user/dto/update-user.dto';
 
 @Injectable()
 export class AuthService {
@@ -157,5 +158,14 @@ export class AuthService {
             message: ' User information from google',
             user: req.user,
         };
+    }
+
+    async verificationUser(userId: number) {
+        const user = await this.userService.getUserById(userId);
+
+        if (user) {
+            user.isVerified = true;
+            await this.userService.updateUser(userId, { isVerified: true });
+        }
     }
 }
