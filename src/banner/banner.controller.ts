@@ -95,7 +95,7 @@ export class BannerController {
         };
     }
 
-    // 배너 클릭 이벤트
+    // 배너 조회수
     @Get('click/:bannerId')
     async getBannerClick(@Request() req, @Param('bannerId', ParseIntPipe) bannerId: number) {
         await this.bannerService.clickBanner(bannerId);

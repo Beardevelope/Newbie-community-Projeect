@@ -96,10 +96,6 @@ export class BannerService {
         let bannerClick = await this.bannerClickRepository.findOne({ where: { bannerId } });
 
         if (!bannerClick) {
-            throw new NotFoundException('배너를 찾을 수 없습니다.');
-        }
-
-        if (!bannerClick) {
             bannerClick = new BannerClick();
             bannerClick.bannerId = bannerId;
             bannerClick.clickCount = 1; // 첫 번째 클릭이므로 1
