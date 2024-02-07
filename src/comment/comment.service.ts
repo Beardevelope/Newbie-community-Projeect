@@ -113,7 +113,7 @@ export class CommentService {
         await this.alarmService.createAlarm(
             comment.userId,
             post.title,
-            '새로운 대댓글이 달렸습니다.',
+            '댓글에 새로운 댓글이 달렸습니다.',
         );
         console.log(savedReply);
         return savedReply;
