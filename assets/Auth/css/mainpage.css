@@ -132,6 +132,15 @@ body {
     margin-right: 0;
 }
 
+.sideBanner {
+    position: absolute;
+    width: 180px;
+    height: 500px;
+    top: 100px;
+    background-color: #999900;
+    color: #ffffff;
+}
+
 .contentBox {
     display: flex;
     gap: 15px;
