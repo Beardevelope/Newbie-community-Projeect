@@ -72,9 +72,11 @@ export class BannerService {
             url = banner.file;
         }
         const updatedTitle = updateBannerDto.title ? updateBannerDto.title : banner.title;
+        const updatedPageUrl = updateBannerDto.pageUrl ? updateBannerDto.pageUrl : banner.pageUrl;
 
         const updatedData = {
             title: updatedTitle,
+            pageUrl: updatedPageUrl,
             file: url,
         };
         await this.bannerRepository.update(id, updatedData);
