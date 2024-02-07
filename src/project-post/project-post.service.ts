@@ -128,7 +128,13 @@ export class ProjectPostService {
 
     // 프로젝트 지원 생성
     async createProjectApplicant(id: number, userId: number) {
-        await this.findById(id);
+        const existApplicant = await this.projectApplicantRepository.findOne({
+            where: { projectPostId: id, userId },
+        });
+
+        if (existApplicant) {
+            throw new BadRequestException('이미 지원한 프로젝트입니다');
+        }
 
         await this.projectApplicantRepository.save({ projectPostId: id, userId: userId });
 

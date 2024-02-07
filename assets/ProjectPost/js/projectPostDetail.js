@@ -1,7 +1,7 @@
 const urlParams = new URLSearchParams(window.location.search);
 const projectId = urlParams.get('id');
 
-const accessToken = `eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjcsImVtYWlsIjoiOTg4NzZAbmF2ZXIuY29tIiwiaWQiOjcsInR5cGUiOiJhY2Nlc3MiLCJpYXQiOjE3MDcyNjY1MjIsImV4cCI6MTcwNzI3MDEyMn0.LVxrqPOpsLfQtDA6yan8A7VT05ijaqJcaxiiWmyJ80c`;
+const accessToken = `eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjcsImVtYWlsIjoiOTg4NzZAbmF2ZXIuY29tIiwiaWQiOjcsInR5cGUiOiJhY2Nlc3MiLCJpYXQiOjE3MDcyOTUxODUsImV4cCI6MTcwNzI5ODc4NX0.ISbu21IBSzfIdg9sp7TFYbhztrnQSc3780lpFoHZLPY`;
 
 async function fetchProjectDetail(projectId) {
     try {
@@ -200,9 +200,31 @@ async function fetchQuestion(projectId) {
     }
 }
 
+async function postStack(projectId, questionId, selectStack, answer) {
+    try {
+        const answerJSON = { answer, stack: selectStack };
+
+        const stack = await fetch(`http://localhost:3000/answer/${projectId}/${questionId}`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                Authorization: `Bearer ${accessToken}`,
+            },
+            body: JSON.stringify(answerJSON),
+        });
+
+        const stackData = await stack.json();
+
+        return stackData;
+    } catch (error) {
+        console.error('에러 --- ', error);
+        throw new error(error);
+    }
+}
+
 async function postApplicant(projectId) {
     try {
-        const response = await fetch(
+        const applicant = await fetch(
             `http://localhost:3000/project-post/${projectId}/projectApplicant`,
             {
                 method: 'POST',
@@ -212,9 +234,9 @@ async function postApplicant(projectId) {
             },
         );
 
-        const data = await response.json();
+        const applicantData = await applicant.json();
 
-        alert(data.message);
+        alert(applicantData.message);
     } catch (error) {
         console.error('에러 --- ', error);
         throw new error(error);
@@ -245,8 +267,6 @@ async function projectApplicant(projectId) {
 
     const fetchQuestionData = await fetchQuestion(projectId);
 
-    console.log(fetchQuestionData.length, '질문 길이');
-
     const questionBox = document.querySelector('.questionBox');
 
     for (let j = 0; j < fetchQuestionData.length; j++) {
@@ -254,7 +274,7 @@ async function projectApplicant(projectId) {
         question.className = 'question';
 
         question.innerHTML = `<label for="${fetchQuestionData[j].question}">${fetchQuestionData[j].question}</label>
-        <input type="text" id="${fetchQuestionData[j].question}" name="question" required />`;
+        <input type="text" id="${fetchQuestionData[j].question}" name="question" class="answer" required />`;
 
         questionBox.appendChild(question);
     }
@@ -268,6 +288,26 @@ async function projectApplicant(projectId) {
     const applicantBtn = document.querySelector('.applicantBtn');
 
     applicantBtn.addEventListener('click', async () => {
+        const selectedRadioButton = document.querySelector('input[name="options"]:checked');
+        const inputValue = document.querySelectorAll('.answer');
+
+        if (selectedRadioButton) {
+            const selectStack = selectedRadioButton.value;
+            for (let k = 0; k < fetchQuestionData.length; k++) {
+                const answer = inputValue[k].value;
+
+                console.log(answer);
+
+                if (!answer) {
+                    return alert(`${k + 1}번째 질문에 답변해주세요`);
+                }
+
+                await postStack(projectId, fetchQuestionData[k].id, selectStack, answer);
+            }
+        } else {
+            return alert('라디오 버튼이 선택되지 않았습니다.');
+        }
+
         await postApplicant(projectId);
         document.querySelector('.modalBox').style.display = 'none';
     });
