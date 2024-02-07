@@ -51,6 +51,13 @@ export class BannerService {
         return randomBanner;
     }
 
+    // 배너 페이지 URL 조회
+    async getBannerPageUrl(bannerId: number) {
+        const banner = await this.getOneBanner(bannerId);
+        console.log({ banner });
+        return banner.pageUrl;
+    }
+
     // 새 배너 생성
     async createBanner(userId: number, file: any, createBannerDto: CreateBannerDto) {
         const url = await this.uploadService.uploadFile(file);

@@ -12,6 +12,7 @@ import {
     Request,
     ParseIntPipe,
     HttpStatus,
+    Response,
 } from '@nestjs/common';
 import { BannerService } from './banner.service';
 import { CreateBannerDto } from './dto/create-banner.dto';
@@ -95,12 +96,12 @@ export class BannerController {
         };
     }
 
-    // 배너 조회수
-    @Get('click/:bannerId')
-    async getBannerClick(@Request() req, @Param('bannerId', ParseIntPipe) bannerId: number) {
+    // 배너 클릭시 조회수 증가
+    @Post('click/:bannerId')
+    async clickBanner(@Response() res, @Param('bannerId', ParseIntPipe) bannerId: number) {
+        const pageUrl = await this.bannerService.getBannerPageUrl(bannerId);
         await this.bannerService.clickBanner(bannerId);
-        return {
-            statusCode: HttpStatus.OK,
-        };
+        // 프론트에 url 전달
+        return res.redirect(pageUrl);
     }
 }
