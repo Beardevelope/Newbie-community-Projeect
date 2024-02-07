@@ -1,3 +1,19 @@
 .main {
     padding: 20px;
 }
+
+.addStackBtn,
+.addQuestionBtn {
+    display: inline-flex;
+    border: 1px solid black;
+    padding: 5px;
+    border-radius: 5px;
+    color: black;
+}
+
+.addStackBtn:hover,
+.addQuestionBtn:hover {
+    color: white;
+    background-color: black;
+    transition: all 0.5s;
+}

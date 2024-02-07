@@ -79,7 +79,7 @@ export class ProjectPostController {
     }
 
     @UseGuards(BearerTokenGuard)
-    @Delete(':id/ProjectApplicant')
+    @Delete(':id/projectApplicant')
     removeProjectApplicant(@Param('id') id: string, @Req() req) {
         return this.projectPostService.removeProjectApplicant(+id, +req.userId);
     }

@@ -1,37 +1,37 @@
 import { Controller, Get, Post, Param, Delete, Req, UseGuards } from '@nestjs/common';
-import { LikeService } from './like.service';
+import { ProjectLikeService } from './project-like.service';
 import { BearerTokenGuard } from 'src/auth/guard/bearer.guard';
 
-@Controller('like')
-export class LikeController {
-    constructor(private readonly likeService: LikeService) {}
+@Controller('project-like')
+export class ProjectLikeController {
+    constructor(private readonly projectLikeService: ProjectLikeService) {}
 
     @UseGuards(BearerTokenGuard)
     @Post(':projectPostId')
     create(@Param('projectPostId') projectPostId: string, @Req() req) {
-        return this.likeService.create(+projectPostId, +req.userId);
+        return this.projectLikeService.create(+projectPostId, +req.userId);
     }
 
     @Get(':projectPostId')
     findAll(@Param('projectPostId') projectPostId: string) {
-        return this.likeService.findAll(+projectPostId);
+        return this.projectLikeService.findAll(+projectPostId);
     }
 
     @UseGuards(BearerTokenGuard)
     @Get('/myLike')
     findAllUser(@Req() req) {
-        return this.likeService.findAllUser(+req.userId);
+        return this.projectLikeService.findAllUser(+req.userId);
     }
 
     @UseGuards(BearerTokenGuard)
     @Get('/myLike/:id')
     findOne(@Param('id') id: string, @Req() req) {
-        return this.likeService.findOne(+id, +req.userId);
+        return this.projectLikeService.findOne(+id, +req.userId);
     }
 
     @UseGuards(BearerTokenGuard)
     @Delete(':projectPostId')
     remove(@Param('projectPostId') projectPostId: string, @Req() req) {
-        return this.likeService.remove(+projectPostId, +req.userId);
+        return this.projectLikeService.remove(+projectPostId, +req.userId);
     }
 }

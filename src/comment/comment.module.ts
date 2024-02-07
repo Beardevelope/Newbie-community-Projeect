@@ -7,9 +7,14 @@ import { User } from 'src/user/entities/user.entity';
 import { Post } from 'src/post/entities/post.entity';
 import { AuthModule } from 'src/auth/auth.module';
 import { CommentLike } from '../comment-like/entitis/comment-like.entity';
+import { AlarmModule } from 'src/alarm/alarm.module';
 
 @Module({
-    imports: [TypeOrmModule.forFeature([Post, Comment, User, CommentLike]), AuthModule],
+    imports: [
+        TypeOrmModule.forFeature([Post, Comment, User, CommentLike]),
+        AuthModule,
+        AlarmModule,
+    ],
     controllers: [CommentController],
     providers: [CommentService],
     exports: [CommentService],
