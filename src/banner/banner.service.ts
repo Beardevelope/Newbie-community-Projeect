@@ -41,6 +41,16 @@ export class BannerService {
         return banner;
     }
 
+    // 배너 랜덤 조회
+    async getRandomBanner() {
+        const banners = await this.getAllBanner();
+
+        const randomIndex = Math.floor(Math.random() * banners.length);
+        const randomBanner = banners[randomIndex];
+
+        return randomBanner;
+    }
+
     // 새 배너 생성
     async createBanner(userId: number, file: any, createBannerDto: CreateBannerDto) {
         const url = await this.uploadService.uploadFile(file);

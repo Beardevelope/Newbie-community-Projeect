@@ -23,6 +23,13 @@ import { BearerTokenGuard } from 'src/auth/guard/bearer.guard';
 export class BannerController {
     constructor(private readonly bannerService: BannerService) {}
 
+    //랜덤 조회
+    @Get('random')
+    async getRandomBanner() {
+        const randomBanner = await this.bannerService.getRandomBanner();
+        return randomBanner;
+    }
+
     // 배너 전체 조회
     @Get()
     async getAllBanner() {
