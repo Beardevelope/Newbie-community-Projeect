@@ -47,7 +47,7 @@ export class PostController {
         const { order, filter, tagName, tab, page } = req.query;
         const posts = await this.postService.findAll(order, filter, tagName, tab, +page);
 
-        console.log(posts)
+        console.log(posts);
         return {
             statusCode: HttpStatus.OK,
             message: 'ok',
@@ -94,19 +94,6 @@ export class PostController {
     @Put(':postId/warning')
     async addWarning(@Param('postId') postId: string) {
         const post = await this.postService.addWarning(+postId);
-
-        return {
-            statusCode: HttpStatus.OK,
-            message: 'ok',
-            post,
-        };
-    }
-
-    // 게시글 좋아요 추가
-    @UseGuards(BearerTokenGuard)
-    @Put(':postId/like')
-    async addLike(@Param('postId') postId: string) {
-        const post = await this.postService.addLike(+postId);
 
         return {
             statusCode: HttpStatus.OK,
