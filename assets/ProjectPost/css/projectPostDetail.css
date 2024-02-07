@@ -6,6 +6,10 @@ img {
     display: none;
 }
 
+.main {
+    position: relative;
+}
+
 .mainWrap {
     width: 80%;
     margin: 0 auto;
@@ -85,7 +89,7 @@ img {
     color: white;
     transition: all 0.3s;
 }
-.mainWrap .mainBox .detailBox .applicantBox .applicantBtn {
+.mainWrap .mainBox .detailBox .applicantBox .openModalBtn {
     display: inline-block;
     padding: 8px;
     border-radius: 10px;
@@ -95,7 +99,7 @@ img {
     cursor: pointer;
 }
 
-.mainWrap .mainBox .detailBox .applicantBox .applicantBtn:hover {
+.mainWrap .mainBox .detailBox .applicantBox .openModalBtn:hover {
     background-color: rgb(0, 207, 138);
     color: white;
     transition: all 0.3s;
@@ -144,4 +148,76 @@ img {
 
 .mainWrap .contentBox > div {
     padding: 20px;
+}
+
+.modalBox {
+    display: none;
+    position: fixed;
+    z-index: 1;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    background-color: rgba(0, 0, 0, 0.4);
+}
+
+.modalBox .applicant {
+    position: absolute;
+    top: calc(50% + 61px);
+    left: calc(50% + 125px);
+    transform: translate(-50%, -50%);
+    width: 500px;
+    height: 500px;
+    background-color: white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    gap: 40px;
+    text-align: center;
+}
+
+.selectStackBox {
+    display: flex;
+    gap: 10px;
+    margin-top: 10px;
+}
+.questionBox {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    text-align: center;
+}
+.questionBox .question {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.modalBox .applicant {
+    position: relative;
+}
+
+.modalBox .applicant .closeModalBtn {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    cursor: pointer;
+}
+
+.modalBox .applicant .applicantBtn {
+    display: inline-block;
+    padding: 8px;
+    border-radius: 10px;
+    border: 1px solid rgb(0, 207, 138);
+    background-color: white;
+    color: rgb(0, 207, 138);
+    cursor: pointer;
+}
+
+.modalBox .applicant .applicantBtn:hover {
+    background-color: rgb(0, 207, 138);
+    color: white;
+    transition: all 0.3s;
 }
