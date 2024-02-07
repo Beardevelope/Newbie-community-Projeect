@@ -110,35 +110,22 @@ body {
 }
 
 .banners {
+    position: relative;
     flex-wrap: wrap;
+    height: 100px;
     width: 200px;
     gap: 30px;
     display: flex;
     flex-direction: column;
 }
 
-.banner {
-    padding: 10px;
-    height: 300px;
-    border: 2px solid #000;
-    border-radius: 10px;
-    margin-right: 2%;
-    box-sizing: border-box;
-    background-color: #212529;
-    color: wheat;
-}
-
-.banner:last-child {
-    margin-right: 0;
-}
-
 .sideBanner {
     position: absolute;
-    width: 180px;
-    height: 500px;
-    top: 100px;
-    background-color: #999900;
-    color: #ffffff;
+    top: 5px; /* 상단 초기 위치 */
+    right: 10px;
+    width: 200px;
+    height: 400px;
+    background-color: #ffffff;
 }
 
 .contentBox {

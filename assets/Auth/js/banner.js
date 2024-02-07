@@ -19,3 +19,12 @@ async function displayRandomBanner() {
 }
 
 displayRandomBanner();
+
+
+window.addEventListener('scroll', function () {
+    var sideBanner = document.querySelector('.sideBanner');
+    var scrollPosition = window.scrollY;
+
+    // 배너가 화면 위에 고정되도록 설정합니다.
+    sideBanner.style.top = (5 + scrollPosition) + 'px';
+});
