@@ -1,40 +1,43 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { Like } from './entities/like.entity';
+import { ProjectLike } from './entities/project-like.entity';
 import { ProjectPost } from 'src/project-post/entities/project-post.entity';
 import _ from 'lodash';
 
 @Injectable()
-export class LikeService {
+export class ProjectLikeService {
     constructor(
-        @InjectRepository(Like) private readonly likeRepository: Repository<Like>,
+        @InjectRepository(ProjectLike)
+        private readonly projectLikeRepository: Repository<ProjectLike>,
         @InjectRepository(ProjectPost)
         private readonly projectPostRepository: Repository<ProjectPost>,
     ) {}
 
     async create(projectPostId: number, userId: number) {
-        const getLike = await this.likeRepository.findOne({ where: { userId, projectPostId } });
+        const getLike = await this.projectLikeRepository.findOne({
+            where: { userId, projectPostId },
+        });
 
         if (getLike) {
             await this.remove(projectPostId, userId);
             return { message: '게시물 좋아요 취소' };
         }
 
-        const projectPost = await this.likeRepository.save({ userId, projectPostId });
+        await this.projectLikeRepository.save({ userId, projectPostId });
 
         return { message: '게시물 좋아요 성공' };
     }
 
     async findAll(projectPostId: number) {
-        const likes = await this.likeRepository.find({ where: { projectPostId } });
+        const likes = await this.projectLikeRepository.find({ where: { projectPostId } });
 
         return likes;
     }
 
     // 유저가 누른 좋아요 목록 전체 조회
     async findAllUser(userId: number) {
-        const likes = await this.likeRepository.find({ where: { userId } });
+        const likes = await this.projectLikeRepository.find({ where: { userId } });
 
         return likes.map(async (like) => {
             return await this.projectPostRepository.findOne({
@@ -44,7 +47,7 @@ export class LikeService {
     }
 
     async findOne(id: number, userId: number) {
-        const like = await this.likeRepository.findOne({ where: { id, userId } });
+        const like = await this.projectLikeRepository.findOne({ where: { id, userId } });
 
         if (_.isNil(like)) {
             throw new NotFoundException('존재하지않은 프로젝트입니다');
@@ -57,13 +60,15 @@ export class LikeService {
     }
 
     async remove(projectPostId: number, userId: number) {
-        const projectPost = await this.likeRepository.findOne({ where: { projectPostId, userId } });
+        const projectPost = await this.projectLikeRepository.findOne({
+            where: { projectPostId, userId },
+        });
 
         if (_.isNil(projectPost)) {
             throw new NotFoundException('존재하지않은 프로젝트입니다');
         }
 
-        await this.likeRepository.delete({ projectPostId, userId });
+        await this.projectLikeRepository.delete({ projectPostId, userId });
         return { message: '좋아요 삭제 성공' };
     }
 }

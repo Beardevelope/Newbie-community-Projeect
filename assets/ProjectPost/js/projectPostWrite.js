@@ -1,8 +1,9 @@
 document.getElementById('dataForm').addEventListener('submit', async function (event) {
     event.preventDefault();
 
-    const accessToken = sessionStorage.getItem('accessToken') ||
-        'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjEsImVtYWlsIjoiOTg4NzZAbmF2ZXIuY29tIiwiaWQiOjEsInR5cGUiOiJhY2Nlc3MiLCJpYXQiOjE3MDY3ODY0NzcsImV4cCI6MTcwNjc5MDA3N30.RQ0VPbPO9xwRPeYo--vGyuoHW8vc8U-3ZfP6_NePfgw';
+    const accessToken =
+        sessionStorage.getItem('accessToken') ||
+        'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjcsImVtYWlsIjoiOTg4NzZAbmF2ZXIuY29tIiwiaWQiOjcsInR5cGUiOiJhY2Nlc3MiLCJpYXQiOjE3MDcyMTIwOTQsImV4cCI6MTcwNzIxNTY5NH0.PyeDj0SGhHGjmvmK_rfzZwEU1xjXWVwoTNisPgbcBlE';
 
     const formData = new FormData();
     formData.append('title', document.getElementById('title').value);
@@ -24,25 +25,82 @@ document.getElementById('dataForm').addEventListener('submit', async function (e
         const createdProjectPost = await responseProject.json();
         const projectId = createdProjectPost.id;
 
-        console.log(projectId, '프로젝트아이디입니다');
+        const stacks = document.querySelectorAll('#stack');
+        const numberOfPeoples = document.querySelectorAll('#numberOfPeople');
+        for (let i = 0; i < stacks.length; i++) {
+            const stack = stacks[i].value;
+            const numberOfPeople = parseInt(numberOfPeoples[i].value);
 
-        const stack = document.getElementById('stack').value;
-        const numberOfPeople = parseInt(document.getElementById('numberOfPeople').value);
+            const responseStack = await fetch(`http://localhost:3000/need-info/${projectId}`, {
+                method: 'POST',
+                headers: {
+                    Authorization: `Bearer ${accessToken}`,
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ stack, numberOfPeople }),
+            });
+        }
 
-        // stack과 numberOfPeople을 백엔드로 전송하여 처리합니다.
-        const responseStack = await fetch(`http://localhost:3000/need-info/${projectId}`, {
-            method: 'POST',
-            headers: {
-                Authorization: `Bearer ${accessToken}`,
-                'Content-Type': 'application/json', // JSON 형식의 데이터를 전송합니다.
-            },
-            body: JSON.stringify({ stack, numberOfPeople }), // stack과 numberOfPeople을 JSON 형식으로 변환하여 전송합니다.
-        });
+        const questions = document.querySelectorAll('#question');
+
+        for (let j = 0; j < questions.length; j++) {
+            const question = questions[j].value;
+
+            const responseQuestion = await fetch(`http://localhost:3000/question/${projectId}`, {
+                method: 'POST',
+                headers: {
+                    Authorization: `Bearer ${accessToken}`,
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ question }),
+            });
+        }
 
         alert('데이터가 성공적으로 전송되었습니다.');
-        window.location.reload();
+        window.location.href = 'projectPostMain.html';
     } catch (error) {
         console.error('오류:', error);
         alert('데이터 전송 중 오류가 발생했습니다.');
     }
+});
+
+const addStackBtn = document.querySelector('.addStackBtn');
+
+addStackBtn.addEventListener('click', () => {
+    const stackBox = document.querySelector('.stackBox');
+
+    const stack = document.createElement('div');
+    stack.className = 'stack';
+
+    stack.innerHTML = ` <label for="stack">스택:</label><br />
+    <input type="text" id="stack" name="stack" required /><br /><br />
+
+    <label for="numberOfPeople">인원 수:</label><br />
+    <input
+        type="number"
+        id="numberOfPeople"
+        name="numberOfPeople"
+        required
+    /><br /><br />`;
+
+    stackBox.appendChild(stack);
+});
+
+const addQuestionBtn = document.querySelector('.addQuestionBtn');
+
+addQuestionBtn.addEventListener('click', () => {
+    const questionBox = document.querySelector('.questionBox');
+
+    const question = document.createElement('div');
+    question.className = 'question';
+
+    question.innerHTML = `<label for="question">질문:</label><br />
+    <input
+        type="text"
+        id="question"
+        name="question"
+        required
+    /><br /><br />`;
+
+    questionBox.appendChild(question);
 });

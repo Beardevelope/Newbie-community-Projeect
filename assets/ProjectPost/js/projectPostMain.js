@@ -32,7 +32,7 @@ async function fetchStack(projectPostId) {
 
 async function fetchLike(projectPostId) {
     try {
-        const response = await fetch(`http://localhost:3000/like/${projectPostId}`, {
+        const response = await fetch(`http://localhost:3000/project-like/${projectPostId}`, {
             method: 'GET',
         });
 
@@ -71,8 +71,11 @@ async function getProject(page) {
 
             const project = document.createElement('div');
             project.className = 'project';
+            project.addEventListener('click', () => {
+                window.location.href = `projectPostDetail.html?id=${sortPost[i].id}`;
+            });
 
-            project.innerHTML = `<a href="projectPostDetail.html?id=${sortPost[i].id}">
+            project.innerHTML = `
         <div class="projectContent">
             <div class="projectImg">
                 <img src="${sortPost[i].image}"/>
@@ -98,7 +101,6 @@ async function getProject(page) {
                 <div class="likeCounts">${like}</div>
             </div>
         </div>
-        </a>
         `;
 
             projects.appendChild(project);

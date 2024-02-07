@@ -3,7 +3,7 @@ import { Answer } from 'src/answer/entities/answer.entity';
 import { Banner } from 'src/banner/entities/banner.entity';
 import { Comment } from 'src/comment/entities/comment.entity';
 import { CommentLike } from 'src/comment-like/entitis/comment-like.entity';
-import { Like } from 'src/like/entities/like.entity';
+import { ProjectLike } from 'src/project-like/entities/project-like.entity';
 import { Post } from 'src/post/entities/post.entity';
 import { ProjectPost } from 'src/project-post/entities/project-post.entity';
 import {
@@ -17,11 +17,15 @@ import {
 } from 'typeorm';
 import { ProjectApplicant } from 'src/project-post/entities/project-applicant.entity';
 import { PostLike } from 'src/post-like/entities/post-like.entity';
+import { Warning } from 'src/warning/entities/warning.entity';
 
 @Entity({ name: 'user' })
 export class User {
     @PrimaryGeneratedColumn()
     id: number;
+
+    @Column({ default: false })
+    isVerified: boolean;
 
     @IsNotEmpty()
     @IsEmail()
@@ -39,13 +43,6 @@ export class User {
     @Column()
     nickname: string;
 
-    @Column({ nullable: true })
-    role: string;
-
-    @Column()
-    @IsNumber()
-    points: number;
-
     @Column()
     providerId: string;
 
@@ -56,13 +53,7 @@ export class User {
     // DB에서의 Enum은 문제가 될 수 있다.
 
     @Column()
-    techType: string;
-
-    @Column({ default: null, nullable: true })
-    name: string;
-
-    @Column({ default: null, nullable: true })
-    contact: string;
+    isBan: boolean;
 
     @CreateDateColumn()
     createdAt: Date;
@@ -88,14 +79,17 @@ export class User {
     @OneToMany((type) => PostLike, (postLike) => postLike.user)
     postLikes: PostLike[];
 
+    @OneToMany((type) => Warning, (warning) => warning.user)
+    warnings: Warning[];
+
     @OneToMany(() => Banner, (banner) => banner.user)
     banners: Banner[];
 
     @OneToMany(() => Answer, (answer) => answer.user)
     answer: Answer[];
 
-    @OneToMany(() => Like, (like) => like.user)
-    like: Like[];
+    @OneToMany(() => ProjectLike, (projectLike) => projectLike.user)
+    projectLike: ProjectLike[];
 
     async serializeUser(): Promise<number> {
         return this.id;

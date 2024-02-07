@@ -47,7 +47,7 @@ export class PostController {
         const { order, filter, tagName, tab, page } = req.query;
         const posts = await this.postService.findAll(order, filter, tagName, tab, +page);
 
-        console.log(posts)
+        console.log(posts);
         return {
             statusCode: HttpStatus.OK,
             message: 'ok',
