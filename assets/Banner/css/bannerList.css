@@ -1,14 +1,15 @@
 :root {
     --gap: 20px;
 }
+
 .totalbox {
-    height: 100%;
     background-color: #212529;
     width: 100px;
+    min-height: 100vh;
 }
 
 .main {
-    background-color: gray;
+    background-color: white;
     width: 100%;
 }
 
@@ -17,6 +18,7 @@
     color: white;
     font-family: 'Anton', sans-serif;
     font-size: 27px;
+    display: flex;
 }
 .container {
     max-width: 1200px;
@@ -35,7 +37,7 @@
 
 .big-box {
     display: flex;
-    height: 100%;
+    min-height: 100vh;
 }
 body,
 html {
@@ -55,7 +57,7 @@ body {
 
 .search-box {
     align-items: center;
-    width: 1500px;
+    width: calc(100% - 800px);
 }
 .box {
     background-color: #ddd;

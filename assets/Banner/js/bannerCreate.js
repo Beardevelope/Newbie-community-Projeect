@@ -1,5 +1,6 @@
 async function saveBanner() {
     const title = document.getElementById('title').value;
+    const pageUrl = document.getElementById('pageUrl').value;
     const image = document.getElementById('image').files[0];
 
     // 토큰 가져오기 >> 구글 로그인 토큰 정보 확인 후 결정.
@@ -7,12 +8,13 @@ async function saveBanner() {
     // const accessToken = localStorage.getItem('accessToken');
 
     // 필수값 설정
-    if (!title || !image) {
-        alert('제목과 이미지는 필수 입력 항목입니다.');
+    if (!title || !image || !pageUrl) {
+        alert('제목,이미지, URL은 필수 입력 항목입니다.');
     }
 
     const formData = new FormData();
     formData.append('title', title);
+    formData.append('pageUrl', pageUrl);
     formData.append('file', image);
 
     try {
@@ -29,13 +31,12 @@ async function saveBanner() {
         if (response.ok) {
             alert('배너가 생성되었습니다.');
             window.location.href = '../html/bannerList.html';
-        } else {
-            alert('배너 생성에 실패했습니다. 관리자에 문의하세요.');
         }
         const result = await response.json();
         return result;
     } catch (error) {
         console.error(error);
+        alert('배너 생성에 실패했습니다. 관리자에 문의하세요.');
     }
 }
 

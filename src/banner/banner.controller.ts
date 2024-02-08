@@ -12,6 +12,7 @@ import {
     Request,
     ParseIntPipe,
     HttpStatus,
+    Response,
 } from '@nestjs/common';
 import { BannerService } from './banner.service';
 import { CreateBannerDto } from './dto/create-banner.dto';
@@ -22,6 +23,13 @@ import { BearerTokenGuard } from 'src/auth/guard/bearer.guard';
 @Controller('banner')
 export class BannerController {
     constructor(private readonly bannerService: BannerService) {}
+
+    //랜덤 조회
+    @Get('random')
+    async getRandomBanner() {
+        const randomBanner = await this.bannerService.getRandomBanner();
+        return randomBanner;
+    }
 
     // 배너 전체 조회
     @Get()
@@ -88,12 +96,12 @@ export class BannerController {
         };
     }
 
-    // 배너 클릭 이벤트
-    @Get('click/:bannerId')
-    async getBannerClick(@Request() req, @Param('bannerId', ParseIntPipe) bannerId: number) {
-        await this.bannerService.clickBanner(bannerId);
-        return {
-            statusCode: HttpStatus.OK,
-        };
+    // 배너 클릭시 조회수 증가
+    @Post('click/:bannerId')
+    async clickBanner(@Param('bannerId', ParseIntPipe) bannerId: number) {
+        const bannerClick = await this.bannerService.clickBanner(bannerId);
+        const pageUrl = await this.bannerService.getBannerPageUrl(bannerId);
+
+        return { clickCount: bannerClick.clickCount, pageUrl };
     }
 }
