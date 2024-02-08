@@ -6,11 +6,6 @@ function getBannerIdFromUrl() {
     return bannerId;
 }
 
-// bannerId 확인용 >> 리팩토링시 삭제
-const bannerId = getBannerIdFromUrl()
-console.log({ bannerId })
-
-
 async function modifyBanner() {
     const bannerId = getBannerIdFromUrl();
     const title = document.getElementById('title').value;

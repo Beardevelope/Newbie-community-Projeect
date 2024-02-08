@@ -98,10 +98,9 @@ export class BannerController {
 
     // 배너 클릭시 조회수 증가
     @Post('click/:bannerId')
-    async clickBanner(@Response() res, @Param('bannerId', ParseIntPipe) bannerId: number) {
+    async clickBanner(@Param('bannerId', ParseIntPipe) bannerId: number) {
+        const bannerClick = await this.bannerService.clickBanner(bannerId);
         const pageUrl = await this.bannerService.getBannerPageUrl(bannerId);
-        await this.bannerService.clickBanner(bannerId);
-        // 프론트에 url 전달
-        return res.redirect(pageUrl);
-    }
+        
+        return { clickCount: bannerClick.clickCount, pageUrl }; 
 }
