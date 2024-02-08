@@ -108,25 +108,6 @@ body {
 .boards {
     width: calc(100% - 240px);
 }
-/* 
-.banners {
-    position: relative;
-    flex-wrap: wrap;
-    height: 100px;
-    width: 200px;
-    gap: 30px;
-    display: flex;
-    flex-direction: column;
-}
-
-.sideBanner {
-    position: absolute;
-    top: 5px; 
-    right: 10px;
-    width: 200px;
-    height: 350px;
-    background-color: #ffffff;
-} */
 
 .contentBox {
     display: flex;
