@@ -36,7 +36,7 @@ export class Post {
     @IsString()
     content: string;
 
-    @Column()
+    @Column({ nullable: true })
     @IsString()
     image?: string;
 
