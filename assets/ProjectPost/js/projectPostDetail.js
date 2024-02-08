@@ -1,7 +1,7 @@
 const urlParams = new URLSearchParams(window.location.search);
 const projectId = urlParams.get('id');
 
-const accessToken = `eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjcsImVtYWlsIjoiOTg4NzZAbmF2ZXIuY29tIiwiaWQiOjcsInR5cGUiOiJhY2Nlc3MiLCJpYXQiOjE3MDcyOTUxODUsImV4cCI6MTcwNzI5ODc4NX0.ISbu21IBSzfIdg9sp7TFYbhztrnQSc3780lpFoHZLPY`;
+const accessToken = `eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjcsImVtYWlsIjoiOTg4NzZAbmF2ZXIuY29tIiwiaWQiOjcsInR5cGUiOiJhY2Nlc3MiLCJpYXQiOjE3MDczNjM2MDksImV4cCI6MTcwNzM2NzIwOX0.s456ftTKcHXiy7g83dCjcVGSfko0Z_Cg73SoyN_fU7o`;
 
 async function fetchProjectDetail(projectId) {
     try {
@@ -79,6 +79,8 @@ async function updateProjectDetail(formData, projectId) {
 }
 
 async function editProjectForm(projectId) {
+    const getStack = await fetchStack(projectId);
+
     const title = document.querySelector('.title');
     const projectImg = document.querySelector('.projectImg');
     const content = document.querySelector('.content');
@@ -131,21 +133,27 @@ async function editProjectForm(projectId) {
             </div>
         </div>
         <div class="contentBox">
-            <div class='content'>${content.textContent}</div>
+            <div class='content'>
+                <input type="text" id="contentInput" class="contentInput" placeholder='${content.textContent}'></input>
+            </div>
         </div>
     </form>`;
-
-    const stack = document.querySelectorAll('.stack');
-
-    const needPeople = document.querySelectorAll('.needPeople');
 
     const stacks = document.querySelector('.stacks');
 
     const needPeoples = document.querySelector('.needPeoples');
 
-    for (let i = 0; i < stack.length; i++) {
-        stacks.appendChild(stack[i]);
-        needPeoples.appendChild(needPeople[i]);
+    for (let i = 0; i < getStack.length; i++) {
+        const stack = document.createElement('div');
+        stack.className = 'stack';
+        const needPeople = document.createElement('div');
+        needPeople.className = 'needPeople';
+
+        stack.innerHTML = `${getStack[i].stack}`;
+        needPeople.innerHTML = `<input type="text" id="needPeopleInput" class="needPeopleInput" placeholder='${getStack[i].numberOfPeople}'></input>`;
+
+        stacks.appendChild(stack);
+        needPeoples.appendChild(needPeople);
     }
 
     const dataForm = document.querySelector('#dataForm');
@@ -155,12 +163,34 @@ async function editProjectForm(projectId) {
 
         const formData = new FormData();
         formData.append('title', document.querySelector('.title').value);
-        formData.append('content', document.querySelector('.content').textContent);
+        formData.append('content', document.querySelector('.contentInput').value);
         formData.append('applicationDeadLine', document.querySelector('.deadLine').value);
         formData.append('startDate', document.querySelector('.startDate').value);
         formData.append('dueDate', document.querySelector('.dueDate').value);
 
         await updateProjectDetail(formData, projectId);
+
+        const getNeedPeoples = document.querySelectorAll('.needPeople input');
+
+        for (let i = 0; i < getNeedPeoples.length; i++) {
+            let numberOfPeople = parseInt(getNeedPeoples[i].value);
+
+            if (!numberOfPeople) {
+                numberOfPeople = getStack[i].numberOfPeople;
+            }
+
+            const responseStack = await fetch(
+                `http://localhost:3000/need-info/${projectId}/${getStack[i].id}`,
+                {
+                    method: 'PATCH',
+                    headers: {
+                        Authorization: `Bearer ${accessToken}`,
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ numberOfPeople }),
+                },
+            );
+        }
         window.location.href = `projectPostDetail.html?id=${projectId}`;
     });
 }

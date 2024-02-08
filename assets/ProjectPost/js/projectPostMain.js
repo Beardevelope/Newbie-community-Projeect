@@ -38,7 +38,7 @@ async function fetchLike(projectPostId) {
 
         const data = await response.json();
 
-        return data.length;
+        return data;
     } catch (error) {
         console.error('에러 --- ', error);
         throw new error(error);

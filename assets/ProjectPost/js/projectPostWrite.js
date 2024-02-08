@@ -3,7 +3,7 @@ document.getElementById('dataForm').addEventListener('submit', async function (e
 
     const accessToken =
         sessionStorage.getItem('accessToken') ||
-        'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjcsImVtYWlsIjoiOTg4NzZAbmF2ZXIuY29tIiwiaWQiOjcsInR5cGUiOiJhY2Nlc3MiLCJpYXQiOjE3MDcyOTc1MjIsImV4cCI6MTcwNzMwMTEyMn0.9QNaApc7DHTm8e1fcpxIS41x9jb2q64-sZGpJDOzar0';
+        'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjcsImVtYWlsIjoiOTg4NzZAbmF2ZXIuY29tIiwiaWQiOjcsInR5cGUiOiJhY2Nlc3MiLCJpYXQiOjE3MDczNjY2NDgsImV4cCI6MTcwNzM3MDI0OH0.J5dxuHtOLfP7_aEYvq8afuws98dNEWRAW1jzggXq41Y';
 
     const formData = new FormData();
     formData.append('title', document.getElementById('title').value);

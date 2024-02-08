@@ -49,7 +49,7 @@ export class ProjectPostService {
         const skip = (page - 1) * pageSize;
 
         const [sortPost, total] = await this.projectPostRepository.findAndCount({
-            order: { createdAt: 'ASC' },
+            order: { createdAt: 'DESC' },
             skip: skip,
             take: pageSize,
         });
