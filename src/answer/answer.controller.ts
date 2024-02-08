@@ -9,7 +9,7 @@ export class AnswerController {
     constructor(private readonly answerService: AnswerService) {}
 
     @UseGuards(BearerTokenGuard)
-    @Post('/:projectPostId/:questionId')
+    @Post(':projectPostId/:questionId')
     create(
         @Param('projectPostId') projectPostId: string,
         @Param('questionId') questionId: string,

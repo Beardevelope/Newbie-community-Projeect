@@ -1,7 +1,7 @@
 const urlParams = new URLSearchParams(window.location.search);
 const projectId = urlParams.get('id');
 
-const accessToken = `eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjcsImVtYWlsIjoiOTg4NzZAbmF2ZXIuY29tIiwiaWQiOjcsInR5cGUiOiJhY2Nlc3MiLCJpYXQiOjE3MDcyNjY1MjIsImV4cCI6MTcwNzI3MDEyMn0.LVxrqPOpsLfQtDA6yan8A7VT05ijaqJcaxiiWmyJ80c`;
+const accessToken = `eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjcsImVtYWlsIjoiOTg4NzZAbmF2ZXIuY29tIiwiaWQiOjcsInR5cGUiOiJhY2Nlc3MiLCJpYXQiOjE3MDczNjM2MDksImV4cCI6MTcwNzM2NzIwOX0.s456ftTKcHXiy7g83dCjcVGSfko0Z_Cg73SoyN_fU7o`;
 
 async function fetchProjectDetail(projectId) {
     try {
@@ -79,6 +79,8 @@ async function updateProjectDetail(formData, projectId) {
 }
 
 async function editProjectForm(projectId) {
+    const getStack = await fetchStack(projectId);
+
     const title = document.querySelector('.title');
     const projectImg = document.querySelector('.projectImg');
     const content = document.querySelector('.content');
@@ -131,21 +133,27 @@ async function editProjectForm(projectId) {
             </div>
         </div>
         <div class="contentBox">
-            <div class='content'>${content.textContent}</div>
+            <div class='content'>
+                <input type="text" id="contentInput" class="contentInput" placeholder='${content.textContent}'></input>
+            </div>
         </div>
     </form>`;
-
-    const stack = document.querySelectorAll('.stack');
-
-    const needPeople = document.querySelectorAll('.needPeople');
 
     const stacks = document.querySelector('.stacks');
 
     const needPeoples = document.querySelector('.needPeoples');
 
-    for (let i = 0; i < stack.length; i++) {
-        stacks.appendChild(stack[i]);
-        needPeoples.appendChild(needPeople[i]);
+    for (let i = 0; i < getStack.length; i++) {
+        const stack = document.createElement('div');
+        stack.className = 'stack';
+        const needPeople = document.createElement('div');
+        needPeople.className = 'needPeople';
+
+        stack.innerHTML = `${getStack[i].stack}`;
+        needPeople.innerHTML = `<input type="text" id="needPeopleInput" class="needPeopleInput" placeholder='${getStack[i].numberOfPeople}'></input>`;
+
+        stacks.appendChild(stack);
+        needPeoples.appendChild(needPeople);
     }
 
     const dataForm = document.querySelector('#dataForm');
@@ -155,12 +163,34 @@ async function editProjectForm(projectId) {
 
         const formData = new FormData();
         formData.append('title', document.querySelector('.title').value);
-        formData.append('content', document.querySelector('.content').textContent);
+        formData.append('content', document.querySelector('.contentInput').value);
         formData.append('applicationDeadLine', document.querySelector('.deadLine').value);
         formData.append('startDate', document.querySelector('.startDate').value);
         formData.append('dueDate', document.querySelector('.dueDate').value);
 
         await updateProjectDetail(formData, projectId);
+
+        const getNeedPeoples = document.querySelectorAll('.needPeople input');
+
+        for (let i = 0; i < getNeedPeoples.length; i++) {
+            let numberOfPeople = parseInt(getNeedPeoples[i].value);
+
+            if (!numberOfPeople) {
+                numberOfPeople = getStack[i].numberOfPeople;
+            }
+
+            const responseStack = await fetch(
+                `http://localhost:3000/need-info/${projectId}/${getStack[i].id}`,
+                {
+                    method: 'PATCH',
+                    headers: {
+                        Authorization: `Bearer ${accessToken}`,
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ numberOfPeople }),
+                },
+            );
+        }
         window.location.href = `projectPostDetail.html?id=${projectId}`;
     });
 }
@@ -200,9 +230,31 @@ async function fetchQuestion(projectId) {
     }
 }
 
+async function postStack(projectId, questionId, selectStack, answer) {
+    try {
+        const answerJSON = { answer, stack: selectStack };
+
+        const stack = await fetch(`http://localhost:3000/answer/${projectId}/${questionId}`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                Authorization: `Bearer ${accessToken}`,
+            },
+            body: JSON.stringify(answerJSON),
+        });
+
+        const stackData = await stack.json();
+
+        return stackData;
+    } catch (error) {
+        console.error('에러 --- ', error);
+        throw new error(error);
+    }
+}
+
 async function postApplicant(projectId) {
     try {
-        const response = await fetch(
+        const applicant = await fetch(
             `http://localhost:3000/project-post/${projectId}/projectApplicant`,
             {
                 method: 'POST',
@@ -212,9 +264,9 @@ async function postApplicant(projectId) {
             },
         );
 
-        const data = await response.json();
+        const applicantData = await applicant.json();
 
-        alert(data.message);
+        alert(applicantData.message);
     } catch (error) {
         console.error('에러 --- ', error);
         throw new error(error);
@@ -245,8 +297,6 @@ async function projectApplicant(projectId) {
 
     const fetchQuestionData = await fetchQuestion(projectId);
 
-    console.log(fetchQuestionData.length, '질문 길이');
-
     const questionBox = document.querySelector('.questionBox');
 
     for (let j = 0; j < fetchQuestionData.length; j++) {
@@ -254,7 +304,7 @@ async function projectApplicant(projectId) {
         question.className = 'question';
 
         question.innerHTML = `<label for="${fetchQuestionData[j].question}">${fetchQuestionData[j].question}</label>
-        <input type="text" id="${fetchQuestionData[j].question}" name="question" required />`;
+        <input type="text" id="${fetchQuestionData[j].question}" name="question" class="answer" required />`;
 
         questionBox.appendChild(question);
     }
@@ -268,6 +318,26 @@ async function projectApplicant(projectId) {
     const applicantBtn = document.querySelector('.applicantBtn');
 
     applicantBtn.addEventListener('click', async () => {
+        const selectedRadioButton = document.querySelector('input[name="options"]:checked');
+        const inputValue = document.querySelectorAll('.answer');
+
+        if (selectedRadioButton) {
+            const selectStack = selectedRadioButton.value;
+            for (let k = 0; k < fetchQuestionData.length; k++) {
+                const answer = inputValue[k].value;
+
+                console.log(answer);
+
+                if (!answer) {
+                    return alert(`${k + 1}번째 질문에 답변해주세요`);
+                }
+
+                await postStack(projectId, fetchQuestionData[k].id, selectStack, answer);
+            }
+        } else {
+            return alert('라디오 버튼이 선택되지 않았습니다.');
+        }
+
         await postApplicant(projectId);
         document.querySelector('.modalBox').style.display = 'none';
     });

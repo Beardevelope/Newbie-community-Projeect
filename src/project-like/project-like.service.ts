@@ -32,7 +32,7 @@ export class ProjectLikeService {
     async findAll(projectPostId: number) {
         const likes = await this.projectLikeRepository.find({ where: { projectPostId } });
 
-        return likes;
+        return likes.length;
     }
 
     // 유저가 누른 좋아요 목록 전체 조회

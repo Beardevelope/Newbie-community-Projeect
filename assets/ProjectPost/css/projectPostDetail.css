@@ -148,6 +148,7 @@ img {
 
 .mainWrap .contentBox > div {
     padding: 20px;
+    height: 500px;
 }
 
 .modalBox {
@@ -220,4 +221,8 @@ img {
     background-color: rgb(0, 207, 138);
     color: white;
     transition: all 0.3s;
+}
+
+.contentInput {
+    width: 100%;
 }
