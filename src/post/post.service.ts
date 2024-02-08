@@ -59,7 +59,7 @@ export class PostService {
             userId,
         });
 
-        this.searchService.indexPost(post);
+        this.searchService.indexPost('posts', post);
 
         return post;
     }
@@ -272,6 +272,8 @@ export class PostService {
             tags,
         });
 
+        this.searchService.update('posts', postId, updatePost);
+
         return updatePost;
     }
 
@@ -293,6 +295,8 @@ export class PostService {
         }
 
         await this.postRepository.delete(postId);
+
+        this.searchService.remove('posts', postId);
 
         return foundPost;
     }
