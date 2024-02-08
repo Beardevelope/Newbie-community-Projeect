@@ -46,6 +46,6 @@ export class BanGuard implements CanActivate {
             throw new NotAcceptableException();
         }
 
-        return false;
+        return true;
     }
 }

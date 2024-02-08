@@ -44,6 +44,9 @@ export class User {
     nickname: string;
 
     @Column()
+    warningCount: number;
+
+    @Column()
     providerId: string;
 
     @Column()

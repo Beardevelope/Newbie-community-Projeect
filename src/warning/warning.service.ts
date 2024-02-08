@@ -5,6 +5,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Warning } from './entities/warning.entity';
 import { DataSource, MoreThan, Repository } from 'typeorm';
 import { Post } from 'src/post/entities/post.entity';
+import { UserService } from 'src/user/user.service';
 
 @Injectable()
 export class WarningService {
@@ -14,6 +15,7 @@ export class WarningService {
         @InjectRepository(Post)
         private readonly postRepository: Repository<Post>,
         private readonly dataSource: DataSource,
+        private readonly userService: UserService,
     ) {}
 
     /**
@@ -87,6 +89,7 @@ export class WarningService {
      * @param userId
      * @returns
      */
+
     async findAllByUser(userId: number) {
         return await this.warningRepository.find({
             where: {
@@ -95,42 +98,48 @@ export class WarningService {
         });
     }
 
-    // // 유저에게 경고를 주는 api
-    // async warningUser(userId: number) {
-    //     const user = await this.usersRepository.findOne({
-    //         where: {
-    //             id: userId,
-    //         },
-    //     });
+    /**
+     *   해당 유저에게 경고를 주는 API
+     * @param userId
+     * @returns
+     */
 
-    //     if (!user) {
-    //         throw new NotFoundException('해당 유저는 존재하지 않습니다.');
-    //     }
+    async warningUser(userId: number) {
+        const user = await this.userService.getUserById(userId);
 
-    //     return await this.usersRepository.increment({ id: userId }, 'warningCount', 1);
-    // }
+        if (!user) {
+            throw new NotFoundException('해당 유저는 존재하지 않습니다.');
+        }
 
-    // 유저 엔티티에 warningCount가 있다는 가정하에 유저에게 서비스 이용 제한을 거는 api
-    // 유저쪽에 컬럼을 생성 is_ban 이라는 것을 새로 만들어서 true면 게시글조회를 제외한
-    // 나머지 기능을 쓰지 못하게끔 만드는게 좋다.
-    // 이 서비스는 아무래도 유저서비스에서 구현을 하는 것이 맞을 듯?
+        // return await this.usersRepository.increment({ id: userId }, 'warningCount', 1);
 
-    // async restrictUser(userId: number) {
-    //     const user = await this.usersRepository.findOne({
-    //         where: {
-    //             id: userId,
-    //         },
-    //     });
+        // 해당코드 repository직접 접근으로 updateUser method 수정후 코드 fix
 
-    //     if (!user) {
-    //         throw new NotFoundException('해당 유저는 존재하지 않습니다.');
-    //     }
+        user.warningCount++;
+        await this.userService.updateUser(userId, user);
+    }
 
-    //     if (user.warningCount > 3) {
-    //         return await this.usersRepository.save({
-    //             id: userId,
-    //             is_ban: true,
-    //         });
-    //     }
-    // }
+    /**
+     *  특정 유저 BAN시키기
+     * @param userId
+     * @returns
+     */
+
+    async restrictUser(userId: number) {
+        const user = await this.userService.getUserById(userId);
+
+        if (!user) {
+            throw new NotFoundException('해당 유저는 존재하지 않습니다.');
+        }
+
+        if (user.warningCount > 3) {
+            user.isBan = true;
+
+            await this.userService.updateUser(userId, user);
+
+            return { message: 'User restricted succesfully' };
+        }
+
+        return { message: 'User not restricted' };
+    }
 }
