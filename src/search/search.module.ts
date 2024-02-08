@@ -7,10 +7,10 @@ import { ElasticsearchModule } from '@nestjs/elasticsearch';
     imports: [
         ElasticsearchModule.registerAsync({
             useFactory: () => ({
-                node: 'https://search-mynewdomain-fhojlpkz6x5d4tl6lwq6qcingu.ap-northeast-2.es.amazonaws.com',
+                node: process.env.SEARCH_ENDPOINT,
                 auth: {
-                    username: 'admin',
-                    password: '1q2w#E$R',
+                    username: process.env.SEARCH_USERNAME,
+                    password: process.env.SEARCH_USERPASSWORD,
                 },
                 headers: {
                     'Content-Type': 'application/json',
