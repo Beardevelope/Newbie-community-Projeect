@@ -10,6 +10,7 @@ import { Tag } from 'src/tag/entities/tag.entity';
 import { UploadServiceModule } from 'src/upload-service/upload-service.module';
 import { MulterModule } from '@nestjs/platform-express';
 import { extname } from 'path';
+import { SearchModule } from 'src/search/search.module';
 
 @Module({
     imports: [
@@ -43,6 +44,7 @@ import { extname } from 'path';
                 return cb(null, true);
             },
         }),
+        SearchModule,
     ],
     controllers: [PostController],
     providers: [PostService],

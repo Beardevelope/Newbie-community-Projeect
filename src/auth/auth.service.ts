@@ -1,4 +1,4 @@
-import { Injectable, UnauthorizedException } from '@nestjs/common';
+import { Injectable, NotAcceptableException, UnauthorizedException } from '@nestjs/common';
 import { User } from '../user/entities/user.entity';
 import { UserService } from '../user/user.service';
 import { JwtService } from '@nestjs/jwt';
@@ -160,12 +160,17 @@ export class AuthService {
         };
     }
 
-    async verificationUser(userId: number) {
-        const user = await this.userService.getUserById(userId);
+    async verificationUser(token: string) {
+        const result = await this.verifyToken(token);
 
-        if (user) {
-            user.isVerified = true;
-            await this.userService.updateUser(userId, { isVerified: true });
+        const user = await this.userService.getUserById(result.id);
+
+        if (!user) {
+            throw new NotAcceptableException();
         }
+
+        await this.userService.updateUser(user.id, { isVerified: true });
+
+        return user;
     }
 }

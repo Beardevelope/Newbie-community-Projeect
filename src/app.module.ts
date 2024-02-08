@@ -30,6 +30,7 @@ import { PostLikeModule } from './post-like/post-like.module';
 import { MailerModule } from '@nestjs-modules/mailer';
 import { EmailModule } from './mailer/mailer.module';
 import { WarningModule } from './warning/warning.module';
+import { SearchModule } from './search/search.module';
 
 @Module({
     imports: [
@@ -73,6 +74,7 @@ import { WarningModule } from './warning/warning.module';
             },
         }),
         WarningModule,
+        SearchModule,
     ],
     controllers: [AppController],
     providers: [AppService],

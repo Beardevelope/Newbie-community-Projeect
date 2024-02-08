@@ -1,4 +1,4 @@
-import { Controller, Post, UseGuards, Req, Request, Get, Res, Param } from '@nestjs/common';
+import { Controller, Post, UseGuards, Req, Request, Get, Res, Param, Query } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { BasicTokenGuard } from './guard/basic.guard';
 import { RefreshTokenGuard } from './guard/bearer.guard';
@@ -48,10 +48,9 @@ export class AuthController {
 
     // 만약에 누군가가 본인의 아이디를 알고, 해당 url을 입력하면 바로 적용이 되는데 해당부분에 대한 보안을 보완할 방법을 찾기.
 
-    @Post('verify/:userId')
-    async verifiedUserUpdate(@Param('userId') userId: number) {
-        console.log(userId);
-        await this.authService.verificationUser(userId);
-        return '인증 완료되었읍니다.';
+    @Post('verify/:token')
+    async verifiedUserUpdate(@Param('token') token: string) {
+        await this.authService.verificationUser(token);
+        return '인증 완료';
     }
 }

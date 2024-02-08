@@ -1,11 +1,3 @@
-function updateBannerDetails(banner) {
-    document.getElementById('bannerId').innerText = banner.id;
-    document.getElementById('bannerTitle').innerText = banner.title;
-    const bannerImage = document.getElementById('bannerImage');
-    bannerImage.src = banner.file;
-    bannerImage.style.maxWidth = '30%'; // 이미지 크기 조절
-}
-
 // bannerId 가져오는 함수
 function getBannerIdFromUrl() {
     const queryString = window.location.search;
@@ -15,35 +7,39 @@ function getBannerIdFromUrl() {
     return bannerId;
 }
 
-// 배너 상세 정보
-async function getBannerById() {
+// 배너 상세 정보 업데이트
+async function updateBannerDetails() {
     const bannerId = getBannerIdFromUrl();
     try {
         const response = await fetch(`http://localhost:3000/banner/${bannerId}`);
-        const data = await response.json();
+        const banner = await response.json();
 
-        updateBannerDetails(data);
+        const clickResponse = await fetch(`http://localhost:3000/banner/click/${bannerId}`, {
+            method: 'POST'
+        });
+        const Click = await clickResponse.json();
+
+        document.getElementById('bannerId').innerText = `배너 ID : ${banner.id}`;
+        document.getElementById('bannerTitle').innerText = `배너 제목 : ${banner.title}`;
+        document.getElementById('bannerPageUrl').innerText = `홈페이지 주소 : ${banner.pageUrl}`;
+        document.getElementById('bannerClick').innerText = `조회수 : ${Click.clickCount}`;
+
+        const bannerImage = document.getElementById('bannerImage');
+        bannerImage.src = banner.file;
+        bannerImage.style.maxWidth = '30%'; // 이미지 크기 조절
     } catch (error) {
         console.error('Error fetching banner details:', error);
     }
 }
-getBannerById();
 
-// 수정 페이지로 이동
-function editBanner() {
-    const bannerId = getBannerIdFromUrl();
-    document.location.href = `bannerModify.html?bannerId=${bannerId}`;
-}
+updateBannerDetails();
 
 // 배너 삭제
 async function deleteBanner() {
-    const queryString = window.location.search;
-    const urlParams = new URLSearchParams(queryString);
-    const bannerId = urlParams.get('bannerId');
-
     const accessToken = "토큰";
     // const accessToken = localStorage.getItem('accessToken');
 
+    const bannerId = getBannerIdFromUrl();
     try {
         const response = await fetch(`http://localhost:3000/banner/${bannerId}`, {
             method: 'DELETE',
@@ -62,6 +58,13 @@ async function deleteBanner() {
     } catch (error) {
         console.error('Error deleting the banner:', error);
     }
+}
+
+
+// 수정 페이지로 이동
+function editBanner() {
+    const bannerId = getBannerIdFromUrl();
+    document.location.href = `bannerModify.html?bannerId=${bannerId}`;
 }
 
 // 목록으로 이동

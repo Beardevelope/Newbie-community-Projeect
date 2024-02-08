@@ -69,30 +69,29 @@ export class WarningController {
         };
     }
 
-    // // 유저쪽에서 구현해야 할듯?
-    // // 유저에게 경고주는 시스템
-    // @UseGuards(BearerTokenGuard)
-    // @Put('warningUser/:userId')
-    // async warningUser(@Param('userId') userId: string) {
-    //     const user =  this.warningService.warningUser(+userId);
-    //     return {
-    //         statusCode: HttpStatus.OK,
-    //         message: 'ok',
-    //         user,
-    //     };
-    // }
+    // 유저쪽에서 구현해야 할듯?
+    // 유저에게 경고주는 시스템
+    @UseGuards(BearerTokenGuard)
+    @Put('warningUser/:userId')
+    async warningUser(@Param('userId') userId: string) {
+        const user = this.warningService.warningUser(+userId);
+        return {
+            statusCode: HttpStatus.OK,
+            message: 'ok',
+            user,
+        };
+    }
 
-
-    // // 유저쪽에서 서비스를 구현해야할듯?
-    // // admin이 유저한테 제한을 거는 api
-    // @UseGuards(BearerTokenGuard)
-    // @Put(':userId')
-    // async restrictUser (@Param('userId') userId: string) {
-    //     const user =  this.warningService.restrictUser(+userId);
-    //     return {
-    //         statusCode: HttpStatus.OK,
-    //         message: 'ok',
-    //         user,
-    //     };
-    // }
+    // 유저쪽에서 서비스를 구현해야할듯?
+    // admin이 유저한테 제한을 거는 api
+    @UseGuards(BearerTokenGuard)
+    @Put(':userId')
+    async restrictUser(@Param('userId') userId: string) {
+        const user = this.warningService.restrictUser(+userId);
+        return {
+            statusCode: HttpStatus.OK,
+            message: 'ok',
+            user,
+        };
+    }
 }

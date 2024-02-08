@@ -41,6 +41,23 @@ export class BannerService {
         return banner;
     }
 
+    // 배너 랜덤 조회
+    async getRandomBanner() {
+        const banners = await this.getAllBanner();
+
+        const randomIndex = Math.floor(Math.random() * banners.length);
+        const randomBanner = banners[randomIndex];
+
+        return randomBanner;
+    }
+
+    // 배너 페이지 URL 조회
+    async getBannerPageUrl(bannerId: number) {
+        const banner = await this.getOneBanner(bannerId);
+        console.log({ banner });
+        return banner.pageUrl;
+    }
+
     // 새 배너 생성
     async createBanner(userId: number, file: any, createBannerDto: CreateBannerDto) {
         const url = await this.uploadService.uploadFile(file);
@@ -62,9 +79,11 @@ export class BannerService {
             url = banner.file;
         }
         const updatedTitle = updateBannerDto.title ? updateBannerDto.title : banner.title;
+        const updatedPageUrl = updateBannerDto.pageUrl ? updateBannerDto.pageUrl : banner.pageUrl;
 
         const updatedData = {
             title: updatedTitle,
+            pageUrl: updatedPageUrl,
             file: url,
         };
         await this.bannerRepository.update(id, updatedData);
@@ -84,10 +103,6 @@ export class BannerService {
     // 배너 조회수
     async clickBanner(bannerId: number) {
         let bannerClick = await this.bannerClickRepository.findOne({ where: { bannerId } });
-
-        if (!bannerClick) {
-            throw new NotFoundException('배너를 찾을 수 없습니다.');
-        }
 
         if (!bannerClick) {
             bannerClick = new BannerClick();
