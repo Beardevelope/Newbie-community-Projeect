@@ -8,6 +8,7 @@ import { Post } from 'src/post/entities/post.entity';
 import { CreateReplyDto } from './dto/create-reply.dto';
 import { UpdateReplyDto } from './dto/update-reply.dto';
 import { CommentLike } from '../comment-like/entitis/comment-like.entity';
+import { AlarmService } from 'src/alarm/alarm.service';
 
 @Injectable()
 export class CommentService {
@@ -18,6 +19,7 @@ export class CommentService {
         private readonly postRepository: Repository<Post>,
         @InjectRepository(CommentLike)
         private readonly commentLikeRepository: Repository<CommentLike>,
+        private readonly alarmService: AlarmService,
     ) {}
 
     // 게시글 유효성 확인
@@ -103,7 +105,18 @@ export class CommentService {
             ...createReplyDto,
         });
 
-        return this.commentRepository.save(reply);
+        const savedReply = await this.commentRepository.save(reply);
+
+        // 알림 보내기
+        const comment = await this.findCommentById(savedReply.id);
+        const post = await this.verifyPostId(postId);
+        await this.alarmService.createAlarm(
+            comment.userId,
+            post.title,
+            '댓글에 새로운 댓글이 달렸습니다.',
+        );
+        console.log(savedReply);
+        return savedReply;
     }
 
     // 대댓글 수정

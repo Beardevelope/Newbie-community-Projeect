@@ -3,7 +3,7 @@ import { Answer } from 'src/answer/entities/answer.entity';
 import { Banner } from 'src/banner/entities/banner.entity';
 import { Comment } from 'src/comment/entities/comment.entity';
 import { CommentLike } from 'src/comment-like/entitis/comment-like.entity';
-import { Like } from 'src/like/entities/like.entity';
+import { ProjectLike } from 'src/project-like/entities/project-like.entity';
 import { Post } from 'src/post/entities/post.entity';
 import { ProjectPost } from 'src/project-post/entities/project-post.entity';
 import {
@@ -88,8 +88,8 @@ export class User {
     @OneToMany(() => Answer, (answer) => answer.user)
     answer: Answer[];
 
-    @OneToMany(() => Like, (like) => like.user)
-    like: Like[];
+    @OneToMany(() => ProjectLike, (projectLike) => projectLike.user)
+    projectLike: ProjectLike[];
 
     async serializeUser(): Promise<number> {
         return this.id;

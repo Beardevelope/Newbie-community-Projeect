@@ -55,7 +55,7 @@
                 <hr />
                 <ul class="nav nav-pills flex-column mb-auto">
                     <li class="nav-item">
-                        <a href="http://localhost:3000/Auth/mainpage.html" class="nav-link text-white" aria-current="page">
+                        <a href="../Auth/mainpage.html" class="nav-link active" aria-current="page">
                             <svg class="bi pe-none me-2" width="16" height="16">
                                 <use xlink:href="#home"></use>
                             </svg>
@@ -63,7 +63,7 @@
                         </a>
                     </li>
                     <li>
-                        <a href="#" class="nav-link text-white">
+                        <a href="../Post/html/postList.html" class="nav-link text-white">
                             <svg class="bi pe-none me-2" width="16" height="16">
                                 <use xlink:href="#speedometer2"></use>
                             </svg>
@@ -71,7 +71,7 @@
                         </a>
                     </li>
                     <li>
-                        <a href="#" class="nav-link active">
+                        <a href="../ProjectPost/projectPostMain.html" class="nav-link text-white">
                             <svg class="bi pe-none me-2" width="16" height="16">
                                 <use xlink:href="#table"></use>
                             </svg>
@@ -125,39 +125,78 @@
                 <div class="mainWrap">
                     <h2>프로젝트 게시물 생성</h2>
                     <form id="dataForm">
-                        <label for="title">제목:</label><br />
-                        <input type="text" id="title" name="title" required /><br /><br />
+                        <div>
+                            <label for="title">제목:</label><br />
+                            <input type="text" id="title" name="title" required /><br /><br />
+                        </div>
 
-                        <label for="content">내용:</label><br />
-                        <textarea id="content" name="content" required></textarea><br /><br />
+                        <div>
+                            <label for="content">내용:</label><br />
+                            <textarea id="content" name="content" required></textarea><br /><br />
+                        </div>
 
-                        <label for="image">이미지:</label><br />
-                        <input type="file" id="image" name="image" /><br /><br />
+                        <div>
+                            <label for="image">이미지:</label><br />
+                            <input type="file" id="image" name="image" /><br /><br />
+                        </div>
 
-                        <label for="stack">스택:</label><br />
-                        <input type="text" id="stack" name="stack" required /><br /><br />
+                        <div class="stackBox">
+                            <div class="stack">
+                                <label for="stack">스택:</label><br />
+                                <input type="text" id="stack" name="stack" required /><br /><br />
 
-                        <label for="numberOfPeople">인원 수:</label><br />
-                        <input
-                            type="number"
-                            id="numberOfPeople"
-                            name="numberOfPeople"
-                            required
-                        /><br /><br />
+                                <label for="numberOfPeople">인원 수:</label><br />
+                                <input
+                                    type="number"
+                                    id="numberOfPeople"
+                                    name="numberOfPeople"
+                                    required
+                                /><br /><br />
+                            </div>
+                        </div>
 
-                        <label for="applicationDeadLine">신청 마감일:</label><br />
-                        <input
-                            type="date"
-                            id="applicationDeadLine"
-                            name="applicationDeadLine"
-                            required
-                        /><br /><br />
+                        <div class="addStackBtn">스택 추가</div>
+                        <br /><br />
 
-                        <label for="startDate">시작일:</label><br />
-                        <input type="date" id="startDate" name="startDate" required /><br /><br />
+                        <div class="questionBox">
+                            <div class="question">
+                                <label for="question">질문:</label><br />
+                                <input
+                                    type="text"
+                                    id="question"
+                                    name="question"
+                                    required
+                                /><br /><br />
+                            </div>
+                        </div>
 
-                        <label for="dueDate">마감일:</label><br />
-                        <input type="date" id="dueDate" name="dueDate" required /><br /><br />
+                        <div class="addQuestionBtn">질문 추가</div>
+                        <br /><br />
+
+                        <div>
+                            <label for="applicationDeadLine">신청 마감일:</label><br />
+                            <input
+                                type="date"
+                                id="applicationDeadLine"
+                                name="applicationDeadLine"
+                                required
+                            /><br /><br />
+                        </div>
+
+                        <div>
+                            <label for="startDate">시작일:</label><br />
+                            <input
+                                type="date"
+                                id="startDate"
+                                name="startDate"
+                                required
+                            /><br /><br />
+                        </div>
+
+                        <div>
+                            <label for="dueDate">마감일:</label><br />
+                            <input type="date" id="dueDate" name="dueDate" required /><br /><br />
+                        </div>
 
                         <input type="submit" value="데이터 전송" />
                     </form>

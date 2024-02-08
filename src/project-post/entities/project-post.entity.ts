@@ -1,5 +1,5 @@
 import { IsDate, IsNotEmpty, IsNumber, IsString } from 'class-validator';
-import { Like } from 'src/like/entities/like.entity';
+import { ProjectLike } from 'src/project-like/entities/project-like.entity';
 import { NeedInfo } from 'src/need-info/entities/need-info.entity';
 import { Question } from 'src/question/entities/question.entity';
 import {
@@ -74,8 +74,8 @@ export class ProjectPost {
     @OneToMany(() => Question, (question) => question.projectPost, { cascade: true })
     question: Question[];
 
-    @OneToMany(() => Like, (like) => like.projectPost, { cascade: true })
-    like: Like[];
+    @OneToMany(() => ProjectLike, (projectLike) => projectLike.projectPost, { cascade: true })
+    projectLike: ProjectLike[];
 
     @ManyToOne(() => User, (user) => user.projectPost)
     @JoinColumn({ name: 'user_id' })
