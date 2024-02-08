@@ -16,6 +16,7 @@ import { AutoReply } from 'src/openai/openai.provider';
 import { CommentService } from 'src/comment/comment.service';
 import { Tag } from 'src/tag/entities/tag.entity';
 import { UploadServiceService } from 'src/upload-service/upload-service.service';
+import { SearchService } from 'src/search/search.service';
 
 @Injectable()
 export class PostService {
@@ -29,6 +30,7 @@ export class PostService {
         private readonly autoReply: AutoReply,
         private readonly commenService: CommentService,
         private readonly uploadService: UploadServiceService,
+        private readonly searchService: SearchService,
     ) {}
 
     // 게시글 생성
@@ -56,6 +58,8 @@ export class PostService {
             tags,
             userId,
         });
+
+        this.searchService.indexPost(post);
 
         return post;
     }
