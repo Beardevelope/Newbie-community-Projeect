@@ -30,6 +30,11 @@ export class Banner {
     @IsString()
     file: string;
 
+    @Column()
+    @IsNotEmpty({ message: 'URL을 입력해주세요.' })
+    @IsString()
+    pageUrl: string;
+
     @CreateDateColumn()
     createdAt: Date;
 

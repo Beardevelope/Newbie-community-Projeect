@@ -1,13 +1,26 @@
 import { Injectable } from '@nestjs/common';
 import { MailerService } from '@nestjs-modules/mailer';
-import { User } from 'src/user/entities/user.entity';
+import { JwtService } from '@nestjs/jwt';
+import { UserService } from 'src/user/user.service';
 
 @Injectable()
 export class EmailService {
-    constructor(private readonly mailerService: MailerService) {}
+    constructor(
+        private readonly mailerService: MailerService,
+        private readonly jwtService: JwtService,
+    ) {}
 
     async sendVerificationEmail(email: string, userId: number): Promise<void> {
-        const url = `http:/localhost:3000/auth/verify/${userId}`;
+        const token = this.jwtService.sign(
+            {
+                email,
+                id: userId,
+            },
+
+            { expiresIn: '1h' },
+        );
+
+        const url = `http:/localhost:3000/auth/verify/${token}`;
 
         await this.mailerService.sendMail({
             to: email,

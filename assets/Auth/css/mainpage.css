@@ -109,29 +109,6 @@ body {
     width: calc(100% - 240px);
 }
 
-.banners {
-    flex-wrap: wrap;
-    width: 200px;
-    gap: 30px;
-    display: flex;
-    flex-direction: column;
-}
-
-.banner {
-    padding: 10px;
-    height: 300px;
-    border: 2px solid #000;
-    border-radius: 10px;
-    margin-right: 2%;
-    box-sizing: border-box;
-    background-color: #212529;
-    color: wheat;
-}
-
-.banner:last-child {
-    margin-right: 0;
-}
-
 .contentBox {
     display: flex;
     gap: 15px;
