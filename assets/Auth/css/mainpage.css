@@ -108,7 +108,7 @@ body {
 .boards {
     width: calc(100% - 240px);
 }
-
+/* 
 .banners {
     position: relative;
     flex-wrap: wrap;
@@ -121,12 +121,12 @@ body {
 
 .sideBanner {
     position: absolute;
-    top: 5px; /* 상단 초기 위치 */
+    top: 5px; 
     right: 10px;
     width: 200px;
     height: 350px;
     background-color: #ffffff;
-}
+} */
 
 .contentBox {
     display: flex;

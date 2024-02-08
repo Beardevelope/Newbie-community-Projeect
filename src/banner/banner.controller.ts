@@ -101,6 +101,7 @@ export class BannerController {
     async clickBanner(@Param('bannerId', ParseIntPipe) bannerId: number) {
         const bannerClick = await this.bannerService.clickBanner(bannerId);
         const pageUrl = await this.bannerService.getBannerPageUrl(bannerId);
-        
-        return { clickCount: bannerClick.clickCount, pageUrl }; 
+
+        return { clickCount: bannerClick.clickCount, pageUrl };
+    }
 }

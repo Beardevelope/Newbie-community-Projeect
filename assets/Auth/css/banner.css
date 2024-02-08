@@ -1,0 +1,18 @@
+.banners {
+    position: relative;
+    flex-wrap: wrap;
+    height: 100px;
+    width: 200px;
+    gap: 30px;
+    display: flex;
+    flex-direction: column;
+}
+
+.sideBanner {
+    position: absolute;
+    top: 5px; /* 상단 초기 위치 */
+    right: 10px;
+    width: 200px;
+    height: 350px;
+    background-color: #ffffff;
+}
