@@ -36,7 +36,7 @@ export class PostService {
     // 게시글 생성
     async create(createPostDto: CreatePostDto, userId: number, file: any) {
         const { title, content, tag } = createPostDto;
-        const url = await this.uploadService.uploadFile(file);
+        const url = file ? await this.uploadService.uploadFile(file): null;
         const tagArray = tag.split(',');
 
         const tags = [];
@@ -59,7 +59,7 @@ export class PostService {
             userId,
         });
 
-        this.searchService.indexPost(post);
+        this.searchService.indexPost('posts', post);
 
         return post;
     }
@@ -249,7 +249,7 @@ export class PostService {
             throw new NotAcceptableException('수정할 권한이 없습니다.');
         }
 
-        const url = await this.uploadService.uploadFile(file);
+        const url = file ? await this.uploadService.uploadFile(file): null;
         const tagArray = tag.split(',');
 
         const tags = [];
@@ -272,6 +272,8 @@ export class PostService {
             tags,
         });
 
+        this.searchService.update('posts', postId, updatePost);
+
         return updatePost;
     }
 
@@ -293,6 +295,8 @@ export class PostService {
         }
 
         await this.postRepository.delete(postId);
+
+        this.searchService.remove('posts', postId);
 
         return foundPost;
     }
