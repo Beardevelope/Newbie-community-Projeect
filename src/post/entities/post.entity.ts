@@ -27,13 +27,13 @@ export class Post {
     userId: number;
 
     @Column()
-    @IsNotEmpty({ message: '입력란을 확인해주세요' })
+    @IsNotEmpty({ message: '제목란을 확인해주세요' })
     @IsString()
     title: string;
 
-    @Column()
-    @IsNotEmpty({ message: '입력란을 확인해주세요' })
-    @IsString()
+    @Column({ type: 'longtext' })
+    @IsNotEmpty({ message: '내용란을 확인해주세요' })
+    //@IsString()
     content: string;
 
     @Column({ nullable: true })
@@ -79,4 +79,9 @@ export class Post {
 
     @OneToMany((type) => Warning, (warning) => warning.post)
     warnings: Warning[];
+
+    // 저장하기 전에 HTML 이스케이핑 수행
+    beforeInsert() {
+        this.content = escape(this.content);
+    }
 }
