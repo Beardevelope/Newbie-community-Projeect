@@ -126,6 +126,13 @@ body {
 }
 /* postList */
 
+.ck-editor__editable {
+    height: 200px;
+}
+.ck-content {
+    font-size: 12px;
+}
+
 
 #post-layout {
     display: flex;
