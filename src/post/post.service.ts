@@ -74,7 +74,8 @@ export class PostService {
         ) {
             throw new BadRequestException('알맞는 정렬값을 입력해주세요.');
         }
-
+        
+        // // 태그가 이상함..
         // const take: number = 3;
         // const skip: number = (page - 1) * take;
         // const [posts, total] = await this.postRepository.findAndCount({
@@ -101,7 +102,8 @@ export class PostService {
         //         meta: {
         //             total,
         //             page,
-        //             last_page: Math.ceil(total / take),
+        //             lastPage: Math.ceil(total / take),
+        //             itemsPerPage: take,
         //         },
         //     };
         // }
@@ -113,10 +115,12 @@ export class PostService {
         //     meta: {
         //         total,
         //         page,
-        //         last_page: Math.ceil(total / take),
+        //         lastPage: Math.ceil(total / take),
         //     },
         // };
 
+
+        //기존 구현
         const posts = await this.postRepository.find({
             where: {
                 deletedAt: null,
@@ -333,7 +337,6 @@ export class PostService {
             throw new BadRequestException('게시글이 없습니다.');
         }
 
-        console.log(posts);
         return posts;
     }
 

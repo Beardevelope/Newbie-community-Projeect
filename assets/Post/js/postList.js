@@ -28,7 +28,7 @@ async function postList(orderAndFilter) {
                 accept: 'application/json',
             });
             const jsonData = await response.json();
-            let posts = jsonData.posts.data;
+            let posts = jsonData.posts;
 
             posts.forEach((post) => {
                 foundPosts.push(post);
@@ -41,7 +41,6 @@ async function postList(orderAndFilter) {
             accept: 'application/json',
         });
         const jsonData = await response.json();
-        console.log(jsonData)
         let posts = jsonData.posts;
 
         posts.forEach((post) => {
@@ -177,7 +176,8 @@ document.addEventListener('DOMContentLoaded', () => {
     let StringTagName = window.location.search;
     const tagName = StringTagName.substr(9);
     if (tagName) {
-        postList(`?order=createdAt&tagName=${tagName}`);
+        postList(`?tagName=${tagName}`);
+        tag.push(tagName)
     } else {
         postList();
     }
