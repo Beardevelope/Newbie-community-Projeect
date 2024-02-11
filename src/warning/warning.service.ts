@@ -6,6 +6,8 @@ import { Warning } from './entities/warning.entity';
 import { DataSource, MoreThan, Repository } from 'typeorm';
 import { Post } from 'src/post/entities/post.entity';
 import { UserService } from 'src/user/user.service';
+import { Cron } from '@nestjs/schedule';
+import { forEach } from 'lodash';
 
 @Injectable()
 export class WarningService {
@@ -142,4 +144,30 @@ export class WarningService {
 
         return { message: 'User not restricted' };
     }
+
+    @Cron('10 * * * * *')
+    async cancelBan() {
+        // 벤당한 사람들을 찾아온다.
+        // 벤 당한 날짜(banDate)를 벤 할 때 새로 넣어주는 것이 좋을듯 new Date() 이걸 사용해서 넣어주기
+        // 벤 날짜 컬럼을 새로 만들어서 ..clg
+        // const users = await this.userService.findAllBanUser();
+        // users.forEach(async (user) => {
+        //     const currentDate = new Date();
+        //     const DateDiff = currentDate.getTime() - user.banDate.getTime();
+        //     const DateDiffNumber = Math.floor(Math.abs(DateDiff / (1000 * 60 * 60 * 24)));
+        //     if (DateDiffNumber >= 3) {
+        //         user.isBan = false;
+        //         await this.userService.updateUser(user.id, user);
+        //     }
+        // });
+    }
 }
+
+// // 벤당한유저 찾기
+// async findAllBanUser() {
+//     return await this.usersRepository.find({
+//         where: {
+//             isBan: true
+//         }
+//     })
+// }
