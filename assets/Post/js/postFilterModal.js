@@ -18,27 +18,41 @@ function openFilterModal() {
     document.getElementById('filterModal').style.display = 'flex';
 }
 
+let tag = [];
+
 // 이곳부터는 필터를 위한 로직들
 // 필터를 위한 버튼들
 newestButton.addEventListener('click', function () {
     questionsList.innerHTML = '';
     foundPosts = [];
     currentPage = 1;
-    postList('?order=createdAt');
+    if (tag.length > 0) {
+        postList(`?order=createdAt&tagName=${tag[tag.length - 1]}`);
+        return;
+    }
+    postList(`?order=createdAt`);
 });
 
 answeredButton.addEventListener('click', function () {
     questionsList.innerHTML = '';
     foundPosts = [];
     currentPage = 1;
-    postList('?order=createdAt&tab=answered');
+    if (tag.length > 0) {
+        postList(`?order=createdAt&tab=answered&tagName=${tag[tag.length - 1]}`);
+        return;
+    }
+    postList(`?order=createdAt&tab=answered`);
 });
 
 unAnsweredButton.addEventListener('click', function () {
     questionsList.innerHTML = '';
     foundPosts = [];
     currentPage = 1;
-    postList('?order=createdAt&tab=unAnswered');
+    if (tag.length > 0) {
+        postList(`?order=createdAt&tab=unAnswered&tagName=${tag[tag.length - 1]}`);
+        return;
+    }
+    postList(`?order=createdAt&tab=unAnswered`);
 });
 
 // 태크를 눌렀을 때 태그 필터 적용
@@ -50,7 +64,8 @@ function addEventListenersToTagButtons() {
             questionsList.innerHTML = '';
             foundPosts = [];
             currentPage = 1;
-            postList(`?order=createdAt&tagName=${tagName}`);
+            postList(`?tagName=${tagName}`);
+            tag.push(tagName);
         });
     });
 }
@@ -75,6 +90,26 @@ function applyFilters() {
     foundPosts = [];
     currentPage = 1;
 
+    if (tag.length > 0) {
+        if (!selectedTab && selectedFilter) {
+            postList(`?order=${selectedOrder}&filter=${selectedFilter}&tagName=${tag}`);
+            return;
+        }
+
+        if (!selectedFilter && selectedTab) {
+            postList(`?order=${selectedOrder}&tab=${selectedTab}&tagName=${tag}`);
+            return;
+        }
+
+        if (!selectedFilter && !selectedTab) {
+            postList(`?order=${selectedOrder}&tagName=${tag}`);
+            return;
+        }
+
+        postList(`?order=${selectedOrder}&tab=${selectedTab}&filter=${selectedFilter}&tagName=${tag}`);
+        return;
+    }
+
     if (!selectedTab && selectedFilter) {
         postList(`?order=${selectedOrder}&filter=${selectedFilter}`);
         return;
@@ -85,12 +120,13 @@ function applyFilters() {
         return;
     }
 
-    if(!selectedFilter && !selectedTab) {
+    if (!selectedFilter && !selectedTab) {
         postList(`?order=${selectedOrder}`);
         return;
     }
 
     postList(`?order=${selectedOrder}&tab=${selectedTab}&filter=${selectedFilter}`);
+    return;
 }
 
 // 필터 모달 닫기
