@@ -10,7 +10,7 @@ import { CreatePostDto } from './dto/create-post.dto';
 import { UpdatePostDto } from './dto/update-post.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Post } from './entities/post.entity';
-import { DataSource, IsNull, LessThan, Not, Repository } from 'typeorm';
+import { DataSource, Equal, IsNull, LessThan, Not, Raw, Repository } from 'typeorm';
 import { Cron } from '@nestjs/schedule';
 import { AutoReply } from 'src/openai/openai.provider';
 import { CommentService } from 'src/comment/comment.service';
@@ -36,7 +36,7 @@ export class PostService {
     // 게시글 생성
     async create(createPostDto: CreatePostDto, userId: number, file: any) {
         const { title, content, tag } = createPostDto;
-        const url = file ? await this.uploadService.uploadFile(file): null;
+        const url = file ? await this.uploadService.uploadFile(file) : null;
         const tagArray = tag.split(',');
 
         const tags = [];
@@ -74,75 +74,55 @@ export class PostService {
         ) {
             throw new BadRequestException('알맞는 정렬값을 입력해주세요.');
         }
-        
-        // // 태그가 이상함..
-        // const take: number = 3;
-        // const skip: number = (page - 1) * take;
-        // const [posts, total] = await this.postRepository.findAndCount({
-        //     where: {
-        //         deletedAt: null,
-        //         ...(filter && { status: `${filter}` }),
-        //         ...(tab === 'answered' && { comments: { id: Not(IsNull()) } }),
-        //         ...(tab === 'unAnswered' && { comments: { id: IsNull() } }),
-        //     },
-        //     order: {
-        //         ...(order && { [`${order}`]: 'DESC' }),
-        //     },
-        //     relations: {
-        //         tags: true,
-        //         comments: true,
-        //     },
-        //     take,
-        //     skip,
-        // });
 
-        // if (!tagName) {
-        //     return {
-        //         data: posts,
-        //         meta: {
-        //             total,
-        //             page,
-        //             lastPage: Math.ceil(total / take),
-        //             itemsPerPage: take,
-        //         },
-        //     };
-        // }
+        const take: number = 3;
+        const skip: number = (page - 1) * take;
 
-        // const filteredPosts = posts.filter((post) => post.tags.some((tag) => tag.name === tagName));
+        const [posts, total] = await this.postRepository
+            .createQueryBuilder('post')
+            .leftJoinAndSelect('post.tags', 'tags')
+            .leftJoinAndSelect('post.comments', 'comments')
+            .where((qb) => {
+                qb.where('post.deletedAt IS NULL');
 
-        // return {
-        //     data: filteredPosts,
-        //     meta: {
-        //         total,
-        //         page,
-        //         lastPage: Math.ceil(total / take),
-        //     },
-        // };
+                if (filter) {
+                    qb.andWhere('post.status = :filter', { filter });
+                }
 
+                if (tab === 'answered') {
+                    qb.andWhere('comments.id IS NOT NULL');
+                }
 
-        //기존 구현
-        const posts = await this.postRepository.find({
-            where: {
-                deletedAt: null,
-                ...(filter && { status: `${filter}` }),
-                ...(tab === 'answered' && { comments: { id: Not(IsNull()) } }),
-                ...(tab === 'unAnswered' && { comments: { id: IsNull() } }),
+                if (tab === 'unAnswered') {
+                    qb.andWhere('comments.id IS NULL');
+                }
+
+                if (tagName) {
+                    const subQuery = qb
+                        .subQuery()
+                        .select('postTags.id')
+                        .from('tag', 'postTags')
+                        .where('postTags.name = :tagName', { tagName })
+                        .getQuery();
+
+                    qb.andWhere(`tags.id IN ${subQuery}`);
+                    qb.leftJoinAndSelect('post.tags', 'allTags');
+                }
+            })
+            .orderBy(order ? { [`post.${order}`]: 'DESC' } : undefined)
+            .skip(skip)
+            .take(take)
+            .getManyAndCount();
+
+        return {
+            data: posts,
+            meta: {
+                total,
+                itemsPerPage: take,
+                page,
+                lastPage: Math.ceil(total / take),
             },
-            order: {
-                ...(order && { [`${order}`]: 'DESC' }),
-            },
-            relations: {
-                tags: true,
-                comments: true,
-            },
-        });
-
-        if (!tagName) {
-            return posts;
-        }
-
-        const filteredPosts = posts.filter((post) => post.tags.some((tag) => tag.name === tagName));
-        return filteredPosts;
+        };
     }
 
     // 게시글 상세 조회
@@ -253,7 +233,7 @@ export class PostService {
             throw new NotAcceptableException('수정할 권한이 없습니다.');
         }
 
-        const url = file ? await this.uploadService.uploadFile(file): null;
+        const url = file ? await this.uploadService.uploadFile(file) : null;
         const tagArray = tag.split(',');
 
         const tags = [];

@@ -118,7 +118,7 @@ const listDetailPageOfPost = async () => {
             </div>
     `;
         tags.forEach((tag) => {
-            postLayout.innerHTML += `<button type="button" id="${tag.name}" class="tagButton" onclick="location.href='./postList.html?tagName=${tag.name}'">${tag.name}</button>`;
+            postLayout.innerHTML += `<button type="button" id="${tag.name}" class="tagButton" onclick="location.href='../Post/html/postList.html?tagName=${tag.name}'">${tag.name}</button>`;
         });
 
         /**좋아요 싫어요 api 없는 거 같아서 우선 안했습니다. */
