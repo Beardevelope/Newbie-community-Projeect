@@ -158,12 +158,17 @@ export class PostService {
             throw new NotAcceptableException('수정할 권한이 없습니다.');
         }
 
-        const updateStatus = foundPost.status === null ? 'done' : null;
+        const updateStatus = foundPost.status === 'unfinished' ? 'finished' : 'unfinished';
 
-        await this.postRepository.save({
+        const updatedPost = await this.postRepository.save({
             id: postId,
             status: updateStatus,
         });
+
+        if (updatedPost.status === 'unfinished') {
+            return -1;
+        }
+        return 1
     }
 
     // 게시글 경고 - 누적제
