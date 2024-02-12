@@ -13,9 +13,9 @@ const statusDone = document.getElementById('statusDone');
 const statusUnfinished = document.getElementById('statusUnfinished');
 
 let foundPosts = [];
+let metaData = [];
 
 // 페이지와 관련된 변수
-const itemsPerPage = 3; // 페이지당 아이템 수
 let currentPage = 1;
 const maxPagesToShow = 5; // 표시할 최대 페이지 수
 
@@ -28,7 +28,10 @@ async function postList(orderAndFilter) {
                 accept: 'application/json',
             });
             const jsonData = await response.json();
-            let posts = jsonData.posts;
+            let posts = jsonData.posts.data;
+            let meta = jsonData.posts.meta;
+
+            metaData.push(meta);
 
             posts.forEach((post) => {
                 foundPosts.push(post);
@@ -37,11 +40,14 @@ async function postList(orderAndFilter) {
             return;
         }
 
-        const response = await fetch(`http://localhost:3000/post`, {
+        const response = await fetch(`http://localhost:3000/post?page=1`, {
             accept: 'application/json',
         });
         const jsonData = await response.json();
-        let posts = jsonData.posts;
+        let posts = jsonData.posts.data;
+        let meta = jsonData.posts.meta;
+
+        metaData.push(meta);
 
         posts.forEach((post) => {
             foundPosts.push(post);
@@ -69,12 +75,7 @@ function displayPosts(posts) {
             if (i > 3) {
                 break;
             }
-            // continue를 사용하면 쓸데없는 반복문을 실행한다.
-            // if (i > 3) {
-            //     continue;
-            // }
             questionElement.innerHTML += `<button id="${tags[i].name}" class="tagButton">${tags[i].name}</button>`;
-           
         }
         questionElement.innerHTML += `<h5 class="commentHitLike">댓글: ${post.comments.length} 조회수: ${post.hitCount} 좋아요: ${post.likes}</h5>`;
         questionsList.appendChild(questionElement);
@@ -88,7 +89,10 @@ function displayPosts(posts) {
 
 // 페이지네이션을 업데이트
 function updatePagination() {
-    const totalPages = Math.ceil(foundPosts.length / itemsPerPage);
+    let totalPost = metaData[metaData.length - 1].total;
+    let itemsPerPage = metaData[metaData.length - 1].itemsPerPage;
+
+    const totalPages = Math.ceil(totalPost / itemsPerPage);
 
     // 표시할 최대 페이지 수 제한
     const startPage = Math.max(1, currentPage - Math.floor(maxPagesToShow / 2));
@@ -98,10 +102,11 @@ function updatePagination() {
     paginationContainer.innerHTML = '';
     paginationContainer.appendChild(pagination);
 
-    // 현재 페이지에 해당하는 포스트 표시
-    const startIndex = (currentPage - 1) * itemsPerPage;
-    const endIndex = startIndex + itemsPerPage;
-    const currentPagePosts = foundPosts.slice(startIndex, endIndex);
+    // //현재 페이지에 해당하는 포스트 표시
+    // const startIndex = (currentPage - 1) * itemsPerPage;
+    // const endIndex = startIndex + itemsPerPage;
+    // const currentPagePosts = foundPosts.slice(startIndex, endIndex);
+    const currentPagePosts = foundPosts;
     displayPosts(currentPagePosts);
 }
 
@@ -129,9 +134,22 @@ function generatePagination(startPage, endPage, currentPage, totalPages) {
     return paginationUl;
 }
 
+const receivedorderAndFilter = [];
+
 // 페이지 변경 함수
 function goToPage(page) {
     currentPage = page;
+    questionsList.innerHTML = '';
+    foundPosts = [];
+    console.log(receivedorderAndFilter[receivedorderAndFilter.length - 1])
+    if (receivedorderAndFilter.length > 0) {
+        postList(
+            `${receivedorderAndFilter[receivedorderAndFilter.length - 1]}&page=${currentPage}`,
+        );
+        updatePagination();
+        return;
+    }
+    postList(`?page=${currentPage}`);
     updatePagination();
 }
 
@@ -176,8 +194,8 @@ document.addEventListener('DOMContentLoaded', () => {
     let StringTagName = window.location.search;
     const tagName = StringTagName.substr(9);
     if (tagName) {
-        postList(`?tagName=${tagName}`);
-        tag.push(tagName)
+        receivedorderAndFilter.push(`?order=createdAt&tagName=${tagName}`)
+        postList(`?order=createdAt&tagName=${tagName}&page=1`);
     } else {
         postList();
     }

@@ -27,10 +27,12 @@ newestButton.addEventListener('click', function () {
     foundPosts = [];
     currentPage = 1;
     if (tag.length > 0) {
-        postList(`?order=createdAt&tagName=${tag[tag.length - 1]}`);
+        receivedorderAndFilter.push(`?order=createdAt&tagName=${tag[tag.length - 1]}`)
+        postList(`?order=createdAt&tagName=${tag[tag.length - 1]}&page=1`);
         return;
     }
-    postList(`?order=createdAt`);
+    receivedorderAndFilter.push(`?order=createdAt`)
+    postList(`?order=createdAt&page=1`);
 });
 
 answeredButton.addEventListener('click', function () {
@@ -38,10 +40,12 @@ answeredButton.addEventListener('click', function () {
     foundPosts = [];
     currentPage = 1;
     if (tag.length > 0) {
-        postList(`?order=createdAt&tab=answered&tagName=${tag[tag.length - 1]}`);
+        receivedorderAndFilter.push(`?order=createdAt&tab=answered&tagName=${tag[tag.length - 1]}`)
+        postList(`?order=createdAt&tab=answered&tagName=${tag[tag.length - 1]}&page=1`);
         return;
     }
-    postList(`?order=createdAt&tab=answered`);
+    receivedorderAndFilter.push(`?order=createdAt&tab=answered`)
+    postList(`?order=createdAt&tab=answered&page=1`);
 });
 
 unAnsweredButton.addEventListener('click', function () {
@@ -49,10 +53,12 @@ unAnsweredButton.addEventListener('click', function () {
     foundPosts = [];
     currentPage = 1;
     if (tag.length > 0) {
-        postList(`?order=createdAt&tab=unAnswered&tagName=${tag[tag.length - 1]}`);
+        receivedorderAndFilter.push(`?order=createdAt&tab=unAnswered&tagName=${tag[tag.length - 1]}`)
+        postList(`?order=createdAt&tab=unAnswered&tagName=${tag[tag.length - 1]}&page=1`);
         return;
     }
-    postList(`?order=createdAt&tab=unAnswered`);
+    receivedorderAndFilter.push(`?order=createdAt&tab=unAnswered`)
+    postList(`?order=createdAt&tab=unAnswered&page=1`);
 });
 
 // 태크를 눌렀을 때 태그 필터 적용
@@ -64,7 +70,8 @@ function addEventListenersToTagButtons() {
             questionsList.innerHTML = '';
             foundPosts = [];
             currentPage = 1;
-            postList(`?tagName=${tagName}`);
+            receivedorderAndFilter.push(`?tagName=${tagName}`)
+            postList(`?tagName=${tagName}&page=1`);
             tag.push(tagName);
         });
     });
@@ -92,40 +99,47 @@ function applyFilters() {
 
     if (tag.length > 0) {
         if (!selectedTab && selectedFilter) {
-            postList(`?order=${selectedOrder}&filter=${selectedFilter}&tagName=${tag}`);
+            receivedorderAndFilter.push(`?order=${selectedOrder}&filter=${selectedFilter}&tagName=${tag}`)
+            postList(`?order=${selectedOrder}&filter=${selectedFilter}&tagName=${tag}&page=1`);
             return;
         }
 
         if (!selectedFilter && selectedTab) {
-            postList(`?order=${selectedOrder}&tab=${selectedTab}&tagName=${tag}`);
+            receivedorderAndFilter.push(`?order=${selectedOrder}&tab=${selectedTab}&tagName=${tag}`)
+            postList(`?order=${selectedOrder}&tab=${selectedTab}&tagName=${tag}&page=1`);
             return;
         }
 
         if (!selectedFilter && !selectedTab) {
-            postList(`?order=${selectedOrder}&tagName=${tag}`);
+            receivedorderAndFilter.push(`?order=${selectedOrder}&tagName=${tag}`)
+            postList(`?order=${selectedOrder}&tagName=${tag}&page=1`);
             return;
         }
-
-        postList(`?order=${selectedOrder}&tab=${selectedTab}&filter=${selectedFilter}&tagName=${tag}`);
+        receivedorderAndFilter.push(`?order=${selectedOrder}&tab=${selectedTab}&filter=${selectedFilter}&tagName=${tag}`)
+        postList(`?order=${selectedOrder}&tab=${selectedTab}&filter=${selectedFilter}&tagName=${tag}&page=1`);
         return;
     }
 
     if (!selectedTab && selectedFilter) {
-        postList(`?order=${selectedOrder}&filter=${selectedFilter}`);
+        receivedorderAndFilter.push(`?order=${selectedOrder}&filter=${selectedFilter}`)
+        postList(`?order=${selectedOrder}&filter=${selectedFilter}&page=1`);
         return;
     }
 
     if (!selectedFilter && selectedTab) {
-        postList(`?order=${selectedOrder}&tab=${selectedTab}`);
+        receivedorderAndFilter.push(`?order=${selectedOrder}&tab=${selectedTab}`)
+        postList(`?order=${selectedOrder}&tab=${selectedTab}&page=1`);
         return;
     }
 
     if (!selectedFilter && !selectedTab) {
-        postList(`?order=${selectedOrder}`);
+        receivedorderAndFilter.push(`?order=${selectedOrder}`)
+        postList(`?order=${selectedOrder}&page=1`);
         return;
     }
 
-    postList(`?order=${selectedOrder}&tab=${selectedTab}&filter=${selectedFilter}`);
+    receivedorderAndFilter.push(`?order=${selectedOrder}&tab=${selectedTab}&filter=${selectedFilter}`)
+    postList(`?order=${selectedOrder}&tab=${selectedTab}&filter=${selectedFilter}&page=1`);
     return;
 }
 
