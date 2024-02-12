@@ -273,3 +273,38 @@ async function clickLikeButton() {
         alert(err.message);
     }
 }
+
+// 게시글 status(해결, 미해결) 바꾸기
+const statusButton = document.getElementById('statusButton')
+statusButton.addEventListener('click', () => {
+    clickStatusButton();
+});
+console.log(statusButton)
+
+async function clickStatusButton () {
+    try {
+        const response = await fetch(`http://localhost:3000/post/${currentPostId}/status`, {
+            method: 'put',
+            headers: {
+                Authorization:
+                    'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjEsImVtYWlsIjoibWluaGVlQHlhaG9vLmNvbSIsImlkIjoxLCJ0eXBlIjoiYWNjZXNzIiwiaWF0IjoxNzA3Nzc2OTcyLCJleHAiOjE3MDc3ODA1NzJ9.r3pbTSEu749jMAr-g69pQ1XKRcjmr9uS_guhZQ4d3h8',
+            },
+        });
+        const jsonData = await response.json();
+        const postStatus = jsonData.postStatus;
+        if (response.status !== 200) {
+            //cry catch 구문에서 throw는 에러가 발생했을 때 catch에다가 error를 던져준다.
+            throw new Error('게시글 상태변경에 실패하였습니다.');
+        }
+        if (postStatus === 1) {
+            alert(`해당 게시글의 상태를 해결로 변경하였습니다.`);
+            window.location.href = `./post-detail.html?id=${currentPostId}`;
+            return;
+        }
+        alert(`해당 게시글의 상태를 미해결로 변경하였습니다.`);
+        window.location.href = `./post-detail.html?id=${currentPostId}`;
+    } catch (err) {
+        console.log(err);
+        alert(err.message);
+    }
+}

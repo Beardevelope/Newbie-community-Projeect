@@ -261,3 +261,13 @@ ul.pagination li a.active {
     text-shadow: 5px 5px #2d63a7;
     text-decoration: underline;
 }
+
+.statusPost {
+    font-size: 20px;
+    margin-left: 30px;
+    font-family: 'Staatliches', cursive;
+    text-align: center;
+    color: #f1c164;
+    text-shadow: 5px 5px #2d63a7;
+    text-decoration: underline;
+}
