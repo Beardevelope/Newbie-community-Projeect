@@ -7,7 +7,6 @@ import { DataSource, MoreThan, Repository } from 'typeorm';
 import { Post } from 'src/post/entities/post.entity';
 import { UserService } from 'src/user/user.service';
 import { Cron } from '@nestjs/schedule';
-import { forEach } from 'lodash';
 
 @Injectable()
 export class WarningService {
