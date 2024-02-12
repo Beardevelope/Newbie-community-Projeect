@@ -3,6 +3,7 @@ import { AppModule } from './app.module';
 import { ValidationPipe } from '@nestjs/common';
 import cors from 'cors';
 import { urlencoded, json } from 'body-parser';
+import helmet from 'helmet';
 
 async function bootstrap() {
     const app = await NestFactory.create(AppModule);
@@ -19,6 +20,7 @@ async function bootstrap() {
         optionsSuccessStatus: 204,
     });
 
+    app.use(helmet())
     await app.listen(parseInt(process.env.PORT) || 3000);
 }
 
