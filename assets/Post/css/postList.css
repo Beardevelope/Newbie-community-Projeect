@@ -250,3 +250,14 @@ ul.pagination li a.active {
     margin-top: 10px;
     border-radius: 5px;
 }
+
+/** 게시글 스타일 */
+#statusPost {
+    font-size: 20px;
+    margin-left: 30px;
+    font-family: 'Staatliches', cursive;
+    text-align: center;
+    color: #f1c164;
+    text-shadow: 5px 5px #2d63a7;
+    text-decoration: underline;
+}

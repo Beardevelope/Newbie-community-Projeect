@@ -70,7 +70,12 @@ function displayPosts(posts) {
         const questionElement = document.createElement('div');
         questionElement.style.width = '820px';
         questionElement.classList.add('question');
-        questionElement.innerHTML = `<h2 style="cursor: pointer" class="post" id="${post.id}">${post.title}</h2><p>${post.content.slice(0, 20)}...</p>`;
+        if (post.status === 'unfinished') {
+            questionElement.innerHTML = `<h2 style="cursor: pointer" class="post" id="${post.id}">${post.title}<a id="statusPost">미해결</a></h2>`;
+        } else if (post.status === 'finished') {
+            questionElement.innerHTML = `<h2 style="cursor: pointer" class="post" id="${post.id}">${post.title}<a>해결</a></h2>`;
+        }
+        questionElement.innerHTML += `<p>${post.content.slice(0, 20)}...</p>`
         for (let i = 0; i < tags.length; i++) {
             if (i > 3) {
                 break;
