@@ -5,7 +5,6 @@ const TOKEN = sessionStorage.getItem('accessToken');
 let StringPostId = window.location.search;
 const POST_ID = StringPostId.substr(4);
 
-
 import { marked } from 'https://cdn.jsdelivr.net/npm/marked/lib/marked.esm.js';
 
 const headline = document.getElementById('headline');
@@ -104,13 +103,11 @@ const listDetailPageOfPost = async () => {
             </div>
         </div>
     `;
-
         postLayout.innerHTML = `
             <div class="vote-bar">
                 <div class="vote-buttons">
-                        <button class="arrow-up"></button>
+                        <div id="arrowUp" style="cursor: pointer">👍</div>
                         <div class="vote-count">${post.likes}</div>
-                        <button class="arrow-down"></button>
                 </div>
             </div>
             <div id="post-cell">
@@ -121,24 +118,20 @@ const listDetailPageOfPost = async () => {
             postLayout.innerHTML += `<button type="button" id="${tag.name}" class="tagButton" onclick="location.href='../Post/html/postList.html?tagName=${tag.name}'">${tag.name}</button>`;
         });
 
-        /**좋아요 싫어요 api 없는 거 같아서 우선 안했습니다. */
-        const voteUp = document.querySelector('.arrow-up');
-        const voteDown = document.querySelector('.arrow-down');
-
         const listComments = async (comments) => {
             commentList.innerHTML = ``;
             const ul = document.createElement('ul');
-        
+
             const commentsMap = new Map();
-        
+
             comments.forEach((comment) => {
-                const parentId = comment.parentId || 0; 
+                const parentId = comment.parentId || 0;
                 if (!commentsMap.has(parentId)) {
                     commentsMap.set(parentId, []);
                 }
                 commentsMap.get(parentId).push(comment);
             });
-        
+
             const generateCommentList = (parentComments, parentElement) => {
                 parentComments.forEach((comment) => {
                     const li = document.createElement('li');
@@ -151,7 +144,7 @@ const listDetailPageOfPost = async () => {
                             <textarea class="commentText" rows="4" cols="50" placeholder="댓글 작성란"></textarea>
                             <button class="submitButton" id="${comment.id}" type="button">댓글 제출</button>
                         </form>`;
-        
+
                     if (commentsMap.has(comment.id)) {
                         const childUl = document.createElement('ul');
                         li.appendChild(childUl);
@@ -159,9 +152,9 @@ const listDetailPageOfPost = async () => {
                     }
                 });
             };
-        
-            generateCommentList(commentsMap.get(0) || [], ul); 
-        
+
+            generateCommentList(commentsMap.get(0) || [], ul);
+
             commentList.appendChild(ul);
         };
         listComments(comments);
@@ -172,8 +165,8 @@ const listDetailPageOfPost = async () => {
             const comment = {
                 userId: USER_ID,
                 postID: POST_ID,
-                content: content
-            }
+                content: content,
+            };
             if (comment) {
                 registerComment(comment);
             } else {
@@ -182,9 +175,6 @@ const listDetailPageOfPost = async () => {
         };
 
         commentSubmitBtn.addEventListener('click', writeComment);
-
-
-
     } catch (error) {
         alert('해당 페이지가 존재하지 않습니다.');
         window.location.href = '/error-page';
@@ -193,30 +183,30 @@ const listDetailPageOfPost = async () => {
 };
 
 function toggleCommentForm(id) {
-    const commentList = document.querySelector(".comment-list ul")
-    const commentForm = commentList.querySelector(`#form-${id}`)
-    commentForm.style.display = (commentForm.style.display === "none") ? "block" : "none"
+    const commentList = document.querySelector('.comment-list ul');
+    const commentForm = commentList.querySelector(`#form-${id}`);
+    commentForm.style.display = commentForm.style.display === 'none' ? 'block' : 'none';
 }
 
 const submitButton = async (id) => {
-    console.log(id)
-    const textArea = document.querySelector(`#form-${id} textarea`)
-    console.log(textArea)
+    console.log(id);
+    const textArea = document.querySelector(`#form-${id} textarea`);
+    console.log(textArea);
     const comment = {
         userId: USER_ID,
         postId: POST_ID,
         content: textArea.value,
-        parentId: id
-    }
-    await registerComment(comment)
-}
+        parentId: id,
+    };
+    await registerComment(comment);
+};
 
 const registerComment = async (comment) => {
     const response = await fetch(`${COMMENT_API}/${POST_ID}`, {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
-            'Authorization': `Bearer ${TOKEN}`
+            Authorization: `Bearer ${TOKEN}`,
         },
         body: JSON.stringify(comment),
     });
@@ -228,20 +218,58 @@ const registerComment = async (comment) => {
     }
     alert('댓글 작성 완료');
     commentTextArea.value = '';
-    location.reload()
+    location.reload();
 };
-
 
 document.addEventListener('DOMContentLoaded', async () => {
     await listDetailPageOfPost();
     document.querySelectorAll('.comment-list ul li .commentButton').forEach((button) => {
-        console.log()
-        button.addEventListener('click', () => toggleCommentForm(button.id))
-
-    })
+        console.log();
+        button.addEventListener('click', () => toggleCommentForm(button.id));
+    });
     document.querySelectorAll('.comment-list ul li .submitButton').forEach((button) => {
-        const commentId = button.id; 
+        const commentId = button.id;
         button.addEventListener('click', () => submitButton(commentId));
     });
 });
 
+// 좋아요 누르기
+let pagePostId = window.location.search;
+const currentPostId = pagePostId.substr(4);
+
+document.addEventListener('DOMContentLoaded', async () => {
+    await listDetailPageOfPost();
+    const likeButton = document.getElementById('arrowUp'); // 여기서 likeButton을 찾음
+
+    likeButton.addEventListener('click', () => {
+        clickLikeButton();
+    });
+});
+
+async function clickLikeButton() {
+    try {
+        const response = await fetch(`http://localhost:3000/post-like/${currentPostId}`, {
+            method: 'post',
+            headers: {
+                Authorization:
+                    'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjIsImVtYWlsIjoibWluaGVlMkB5YWhvby5jb20iLCJpZCI6MiwidHlwZSI6ImFjY2VzcyIsImlhdCI6MTcwNzc3NTQ1NCwiZXhwIjoxNzA3Nzc5MDU0fQ.BTHmzDufXCEltpXSuzNMQ0g0irnoBmn6DusIpwRkfog',
+            },
+        });
+        const jsonData = await response.json();
+        const like = jsonData.like;
+        if (response.status !== 201) {
+            //cry catch 구문에서 throw는 에러가 발생했을 때 catch에다가 error를 던져준다.
+            throw new Error('게시글 좋아요클릭에 실패하였습니다.');
+        }
+        if (like === 1) {
+            alert(`해당 게시글을 좋아합니다.`);
+            window.location.href = `./post-detail.html?id=${currentPostId}`;
+            return;
+        }
+        alert(`해당 게시글의 좋아요를 취소합니다.`);
+        window.location.href = `./post-detail.html?id=${currentPostId}`;
+    } catch (err) {
+        console.log(err);
+        alert(err.message);
+    }
+}
