@@ -80,12 +80,12 @@ export class PostController {
     @Put(':postId/status')
     async statusUpdate(@Param('postId') postId: string, @Req() req) {
         const userId = req.userId;
-        const post = await this.postService.statusUpdate(+postId, userId);
+        const postStatus = await this.postService.statusUpdate(+postId, userId);
 
         return {
             statusCode: HttpStatus.OK,
             message: 'ok',
-            post,
+            postStatus,
         };
     }
 

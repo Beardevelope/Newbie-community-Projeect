@@ -1,9 +1,23 @@
 // 폼 데이터 수집
 const title = document.querySelector('#title');
-const content = document.querySelector('#content');
 const image = document.querySelector('#image');
 const tags = document.querySelector('#tags');
-const TOKEN = sessionStorage.getItem('accessToken')
+const TOKEN = sessionStorage.getItem('accessToken');
+
+let editor;
+
+// 위지위그 옵션
+ClassicEditor.create(document.querySelector('#editor'), {
+    toolbar: {
+        items: ['bold', 'italic', 'bulletedlist', 'numberedlist', '|', 'undo', 'redo'],
+    },
+})
+    .then((createdEditor) => {
+        editor = createdEditor;
+    })
+    .catch((error) => {
+        console.error(error);
+    });
 
 // askButton에 이벤트 리스너 추가
 const askButton = document.getElementById('askButton');
@@ -38,10 +52,12 @@ async function createPost() {
     try {
         const form = document.getElementById('askForm');
         const formData = new FormData(form);
+        formData.append('content', editor.getData());
         const response = await fetch(`http://localhost:3000/post`, {
             method: 'post',
             headers: {
-                Authorization: `Bearer ${TOKEN}`,
+                // Authorization: `Bearer ${TOKEN}`,
+                Authorization: `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjEsImVtYWlsIjoibWluaGVlQHlhaG9vLmNvbSIsImlkIjoxLCJ0eXBlIjoiYWNjZXNzIiwiaWF0IjoxNzA3NjgwMTc3LCJleHAiOjE3MDc2ODM3Nzd9.gmU2cjtcyTBOpnH7oTsl0EiDCx2vh6CNx0FGSq0p_4k`,
             },
             body: formData,
         });

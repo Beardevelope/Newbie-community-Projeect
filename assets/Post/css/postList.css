@@ -56,7 +56,7 @@ body {
 
 .search-box {
     align-items: center;
-    width: 800px;
+    width: 750px;
 }
 .box {
     background-color: #ddd;
@@ -163,6 +163,19 @@ ul.pagination li a.active {
 }
 
 /* 모달 스타일 */
+
+#askModal {
+    margin-left: 200px;
+    height: 100%;
+}
+
+.ck-editor__editable {
+    height: 200px;
+}
+.ck-content {
+    font-size: 12px;
+}
+
 .modal {
     display: none;
     position: fixed;
@@ -179,6 +192,7 @@ ul.pagination li a.active {
     background-color: #fff;
     padding: 20px;
     border-radius: 5px;
+    height: 100%;
 }
 
 .close-button {
@@ -235,4 +249,25 @@ ul.pagination li a.active {
     cursor: pointer;
     margin-top: 10px;
     border-radius: 5px;
+}
+
+/** 게시글 스타일 */
+#statusPost {
+    font-size: 20px;
+    margin-left: 30px;
+    font-family: 'Staatliches', cursive;
+    text-align: center;
+    color: #f1c164;
+    text-shadow: 5px 5px #2d63a7;
+    text-decoration: underline;
+}
+
+.statusPost {
+    font-size: 20px;
+    margin-left: 30px;
+    font-family: 'Staatliches', cursive;
+    text-align: center;
+    color: #f1c164;
+    text-shadow: 5px 5px #2d63a7;
+    text-decoration: underline;
 }

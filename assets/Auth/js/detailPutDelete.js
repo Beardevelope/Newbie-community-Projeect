@@ -30,18 +30,33 @@ putData.addEventListener('click', function () {
     putPost();
 });
 
+let editor;
+
+// 위지위그 옵션
+ClassicEditor.create(document.querySelector('#editor'), {
+    toolbar: {
+        items: ['bold', 'italic', 'bulletedlist', 'numberedlist', '|', 'undo', 'redo'],
+    },
+})
+    .then((createdEditor) => {
+        editor = createdEditor;
+    })
+    .catch((error) => {
+        console.error(error);
+    });
+
 async function putPost() {
     try {
         const form = document.getElementById('putForm');
 
         // 현재 코드
         const formData = new FormData(form);
-
+        formData.append('content', editor.getData());
         const response = await fetch(`http://localhost:3000/post/${postId}`, {
             method: 'put',
             headers: {
                 Authorization:
-                    'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6OCwidHlwZSI6ImFjY2VzcyIsImlhdCI6MTcwNjcyNTcxOCwiZXhwIjoxNzA2NzI2MDE4fQ.gGQsNfaE7lipeaxvvBmHJ_U4vC_D4xUGPqH4fRLRMtQ',
+                    'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjEsImVtYWlsIjoibWluaGVlQHlhaG9vLmNvbSIsImlkIjoxLCJ0eXBlIjoiYWNjZXNzIiwiaWF0IjoxNzA3Njg0MTAwLCJleHAiOjE3MDc2ODc3MDB9.U3n99BTLvUSlmdPHux-ewpyMJrb18FpOF0-Jl0yrzT0',
             },
             body: formData,
         });
@@ -66,7 +81,7 @@ async function getPostDetail() {
 
         // 폼에 기존 게시글 내용 채우기
         document.getElementById('title').value = postData.post.title;
-        document.getElementById('content').value = postData.post.content;
+        document.getElementById('editor').value = editor.setData(postData.post.content);
         const tags = postData.post.tags;
         for (let i = 0; i < tags.length; i++) {
             if (i === tags.length - 1) {
