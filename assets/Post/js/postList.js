@@ -70,11 +70,11 @@ function displayPosts(posts) {
         const questionElement = document.createElement('div');
         questionElement.style.width = '820px';
         questionElement.classList.add('question');
-        questionElement.innerHTML = `<h2 style="cursor: pointer" class="post" id="${post.id}">${post.title}</h2>`;
+        questionElement.innerHTML = `<h2 style="cursor: pointer; width: 550px;" class="post" id="${post.id}">${post.title}</h2>`;
         if (post.status === 'unfinished') {
-            questionElement.innerHTML += `<p>${post.content.slice(0, 20)}...<a id="statusPost">미해결</a></p>`
+            questionElement.innerHTML += `<p>${post.content.slice(0, 20)}...<a id="statusPost">미해결</a><button id="${post.id}" class="warningPostButton">게시글 신고</button></p>`;
         } else if (post.status === 'finished') {
-            questionElement.innerHTML += `<p>${post.content.slice(0, 20)}...<a class="statusPost">해결</a></p>`
+            questionElement.innerHTML += `<p>${post.content.slice(0, 20)}...<a class="statusPost">해결</a><button id="${post.id}" class="warningPostButton">게시글 신고</button></p>`;
         }
         for (let i = 0; i < tags.length; i++) {
             if (i > 3) {
@@ -88,6 +88,8 @@ function displayPosts(posts) {
 
     // 새로운 태그 버튼에 이벤트 리스너 추가
     addEventListenersToTagButtons();
+
+    addEventListenersToWarningButton()
 
     addEventListenersToPost();
 }
@@ -146,7 +148,6 @@ function goToPage(page) {
     currentPage = page;
     questionsList.innerHTML = '';
     foundPosts = [];
-    console.log(receivedorderAndFilter[receivedorderAndFilter.length - 1])
     if (receivedorderAndFilter.length > 0) {
         postList(
             `${receivedorderAndFilter[receivedorderAndFilter.length - 1]}&page=${currentPage}`,
@@ -194,12 +195,44 @@ function addEventListenersToPost() {
     });
 }
 
+// 게시글 신고
+function addEventListenersToWarningButton() {
+    const warningButtons = document.querySelectorAll('.warningPostButton');
+    warningButtons.forEach((button) => {
+        button.addEventListener('click', function (event) {
+            const clickedPostId = event.target.id;
+            warningPost(clickedPostId);
+        });
+    });
+}
+
+async function warningPost(clickedPostId) {
+    try {
+        const response = await fetch(`http://localhost:3000/warning/${clickedPostId}`, {
+            method: 'post',
+            headers: {
+                Authorization:
+                    'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjEsImVtYWlsIjoibWluaGVlQHlhaG9vLmNvbSIsImlkIjoxLCJ0eXBlIjoiYWNjZXNzIiwiaWF0IjoxNzA3ODQxNzY0LCJleHAiOjE3MDc4NDUzNjR9.QqtVzXEBhNMXxj9MTjv21GMJ6TzJINN_ck49kRE33oo',
+            },
+        });
+        const data = await response.json();
+        if (response.status !== 201) {
+            alert(`${data.message}`);
+            throw new Error(data.message);
+        }
+        alert('게시글 경고에 성공하였습니다.');
+        window.location.reload();
+    } catch (error) {
+        console.log(error.message);
+    }
+}
+
 // 페이지 로드 시 실행
 document.addEventListener('DOMContentLoaded', () => {
     let StringTagName = window.location.search;
     const tagName = StringTagName.substr(9);
     if (tagName) {
-        receivedorderAndFilter.push(`?order=createdAt&tagName=${tagName}`)
+        receivedorderAndFilter.push(`?order=createdAt&tagName=${tagName}`);
         postList(`?order=createdAt&tagName=${tagName}&page=1`);
     } else {
         postList();
