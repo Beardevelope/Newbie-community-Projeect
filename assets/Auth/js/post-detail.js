@@ -185,6 +185,7 @@ const listDetailPageOfPost = async () => {
 function toggleCommentForm(id) {
     const commentList = document.querySelector('.comment-list ul');
     const commentForm = commentList.querySelector(`#form-${id}`);
+    console.log(commentList, commentForm)
     commentForm.style.display = commentForm.style.display === 'none' ? 'block' : 'none';
 }
 
@@ -224,27 +225,22 @@ const registerComment = async (comment) => {
 document.addEventListener('DOMContentLoaded', async () => {
     await listDetailPageOfPost();
     document.querySelectorAll('.comment-list ul li .commentButton').forEach((button) => {
-        console.log();
-        button.addEventListener('click', () => toggleCommentForm(button.id));
+        button.addEventListener('click', () => { console.log(button.id); toggleCommentForm(button.id)});
     });
     document.querySelectorAll('.comment-list ul li .submitButton').forEach((button) => {
         const commentId = button.id;
         button.addEventListener('click', () => submitButton(commentId));
     });
-});
-
-// 좋아요 누르기
-let pagePostId = window.location.search;
-const currentPostId = pagePostId.substr(4);
-
-document.addEventListener('DOMContentLoaded', async () => {
-    await listDetailPageOfPost();
     const likeButton = document.getElementById('arrowUp'); // 여기서 likeButton을 찾음
 
     likeButton.addEventListener('click', () => {
         clickLikeButton();
     });
 });
+
+// 좋아요 누르기
+let pagePostId = window.location.search;
+const currentPostId = pagePostId.substr(4);
 
 async function clickLikeButton() {
     try {
