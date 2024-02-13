@@ -193,4 +193,12 @@ export class UserService {
 
         return user;
     }
+
+    async getBanededUsers() {
+        return await this.usersRepository.find({
+            where: {
+                isBan: true,
+            },
+        });
+    }
 }
