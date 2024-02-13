@@ -149,6 +149,12 @@ export class AuthService {
         );
     }
 
+    /**
+     * 구글 로그인
+     * @param req
+     * @returns
+     */
+
     googleLogin(req) {
         if (!req.user) {
             return ' No user from google';
@@ -159,6 +165,12 @@ export class AuthService {
             user: req.user,
         };
     }
+
+    /**
+     * 유저 인증(이메일 인증버튼 클릭 이후)
+     * @param token
+     * @returns
+     */
 
     async verificationUser(token: string) {
         const result = await this.verifyToken(token);

@@ -10,6 +10,12 @@ export class EmailService {
         private readonly jwtService: JwtService,
     ) {}
 
+    /**
+     * 인증메일 발송( +토큰 생성, 만료시간 생성)
+     * @param email
+     * @param userId
+     */
+
     async sendVerificationEmail(email: string, userId: number): Promise<void> {
         const token = this.jwtService.sign(
             {
@@ -17,6 +23,7 @@ export class EmailService {
                 id: userId,
             },
 
+            // 만료시간을 줄여줄 필요가 있음.
             { expiresIn: '1h' },
         );
 
