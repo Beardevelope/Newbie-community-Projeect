@@ -9,7 +9,7 @@ export default registerAs('mailer', () => ({
     smtp_pw: process.env.GOOGLE_APP_PASSWORD,
     smtp_ssl: true,
     smtp_port: 587,
-    smtp_from_name: '<example_name>',
-    smtp_from_email: '<example>@gmail.com',
+    smtp_from_name: '<본인인증맨>',
+    smtp_from_email: 'mck84835182@gmail.com',
     privkey: 'supertest',
 }));
