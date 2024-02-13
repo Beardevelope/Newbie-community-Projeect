@@ -273,3 +273,10 @@ ul.pagination li a.active {
     text-shadow: 5px 5px #2d63a7;
     text-decoration: underline;
 }
+
+.warningPostButton {
+    float: right;
+    color: black;
+    font-family: 'Staatliches', cursive;
+    text-align: center;
+}
