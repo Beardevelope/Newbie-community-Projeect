@@ -5,11 +5,11 @@ const contentSecond = document.getElementById('contentSecond');
 let foundPosts = [];
 async function postList() {
     try {
-        const response = await fetch(`http://localhost:3000/post?order=createdAt`, {
+        const response = await fetch(`http://localhost:3000/post?order=createdAt&page=1`, {
             accept: 'application/json',
         });
         const jsonData = await response.json();
-        let posts = jsonData.posts;
+        let posts = jsonData.posts.data;
 
         posts.forEach((post) => {
             foundPosts.push(post);

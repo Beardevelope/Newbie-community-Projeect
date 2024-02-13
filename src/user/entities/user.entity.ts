@@ -32,6 +32,9 @@ export class User {
     @Column({ unique: true })
     email: string;
 
+    @Column()
+    bannedDate: Date;
+
     @IsNotEmpty()
     @IsString()
     @MinLength(6)

@@ -253,6 +253,7 @@ ul.pagination li a.active {
 
 /** 게시글 스타일 */
 #statusPost {
+    float: right;
     font-size: 20px;
     margin-left: 30px;
     font-family: 'Staatliches', cursive;
@@ -263,6 +264,7 @@ ul.pagination li a.active {
 }
 
 .statusPost {
+    float: right;
     font-size: 20px;
     margin-left: 30px;
     font-family: 'Staatliches', cursive;

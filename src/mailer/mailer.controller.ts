@@ -6,6 +6,13 @@ import { AccessTokenGuard } from 'src/auth/guard/bearer.guard';
 export class EmailController {
     constructor(private readonly emailService: EmailService) {}
 
+    /**
+     * 메일 인증 엔드포인트
+     * @param req
+     * @param email
+     * @returns
+     */
+
     @UseGuards(AccessTokenGuard)
     @Post('send-verification-email')
     async sendVerificationEmail(

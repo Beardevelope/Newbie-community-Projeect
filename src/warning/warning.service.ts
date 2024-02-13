@@ -112,10 +112,6 @@ export class WarningService {
             throw new NotFoundException('해당 유저는 존재하지 않습니다.');
         }
 
-        // return await this.usersRepository.increment({ id: userId }, 'warningCount', 1);
-
-        // 해당코드 repository직접 접근으로 updateUser method 수정후 코드 fix
-
         user.warningCount++;
         await this.userService.updateUser(userId, user);
     }
