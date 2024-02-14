@@ -7,6 +7,7 @@ const USER_API = 'http://localhost:3000/user'
 const USER_ID = 1
 const TOKEN = sessionStorage.getItem('accessToken') || `eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NCwidHlwZSI6ImFjY2VzcyIsImlhdCI6MTcwNjc2MDQ3NiwiZXhwIjoxNzA2NzYwNzc2fQ.j5dxoMx--o6U2KRir4dm7013p4fszOUqVvH0CGmq2BI`
 
+const profileImage = document.querySelector("#profileImage")
 const email = document.querySelector('#email')
 const nickname = document.querySelector("#NICKNAME")
 const password = document.querySelector('#PASSWORD')
