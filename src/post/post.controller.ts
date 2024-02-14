@@ -56,7 +56,7 @@ export class PostController {
 
     // 특정 User의 게시글 조회하기
     @UseGuards(BearerTokenGuard)
-    @Get('myposts')
+    @Get('myposts/:userId')
     async getMyPosts(@Req() req) {
         const userId = req.userId;
         return await this.postService.findByUserId(userId);
