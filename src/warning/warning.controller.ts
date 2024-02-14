@@ -74,7 +74,7 @@ export class WarningController {
     @UseGuards(BearerTokenGuard)
     @Put('warningUser/:userId')
     async warningUser(@Param('userId') userId: string) {
-        const user = this.warningService.warningUser(+userId);
+        const user = await this.warningService.warningUser(+userId);
         return {
             statusCode: HttpStatus.OK,
             message: 'ok',
@@ -85,9 +85,9 @@ export class WarningController {
     // 유저쪽에서 서비스를 구현해야할듯?
     // admin이 유저한테 제한을 거는 api
     @UseGuards(BearerTokenGuard)
-    @Put(':userId')
+    @Put('banUser/:userId')
     async restrictUser(@Param('userId') userId: string) {
-        const user = this.warningService.restrictUser(+userId);
+        const user = await this.warningService.restrictUser(+userId);
         return {
             statusCode: HttpStatus.OK,
             message: 'ok',

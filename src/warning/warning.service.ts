@@ -6,6 +6,7 @@ import { Warning } from './entities/warning.entity';
 import { DataSource, MoreThan, Repository } from 'typeorm';
 import { Post } from 'src/post/entities/post.entity';
 import { UserService } from 'src/user/user.service';
+import { Cron } from '@nestjs/schedule';
 
 @Injectable()
 export class WarningService {
@@ -113,29 +114,46 @@ export class WarningService {
 
         user.warningCount++;
         await this.userService.updateUser(userId, user);
+        return user;
     }
 
     /**
-     *  특정 유저 BAN시키기
+     *  특정 유저 BAN시키기 -> 일단 admin이 직접 벤 하는 것으로 구현하긴 했지만 자동화는 별론가?
      * @param userId
      * @returns
      */
 
     async restrictUser(userId: number) {
         const user = await this.userService.getUserById(userId);
-
         if (!user) {
             throw new NotFoundException('해당 유저는 존재하지 않습니다.');
         }
 
-        if (user.warningCount > 3) {
-            user.isBan = true;
-
-            await this.userService.updateUser(userId, user);
-
-            return { message: 'User restricted succesfully' };
+        if (user.warningCount <= 3) {
+            throw new BadRequestException('해당 유저는 벤을 당할 경고 누적을 채우지 않았습니다.');
         }
+        user.isBan = true;
+        const banDate = new Date();
+        user.bannedDate = banDate;
 
-        return { message: 'User not restricted' };
+        await this.userService.updateUser(userId, user);
+        return user
+    }
+
+    @Cron('10 * * * * *')
+    async cancelBan() {
+        // 벤당한 사람들을 찾아온다.
+        // 벤 당한 날짜(banDate)를 벤 할 때 새로 넣어주는 것이 좋을듯 new Date() 이걸 사용해서 넣어주기
+        const users = await this.userService.getBanededUsers();
+        users.forEach(async (user) => {
+            const currentDate = new Date();
+            const DateDiff = currentDate.getTime() - user.bannedDate.getTime();
+            const DateDiffNumber = Math.floor(Math.abs(DateDiff / (1000 * 60 * 60 * 24)));
+            if (DateDiffNumber >= 0) {
+                user.isBan = false;
+                user.warningCount = 0;
+                await this.userService.updateUser(user.id, user);
+            }
+        });
     }
 }

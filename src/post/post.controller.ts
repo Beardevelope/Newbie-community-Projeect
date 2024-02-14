@@ -89,19 +89,6 @@ export class PostController {
         };
     }
 
-    // 게시글 경고 - 누적제
-    @UseGuards(BearerTokenGuard)
-    @Put(':postId/warning')
-    async addWarning(@Param('postId') postId: string) {
-        const post = await this.postService.addWarning(+postId);
-
-        return {
-            statusCode: HttpStatus.OK,
-            message: 'ok',
-            post,
-        };
-    }
-
     // 게시글 좋아요 추가
     @Put(':postId/hit')
     async addHitCount(@Param('postId') postId: string) {

@@ -171,33 +171,6 @@ export class PostService {
         return 1
     }
 
-    // 게시글 경고 - 누적제
-    async addWarning(postId: number) {
-        const foundPost = await this.postRepository.findOne({
-            where: {
-                deletedAt: null,
-                id: postId,
-            },
-        });
-
-        if (!foundPost) {
-            throw new NotFoundException('해당 게시물은 존재하지 않습니다.');
-        }
-
-        let warning = foundPost.warning + 1;
-
-        // orm이 2번 사용되었는데 하나로 합쳐보기
-        // save 할 때 deletedAt: new Date() 추가해보면서..
-        await this.postRepository.save({
-            id: postId,
-            warning,
-        });
-
-        if (foundPost.warning > 3) {
-            await this.postRepository.softDelete(foundPost.id);
-        }
-    }
-
     // 조회수 증가 api
     async addHitCount(postId: number) {
         const foundPost = await this.postRepository.findOne({
