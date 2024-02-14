@@ -84,7 +84,7 @@ const defaultDisplay = async () => {
             nickname.placeholder = responseData.nickname
             password.placeholder = "*******"
             passwordConfirm.placeholder = "********"
-            name.placeholder = responseData || "-"
+            name.placeholder = responseData.number || "-"
             contact.placeholder = responseData.contact || '-'
             uploadImage.src = responseData.profileImage || './images/profile2.png'
             
@@ -98,21 +98,21 @@ const defaultDisplay = async () => {
                 <div class="imgBox">
                     <img src="${post.image}" alt="" />
                 </div>
-                <div class="posts">
-                    <div class="post">
-                        <div class="title">${post.title}</div>
-                        <div class="likeAndview">
-                            <div class="like">
-                                ${post.likes}
-                                <img src="./images/like.png" />
-                            </div>
+                    <div class="title">${post.title}</div>
+                    <div class="viewAndLike">
+                        <div class="views">
                             <div class="view">
-                                ${post.hitCount}
-                                <img src="./images/view.png" />
+                                <img src="./images/view.png" alt="" />
                             </div>
+                            <div>${post.hitCount}</div>
+                        </div>
+                        <div class="likes">
+                            <div class="like">
+                                <img src="./images/like.png" alt="" />
+                            </div>
+                            <div>${post.likes}</div>
                         </div>
                     </div>
-                    <div></div>
                 </div>
 
                 `
@@ -130,23 +130,22 @@ const defaultDisplay = async () => {
                 <div class="imgBox">
                     <img src="${post.image}" alt="" />
                 </div>
-                <div class="posts">
-                    <div class="post">
-                        <div class="title">${post.title}</div>
-                        <div class="likeAndview">
-                            <div class="like">
-                                ${post.likes}
-                                <img src="./images/like.png" />
-                            </div>
+                    <div class="title">${post.title}</div>
+                    <div class="viewAndLike">
+                        <div class="views">
                             <div class="view">
-                                ${post.hitCount}
-                                <img src="./images/view.png" />
+                                <img src="./images/view.png" alt="" />
                             </div>
+                            <div>${post.hitCount}</div>
+                        </div>
+                        <div class="likes">
+                            <div class="like">
+                                <img src="./images/like.png" alt="" />
+                            </div>
+                            <div>${post.likes}</div>
                         </div>
                     </div>
-                    <div></div>
                 </div>
-
                 `
                 postProjectBoxes.appendChild(box)
                 postProjectBoxes.appendChild(hr)

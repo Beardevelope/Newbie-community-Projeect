@@ -254,7 +254,12 @@ button:hover {
 
 .box1 {
     display: flex;
-    gap: 20px;
+    gap: 15px;
+    border-top: 1px solid black;
+    border-bottom: 1px solid black;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    cursor: pointer;
 }
 
 .imgBox {
@@ -294,4 +299,36 @@ button:hover {
     font-weight: 900;
     font-size: 25px;
     text-align: center;
+}
+
+.viewAndLike {
+    display: flex;
+    gap: 60px;
+}
+
+.views {
+    display: flex;
+    gap: 5px;
+    align-items: center;
+}
+
+.view {
+    width: 30px;
+}
+
+.like {
+    width: 30px;
+}
+
+.likes {
+    display: flex;
+    gap: 5px;
+    align-items: center;
+}
+
+.title{
+    width: 70%;
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
 }
