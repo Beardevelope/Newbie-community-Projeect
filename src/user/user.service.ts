@@ -201,4 +201,33 @@ export class UserService {
             },
         });
     }
+    
+    getUserInfoAndPostsById(userId: number) {
+        return this.usersRepository.findOne({
+            where: {
+                id: userId,
+            },
+            relations: {
+                posts: true,
+                projectPost: true,
+            }
+        });
+    }
+
+    async banUser(userId: number) {
+        const user = await this.usersRepository.findOne({
+            where: {
+                id: userId,
+            },
+        });
+
+        try {
+            Object.assign(user, { isBan: true, bannedDate: new Date()});
+            await this.usersRepository.save(user);
+
+            return { message: 'User banned successful' };
+        } catch (error) {
+            throw new BadRequestException('Failed to update user');
+        }    }
+
 }

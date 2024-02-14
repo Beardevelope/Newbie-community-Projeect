@@ -241,7 +241,7 @@ button:hover {
     width: calc(50% - 10px);
 }
 
-.boxes {
+.post-boxes, .postProject-boxes {
     border-radius: 10px;
     background-color: rgb(235, 233, 228);
     border: 1px solid white;
@@ -250,6 +250,7 @@ button:hover {
     flex-direction: column;
     gap: 10px;
 }
+
 
 .box1 {
     display: flex;

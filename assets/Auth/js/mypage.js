@@ -19,6 +19,10 @@ const postTitle = document.querySelector("#post-title")
 const postLike = document.querySelector("#post-like")
 const postView = document.querySelector("#post-view")
 
+const postBoxes = document.querySelector(".post-boxes")
+const postProjectBoxes = document.querySelector(".postProject-boxes")
+
+
 const projectTitle = document.querySelector(".title")
 const projectLike = document.querySelector(".like")
 const projectView = document.querySelector(".view")
@@ -43,35 +47,99 @@ const getUserIdByToken = async () => {
 
 const defaultDisplay = async () => {
     try {
-        const response = await fetch(`${USER_API}/list`, {
+        const response = await fetch(`${USER_API}/userinfo`, {
             method: 'GET',
             headers: {
                 Authorization: `Bearer ${TOKEN}`,
             },
         });
+        
         const responseData = await response.json();
+        console.log(responseData)
+
+        const posts = responseData.posts
+        const postProject = responseData.projectPost
         if (!response.ok) {
             alert(`${responseData.message}`);
             throw new Error('서버 에러')
         }
 
         if (response.ok) {
-            console.log(responseData)
             email.placeholder = responseData.email
             nickname.placeholder = responseData.nickname
             password.placeholder = "*******"
             passwordConfirm.placeholder = "********"
+            name.placeholder = responseData.name || "-"
+            contact.placeholder = responseData.contact || '-'
+            
+            
+            posts.forEach((post) => {
+                const box = document.createElement('div')
+                const hr = document.createElement('hr')
+                box.className = 'box1'
 
-            const post = getPost()
-            postTitle.value = post.title
+                box.innerHTML = `
+                <div class="imgBox">
+                    <img src="${post.image}" alt="" />
+                </div>
+                <div class="posts">
+                    <div class="post">
+                        <div class="title">${post.title}</div>
+                        <div class="likeAndview">
+                            <div class="like">
+                                ${post.likes}
+                                <img src="./images/like.png" />
+                            </div>
+                            <div class="view">
+                                ${post.hitCount}
+                                <img src="./images/view.png" />
+                            </div>
+                        </div>
+                    </div>
+                    <div></div>
+                </div>
 
-            alert(`수정 완료`);
-            // window.location.href = './mainpage.html';
+                `
+                postBoxes.appendChild(box)
+                postBoxes.appendChild(hr)
+            })
+
+            postProject.forEach((post) => {
+                console.log(post)
+                const box = document.createElement('div')
+                const hr = document.createElement('hr')
+                box.className = 'box1'
+
+                box.innerHTML = `
+                <div class="imgBox">
+                    <img src="${post.image}" alt="" />
+                </div>
+                <div class="posts">
+                    <div class="post">
+                        <div class="title">${post.title}</div>
+                        <div class="likeAndview">
+                            <div class="like">
+                                ${post.likes}
+                                <img src="./images/like.png" />
+                            </div>
+                            <div class="view">
+                                ${post.hitCount}
+                                <img src="./images/view.png" />
+                            </div>
+                        </div>
+                    </div>
+                    <div></div>
+                </div>
+
+                `
+                postProjectBoxes.appendChild(box)
+                postProjectBoxes.appendChild(hr)
+            })
+            
         }
     } catch (error) {
         alert('서버 에러');
         console.error(error)
-        // window.location.href = 'server-error';
     }
 }
 
@@ -98,12 +166,10 @@ const modifyUserInfo = async () => {
         if (response.ok) {
             sessionStorage.setItem('accessToken', responseData.accessToken)
             alert(`수정 완료`);
-            // window.location.href = './mainpage.html';
         }
     } catch (error) {
         alert('서버 에러');
         console.error(error)
-        // window.location.href = 'server-error';
     }
 };
 
