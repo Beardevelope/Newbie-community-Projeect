@@ -18,6 +18,7 @@ import {
 import { ProjectApplicant } from 'src/project-post/entities/project-applicant.entity';
 import { PostLike } from 'src/post-like/entities/post-like.entity';
 import { Warning } from 'src/warning/entities/warning.entity';
+import { Alarm } from 'src/alarm/entities/alarm.entity';
 
 @Entity({ name: 'user' })
 export class User {
@@ -92,7 +93,7 @@ export class User {
     banners: Banner[];
 
     @OneToMany(() => Answer, (answer) => answer.user)
-    answer: Answer[];
+    answers: Answer[];
 
     @OneToMany(() => ProjectLike, (projectLike) => projectLike.user)
     projectLike: ProjectLike[];
@@ -106,4 +107,7 @@ export class User {
 
     @OneToMany(() => ProjectApplicant, (projectApplicant) => projectApplicant.user)
     projectApplicant: ProjectApplicant[];
+
+    @OneToMany((type) => Alarm, (alarm) => alarm.user)
+    alarms: Alarm[];
 }
