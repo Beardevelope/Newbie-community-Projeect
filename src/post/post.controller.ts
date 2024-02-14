@@ -47,7 +47,6 @@ export class PostController {
         const { order, filter, tagName, tab, page } = req.query;
         const posts = await this.postService.findAll(order, filter, tagName, tab, +page);
 
-        console.log(posts);
         return {
             statusCode: HttpStatus.OK,
             message: 'ok',
@@ -57,7 +56,7 @@ export class PostController {
 
     // 특정 User의 게시글 조회하기
     @UseGuards(BearerTokenGuard)
-    @Get('myposts')
+    @Get('myposts/:userId')
     async getMyPosts(@Req() req) {
         const userId = req.userId;
         return await this.postService.findByUserId(userId);
