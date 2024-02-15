@@ -1,5 +1,21 @@
 const accessToken = sessionStorage.getItem('accessToken');
 
+async function fetchProjectAnswer(projectId, userId) {
+    try {
+        const response = await fetch(`http://localhost:3000/answer/${projectId}/${userId}`, {
+            method: 'GET',
+        });
+
+        const responseData = await response.json();
+        console.log(responseData, '대답');
+
+        return responseData;
+    } catch (error) {
+        console.error('에러 --- ', error);
+        throw new error(error);
+    }
+}
+
 async function fetchProject() {
     try {
         const response = await fetch(`http://localhost:3000/project-post/myProject`, {
@@ -34,6 +50,48 @@ async function fetchLikeProject(projectId) {
     }
 }
 
+async function fetchQuestion(projectId) {
+    try {
+        const response = await fetch(`http://localhost:3000/question/${projectId}`, {
+            method: 'GET',
+        });
+
+        const data = await response.json();
+        console.log(data);
+
+        return data;
+    } catch (error) {
+        console.error('에러 --- ', error);
+        throw new error(error);
+    }
+}
+
+async function acceptUser(projectId, userId) {
+    try {
+        console.log(projectId, '프로젝트아이디');
+        console.log(userId, '유저아이디');
+        const response = await fetch(
+            `http://localhost:3000/project-post/${projectId}/projectApplicant`,
+            {
+                method: 'PATCH',
+                headers: {
+                    Authorization: `Bearer ${accessToken}`,
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ userId }),
+            },
+        );
+
+        const data = await response.json();
+        console.log(data, 'dddddddddddddddd');
+
+        return data;
+    } catch (error) {
+        console.error('에러 --- ', error);
+        throw new error(error);
+    }
+}
+
 async function fetchMyLike() {
     try {
         const response = await fetch(`http://localhost:3000/project-like/myLike`, {
@@ -42,6 +100,27 @@ async function fetchMyLike() {
                 Authorization: `Bearer ${accessToken}`,
             },
         });
+
+        const data = await response.json();
+
+        return data;
+    } catch (error) {
+        console.error('에러 --- ', error);
+        throw new error(error);
+    }
+}
+
+async function fetchProjectApplicant(projectId) {
+    try {
+        const response = await fetch(
+            `http://localhost:3000/project-post/${projectId}/projectApplicant`,
+            {
+                method: 'GET',
+                headers: {
+                    Authorization: `Bearer ${accessToken}`,
+                },
+            },
+        );
 
         const data = await response.json();
 
@@ -63,6 +142,45 @@ async function fetchMyApplicant() {
 
         const data = await response.json();
         console.log(data);
+
+        return data;
+    } catch (error) {
+        console.error('에러 --- ', error);
+        throw new error(error);
+    }
+}
+
+async function removeLike(projectId) {
+    try {
+        const response = await fetch(`http://localhost:3000/project-like/${projectId}`, {
+            method: 'DELETE',
+            headers: {
+                Authorization: `Bearer ${accessToken}`,
+            },
+        });
+
+        const data = await response.json();
+
+        return data;
+    } catch (error) {
+        console.error('에러 --- ', error);
+        throw new error(error);
+    }
+}
+
+async function removeApplicant(projectId) {
+    try {
+        const response = await fetch(
+            `http://localhost:3000/project-post/${projectId}/projectApplicant`,
+            {
+                method: 'DELETE',
+                headers: {
+                    Authorization: `Bearer ${accessToken}`,
+                },
+            },
+        );
+
+        const data = await response.json();
 
         return data;
     } catch (error) {
@@ -115,10 +233,13 @@ async function getRecentProject() {
             </div>`;
 
         recentProjectBox.appendChild(recentProject);
+
         const memberBtn = document.querySelectorAll('.memberBtn');
 
         memberBtn[i].addEventListener('click', (event) => {
             event.stopPropagation();
+            await getMember(getProjectData[i].id)
+
             const memberModalBox = document.querySelector('.memberModalBox');
 
             memberModalBox.style.display = 'block';
@@ -126,8 +247,10 @@ async function getRecentProject() {
 
         const applicantsBtn = document.querySelectorAll('.applicantsBtn');
 
-        applicantsBtn[i].addEventListener('click', (event) => {
+        applicantsBtn[i].addEventListener('click', async (event) => {
             event.stopPropagation();
+            await getApplicantProjectors(getProjectData[i].id);
+
             const applicantModalBox = document.querySelector('.applicantModalBox');
 
             applicantModalBox.style.display = 'block';
@@ -143,7 +266,63 @@ async function getRecentProject() {
         }
 
         recentProject.addEventListener('click', () => {
-            // window.location.href = `../projectPost/projectPostDetail.html?id=${getProjectData[i].id}`;
+            window.location.href = `../projectPost/projectPostDetail.html?id=${getProjectData[i].id}`;
+        });
+    }
+}
+
+async function getMember(projectId) {
+    
+}
+
+async function getApplicantProjectors(projectId) {
+    const getProjectApplicantData = await fetchProjectApplicant(projectId);
+
+    const applicant = document.querySelector('.applicant');
+
+    for (let i = 0; i < getProjectApplicantData.length; i++) {
+        const getQuestionData = await fetchQuestion(projectId);
+
+        const getProjectAnswerData = await fetchProjectAnswer(
+            projectId,
+            getProjectApplicantData[i].userId,
+        );
+
+        const userInfo = getProjectAnswerData[i].user;
+
+        const applicantInfo = document.createElement('div');
+        applicantInfo.className = 'applicantInfo';
+
+        applicantInfo.innerHTML = `
+        <div class="applicantUser">
+            <div class="nickName">${userInfo.nickname}</div>
+            <div class="stack">${getProjectAnswerData[i].answer.stack}</div>
+        </div>
+        <div class="applicantAnswerBox"></div>
+
+        <div class="pickBtn">뽑기</div> 
+        `;
+
+        applicant.appendChild(applicantInfo);
+
+        const applicantAnswerBox = document.querySelectorAll('.applicantAnswerBox');
+
+        for (let j = 0; j < getQuestionData.length; j++) {
+            const applicantAnswer = document.createElement('div');
+            applicantAnswer.className = 'applicantAnswer';
+
+            applicantAnswer.innerHTML = `
+            <div class="question">${getQuestionData[j].question}</div>
+            <div class="answer">${getProjectAnswerData[j].answer.answer}</div>
+        `;
+
+            applicantAnswerBox[i].appendChild(applicantAnswer);
+        }
+
+        const pickBtn = document.querySelectorAll('.pickBtn');
+
+        pickBtn[i].addEventListener('click', async () => {
+            await acceptUser(projectId, userInfo.id);
         });
     }
 }
@@ -166,6 +345,7 @@ async function getLikeProject() {
             <div class="posts">
                 <div class="post">
                     <div class="title">${getMyLikeData[i].title}</div>
+                    <div class='removeLikeBtn'>좋아요 취소</div>
                     <div class="likeAndview">
                         <div class="like">
                             <div>
@@ -189,36 +369,46 @@ async function getLikeProject() {
 
         likeProjectBox.appendChild(likeProject);
 
+        const removeLikeBtn = document.querySelectorAll('.removeLikeBtn');
+
+        removeLikeBtn[i].addEventListener('click', async (event) => {
+            event.stopPropagation();
+            const removeLikeData = await removeLike(getMyLikeData[i].id);
+            alert(removeLikeData.message);
+            window.location.reload();
+        });
+
         likeProject.addEventListener('click', () => {
             window.location.href = `../projectPost/projectPostDetail.html?id=${getMyLikeData[i].id}`;
         });
     }
 }
 async function getApplicantProject() {
-    const fetchMyApplicantData = await fetchMyApplicant();
+    const getMyApplicantData = await fetchMyApplicant();
 
     const applicantProjectBox = document.querySelector('.applicantProjectBox');
 
-    for (let i = 0; i < fetchMyApplicantData.length; i++) {
-        const getApplicantProjectData = await fetchLikeProject(fetchMyApplicantData[i].id);
+    for (let i = 0; i < getMyApplicantData.length; i++) {
+        const getLikeProjectData = await fetchLikeProject(getMyApplicantData[i].id);
 
         const applicantProject = document.createElement('div');
         applicantProject.className = 'box1 applicantProject';
 
         applicantProject.innerHTML = `  
             <div class="imgBox">
-                <img src=${fetchMyApplicantData[i].image} alt="" />
+                <img src=${getMyApplicantData[i].image} alt="" />
             </div>
             <div class="posts">
                 <div class="post">
-                    <div class="title">${fetchMyApplicantData[i].title}</div>
+                    <div class="title">${getMyApplicantData[i].title}</div>
+                    <div class="removeApplicantBtn">지원 삭제</div>
                     <div class="likeAndview">
                         <div class="like">
                             <div>
                                 <img src="./images/like.png" />
                             </div>
                             <div>
-                                ${getApplicantProjectData}
+                                ${getLikeProjectData}
                             </div>
                         </div>
                         <div class="view">
@@ -226,7 +416,7 @@ async function getApplicantProject() {
                                 <img src="./images/view.png" />
                             </div>
                             <div>
-                               ${fetchMyApplicantData[i].hitCount}
+                               ${getMyApplicantData[i].hitCount}
                             </div>
                         </div>
                     </div>
@@ -235,8 +425,17 @@ async function getApplicantProject() {
 
         applicantProjectBox.appendChild(applicantProject);
 
+        const removeApplicantBtn = document.querySelectorAll('.removeApplicantBtn');
+
+        removeApplicantBtn[i].addEventListener('click', async (event) => {
+            event.stopPropagation();
+            const removeApplicantData = await removeApplicant(getMyApplicantData[i].id);
+            alert(removeApplicantData.message);
+            window.location.reload();
+        });
+
         applicantProject.addEventListener('click', () => {
-            window.location.href = `../projectPost/projectPostDetail.html?id=${getApplicantProjectData[i].id}`;
+            window.location.href = `../projectPost/projectPostDetail.html?id=${getMyApplicantData[i].id}`;
         });
     }
 }
