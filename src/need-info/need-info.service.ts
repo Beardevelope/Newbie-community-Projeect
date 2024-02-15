@@ -74,8 +74,6 @@ export class NeedInfoService {
 
         await this.needInfoRepository.update({ projectPostId, id }, { numberOfPeople });
 
-        await this.applicantDone(projectPostId);
-
         const result = await this.findById(projectPostId, id);
 
         return result;
@@ -93,8 +91,6 @@ export class NeedInfoService {
 
         await this.needInfoRepository.delete({ projectPostId, id });
 
-        await this.applicantDone(projectPostId);
-
         return { message: '기술 삭제 완료' };
     }
 
@@ -107,23 +103,5 @@ export class NeedInfoService {
         }
 
         return result;
-    }
-
-    // 스택이 없을 시 모집완료로 변환
-    async applicantDone(projectPostId: number) {
-        const findAllStacks = await this.findAll(projectPostId);
-
-        const existStacks = findAllStacks.some((stack) => {
-            console.log(stack.numberOfPeople);
-            return stack.numberOfPeople !== 0;
-        });
-
-        console.log(existStacks);
-
-        if (!existStacks) {
-            await this.projectPostRepository.update({ id: projectPostId }, { status: '모집완료' });
-        } else {
-            await this.projectPostRepository.update({ id: projectPostId }, { status: '모집중' });
-        }
     }
 }

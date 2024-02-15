@@ -15,8 +15,11 @@ const email = document.querySelector('#email');
 const nickname = document.querySelector('#NICKNAME');
 const password = document.querySelector('#PASSWORD');
 const passwordConfirm = document.querySelector('#PASSWORDCONFIRM');
-const name = document.querySelector('#NAME');
-const contact = document.querySelector('#CONTACT');
+const modifyButton = document.querySelector('.fixbutton');
+const email = document.querySelector('#email');
+const nickname = document.querySelector('#NICKNAME');
+const password = document.querySelector('#PASSWORD');
+const passwordConfirm = document.querySelector('#PASSWORDCONFIRM');
 const modifyButton = document.querySelector('.fixbutton');
 
 const postTitle = document.querySelector('#post-title');
