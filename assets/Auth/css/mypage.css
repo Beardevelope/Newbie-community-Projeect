@@ -375,6 +375,8 @@ button:hover {
     flex-direction: column;
 }
 
+.removeLikeBtn,
+.removeApplicantBtn,
 .memberBtn,
 .applicantsBtn {
     display: inline-block;
@@ -387,6 +389,8 @@ button:hover {
     cursor: pointer;
 }
 
+.removeLikeBtn:hover,
+.removeApplicantBtn:hover,
 .memberBtn:hover,
 .applicantsBtn:hover {
     background-color: rgb(255, 114, 114);
@@ -411,19 +415,28 @@ button:hover {
     top: calc(50% + 61px);
     left: calc(50% + 125px);
     transform: translate(-50%, -50%);
-    width: 500px;
-    height: 500px;
+    width: 800px;
+    height: 800px;
     background-color: white;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    flex-direction: column;
-    gap: 40px;
-    text-align: center;
+    padding: 30px;
 }
 
-.applicantModalBox .applicant {
-    position: relative;
+.applicantModalBox .applicant .applicantInfo {
+    border: 1px solid black;
+    padding: 10px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.applicantModalBox .applicant .applicantInfo .pickBtn {
+    margin-left: auto;
+}
+
+.applicantModalBox .applicant .applicantInfo .applicantUser {
+    display: flex;
+    justify-content: space-between;
+    border-bottom: 1px solid black;
 }
 
 .applicantModalBox .applicant .closeModalBtn {

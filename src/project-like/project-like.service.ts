@@ -73,6 +73,6 @@ export class ProjectLikeService {
         }
 
         await this.projectLikeRepository.delete({ projectPostId, userId });
-        return { message: '좋아요 삭제 성공' };
+        return { message: '좋아요 취소 완료' };
     }
 }

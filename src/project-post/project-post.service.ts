@@ -166,7 +166,7 @@ export class ProjectPostService {
         return { message: '프로젝트 지원 완료' };
     }
 
-    // 프로젝트 지원 확인
+    // 프로젝트 지원자 확인
     async findProjectApplicant(id: number, userId: number) {
         await this.findById(id);
 
@@ -196,6 +196,26 @@ export class ProjectPostService {
         });
 
         return result;
+    }
+
+    // 프로젝트 지원 수락
+    async acceptProjectApplicant(id: number, userId: number, pickeduserId: number) {
+        await this.findById(id);
+
+        const projectApplicantUser = await this.projectApplicantRepository.findOne({
+            where: { userId },
+        });
+
+        if (userId !== projectApplicantUser.userId) {
+            throw new UnauthorizedException('권한이 없습니다');
+        }
+
+        await this.projectApplicantRepository.update(
+            { id, userId: pickeduserId },
+            { accept: true },
+        );
+
+        return { message: '지원자 완료' };
     }
 
     // 프로젝트 지원 삭제
