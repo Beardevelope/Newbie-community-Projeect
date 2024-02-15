@@ -32,7 +32,7 @@ function addPost() {
                                 </div>
                                 <div class="titleAndContent">
                                     <div>
-                                        <h3>${postFirst.title}</h3>
+                                        <h3 style="cursor: pointer" onclick="location.href='./post-detail.html?id=${postFirst.id}'">${postFirst.title}</h3>
                                     </div>
                                     <div>${postFirst.content.slice(0, 20)}...</div>
                                 </div>
@@ -55,7 +55,7 @@ function addPost() {
                                 </div>
                                 <div class="titleAndContent">
                                     <div>
-                                        <h3>${postSecond.title}</h3>
+                                        <h3 style="cursor: pointer" onclick="location.href='./post-detail.html?id=${postSecond.id}'">${postSecond.title}</h3>
                                     </div>
                                     <div>${postSecond.content.slice(0, 20)}...</div>
                                 </div>

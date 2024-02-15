@@ -56,8 +56,7 @@ async function createPost() {
         const response = await fetch(`http://localhost:3000/post`, {
             method: 'post',
             headers: {
-                // Authorization: `Bearer ${TOKEN}`,
-                Authorization: `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjEsImVtYWlsIjoibWluaGVlQHlhaG9vLmNvbSIsImlkIjoxLCJ0eXBlIjoiYWNjZXNzIiwiaWF0IjoxNzA3NjgwMTc3LCJleHAiOjE3MDc2ODM3Nzd9.gmU2cjtcyTBOpnH7oTsl0EiDCx2vh6CNx0FGSq0p_4k`,
+                Authorization: `Bearer ${TOKEN}`,
             },
             body: formData,
         });

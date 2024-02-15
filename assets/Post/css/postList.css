@@ -2,9 +2,9 @@
     --gap: 20px;
 }
 .totalbox {
-    height: 100%;
     background-color: #212529;
     width: 100px;
+    min-height: 100vh;
 }
 
 .main {
@@ -17,6 +17,7 @@
     color: white;
     font-family: 'Anton', sans-serif;
     font-size: 27px;
+    display: flex;
 }
 .container {
     max-width: 1200px;
@@ -35,7 +36,7 @@
 
 .big-box {
     display: flex;
-    height: 100%;
+    min-height: 100vh;
 }
 body,
 html {
@@ -48,7 +49,6 @@ body {
 }
 
 .total-header {
-    margin-left: -30px;
     display: flex;
     justify-content: space-between;
     width: 100%;
@@ -56,7 +56,7 @@ body {
 
 .search-box {
     align-items: center;
-    width: 750px;
+    width: calc(100% - 800px);
 }
 .box {
     background-color: #ddd;
@@ -87,7 +87,18 @@ body {
     min-width: 0;
 }
 
+.main {
+    display: flex;
+    flex-wrap: wrap;
+    background-color: gray;
+    padding: var(--gap);
+    gap: 40px;
+}
 /* 윗부분은 메인에서 받은 css */
+
+#searchInput {
+    width: 400px;
+}
 
 .question {
     border: 1px solid #ccc;
@@ -115,16 +126,33 @@ body {
 #newestButton,
 #answeredButton,
 #unAnsweredButton,
-#filterButton,
+#filterButton {
+    height: 40px;
+}
+
+
+
+#askButton {
+    width: 200px;
+    height: 40px;
+}
+
 .tagButton {
-    border-radius: 20px;
-    color: black;
-    font-size: 15px;
-    background-color: #e1edf4;
+    -webkit-transform: scale(1);
+    transform: scale(1);
+    height: 37px;
+}
+
+.postBox {
+    height: 60%;
+    width: calc(100% - 240px);
+    border: 2px solid #000;
+    border-radius: 10px;
 }
 
 #questionsList {
     width: 100%;
+    padding: 10px;
 }
 
 .commentHitLike {
@@ -158,10 +186,13 @@ ul.pagination li a.active {
 
 .pagination {
     margin-top: 50px;
-    margin-left: 310px;
+    margin-left: 32%;
     font-size: 20px;
 }
 
+#pagination-container {
+    width: 100%;
+}
 /* 모달 스타일 */
 
 #askModal {
@@ -254,29 +285,21 @@ ul.pagination li a.active {
 /** 게시글 스타일 */
 #statusPost {
     float: right;
+    color: black;
     font-size: 20px;
     margin-left: 30px;
-    font-family: 'Staatliches', cursive;
     text-align: center;
-    color: #f1c164;
-    text-shadow: 5px 5px #2d63a7;
-    text-decoration: underline;
 }
 
 .statusPost {
     float: right;
+    color: black;
     font-size: 20px;
     margin-left: 30px;
-    font-family: 'Staatliches', cursive;
     text-align: center;
-    color: #f1c164;
-    text-shadow: 5px 5px #2d63a7;
-    text-decoration: underline;
 }
 
 .warningPostButton {
     float: right;
-    color: black;
-    font-family: 'Staatliches', cursive;
     text-align: center;
 }
