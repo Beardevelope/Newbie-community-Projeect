@@ -19,9 +19,9 @@ export class AnswerController {
         return this.answerService.create(+projectPostId, +questionId, +req.userId, createAnswerDto);
     }
 
-    @Get(':projectPostId')
-    findAll(@Param('projectPostId') projectPostId: string) {
-        return this.answerService.findAll(+projectPostId);
+    @Get(':projectPostId/:userId')
+    findAll(@Param('projectPostId') projectPostId: string, @Param('userId') userId: string) {
+        return this.answerService.findAll(+projectPostId, +userId);
     }
 
     @UseGuards(BearerTokenGuard)

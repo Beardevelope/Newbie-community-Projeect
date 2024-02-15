@@ -84,8 +84,8 @@ export class UserService {
      * @param nickname
      */
 
-    getUserByNickName(nickname: string) {
-        return this.usersRepository.findOne({
+    async getUserByNickName(nickname: string) {
+        return await this.usersRepository.findOne({
             where: {
                 nickname,
             },

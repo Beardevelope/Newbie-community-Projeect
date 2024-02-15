@@ -1,7 +1,7 @@
 const urlParams = new URLSearchParams(window.location.search);
 const projectId = urlParams.get('id');
 
-const accessToken = `eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjcsImVtYWlsIjoiOTg4NzZAbmF2ZXIuY29tIiwiaWQiOjcsInR5cGUiOiJhY2Nlc3MiLCJpYXQiOjE3MDczNjM2MDksImV4cCI6MTcwNzM2NzIwOX0.s456ftTKcHXiy7g83dCjcVGSfko0Z_Cg73SoyN_fU7o`;
+const accessToken = sessionStorage.getItem('accessToken');
 
 async function fetchProjectDetail(projectId) {
     try {
@@ -325,8 +325,6 @@ async function projectApplicant(projectId) {
             const selectStack = selectedRadioButton.value;
             for (let k = 0; k < fetchQuestionData.length; k++) {
                 const answer = inputValue[k].value;
-
-                console.log(answer);
 
                 if (!answer) {
                     return alert(`${k + 1}번째 질문에 답변해주세요`);
