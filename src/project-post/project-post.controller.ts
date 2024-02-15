@@ -38,6 +38,18 @@ export class ProjectPostController {
         return this.projectPostService.findAll(page);
     }
 
+    @UseGuards(BearerTokenGuard)
+    @Get('/myProject')
+    findMyProject(@Req() req) {
+        return this.projectPostService.findMyProject(+req.userId);
+    }
+
+    @UseGuards(BearerTokenGuard)
+    @Get('/myProjectApplicant')
+    myApplicant(@Req() req) {
+        return this.projectPostService.myApplicant(+req.userId);
+    }
+
     @Get(':id')
     findOne(@Param('id') id: string) {
         return this.projectPostService.findOne(+id);

@@ -39,6 +39,8 @@ async function getProject() {
     const projectBox = document.querySelector('.projectBox');
 
     for (let i = 0; i < 2; i++) {
+        const fetchLikeData = await fetchLike(fetchProjectData[i].id);
+
         const contentBox = document.createElement('div');
         contentBox.className = 'contentBox';
         contentBox.id = 'project';
@@ -63,17 +65,11 @@ async function getProject() {
             <div class="like">
                 <img src="./images/like.png" alt="" />
             </div>
-            <div class='likeCount'></div>
+            <div class='likeCount'>${fetchLikeData}</div>
         </div>
     </div>`;
 
         projectBox.appendChild(contentBox);
-
-        const fetchLikeData = await fetchLike(fetchProjectData[i].id);
-
-        const likeCount = document.querySelectorAll('.likeCount');
-
-        likeCount[i].innerHTML = `${fetchLikeData}`;
 
         contentBox.addEventListener('click', () => {
             window.location.href = `../projectPost/projectPostDetail.html?id=${fetchProjectData[i].id}`;
