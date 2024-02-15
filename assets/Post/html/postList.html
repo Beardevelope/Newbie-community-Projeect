@@ -19,7 +19,7 @@
         <header class="header">
             <div class="total-header">
                 <div class="title-logo">
-                    <div><img src="images/logo.png" alt="" class="logo-img" /></div>
+                    <div><img src="../../Auth/images/logo.png" alt="" class="logo-img" /></div>
                     <div>Roomdevelope</div>
                 </div>
                 <form class="d-flex search-box">
@@ -137,6 +137,7 @@
             </div>
             <main class="main">
                 <div class="buttonsDown">
+                    <button id="newestButtonSearch" class="btn btn-outline-light" style="display: none;"><span>newest</span>
                     <button id="newestButton" class="btn btn-outline-light"><span>newest</span>
                     <button id="answeredButton" class="btn btn-outline-light"><span>answered</span>
                     <button id="unAnsweredButton" class="btn btn-outline-light"><span>unAnswered</span>
@@ -151,10 +152,11 @@
                         placeholder="Search"
                         aria-label="Search"
                     />
-                    <button type="button" class="btn btn-outline-dark">Search</button>
+                    <button id="searchButton" type="button" class="btn btn-outline-dark">Search</button>
                 </form>
                 <div class= "postBox">
                 <div id="questionsList"></div>
+                <div id="searchList" style="display: none;"></div>
                 </div>
                 <div id="pagination-container"></div>
             </main>
