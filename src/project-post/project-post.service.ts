@@ -63,6 +63,18 @@ export class ProjectPostService {
         return result;
     }
 
+    // 내가 작성한 토이프로젝트
+    async findMyProject(userId: number) {
+        console.log(userId, '유저아이디');
+
+        const result = await this.projectPostRepository.find({
+            where: { userId },
+            order: { createdAt: 'DESC' },
+        });
+
+        return result;
+    }
+
     // 토이프로젝트 수정
     async update(
         id: number,
@@ -119,11 +131,24 @@ export class ProjectPostService {
 
         projectPost.hitCount += 1;
 
-        console.log(projectPost.hitCount, 'Dddddddddddddd');
-
         await this.projectPostRepository.save(projectPost);
 
         return projectPost.hitCount;
+    }
+
+    // 내 지원 프로젝트 조회
+    async myApplicant(userId: number) {
+        const myApplicants = await this.projectApplicantRepository.find({ where: { userId } });
+
+        const promises = myApplicants.map(async (myApplicant) => {
+            return await this.projectPostRepository.findOne({
+                where: { id: myApplicant.projectPostId },
+            });
+        });
+
+        const result = await Promise.all(promises);
+
+        return result;
     }
 
     // 프로젝트 지원 생성
