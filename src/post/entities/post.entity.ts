@@ -1,6 +1,8 @@
 import { IsNotEmpty, IsNumber, IsString } from 'class-validator';
 import { User } from 'src/user/entities/user.entity';
 import {
+    AfterInsert,
+    BeforeInsert,
     Column,
     CreateDateColumn,
     DeleteDateColumn,
@@ -17,6 +19,7 @@ import { Comment } from 'src/comment/entities/comment.entity';
 import { Tag } from 'src/tag/entities/tag.entity';
 import { PostLike } from 'src/post-like/entities/post-like.entity';
 import { Warning } from 'src/warning/entities/warning.entity';
+import * as he from 'he';
 
 @Entity()
 export class Post {
@@ -80,8 +83,13 @@ export class Post {
     @OneToMany((type) => Warning, (warning) => warning.post)
     warnings: Warning[];
 
-    // 저장하기 전에 HTML 이스케이핑 수행
+    @BeforeInsert()
     beforeInsert() {
-        this.content = escape(this.content);
+        this.content = he.encode(this.content);
+    }
+
+    @AfterInsert()
+    afterInsert() {
+        this.content = he.decode(this.content);
     }
 }
