@@ -28,6 +28,24 @@ const getPost = async () => {
     return data.post;
 };
 
+const updateComment = async (comment) => {
+    const response = await fetch(`${COMMENT_API}/${POST_ID}/${comment.id}`, {
+        method: 'PUT',
+        headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${TOKEN}`,
+        },
+        body: JSON.stringify({ content: comment.content }),
+    });
+
+    const updatedComment = await response.json();
+    if (!response.ok) {
+        alert(`${updatedComment.message}`);
+        throw new Error('서버 오류');
+    }
+    alert('댓글 수정 완료');
+};
+
 const listDetailPageOfPost = async () => {
     try {
         const post = await getPost();
@@ -145,6 +163,7 @@ const listDetailPageOfPost = async () => {
                             <button class="submitButton" id="${comment.id}" type="button">댓글 제출</button>
                         </form>
                         <button class="deleteButton" id="${comment.id}">댓글 삭제</button>
+                        <button class="editButton" id="${comment.id}">댓글 수정</button>
                         `;
                         
 
@@ -255,6 +274,11 @@ document.addEventListener('DOMContentLoaded', async () => {
     });
 
     document.querySelectorAll('.comment-list ul li .deleteButton').forEach((button) => {
+        const commentId = button.id;
+        button.addEventListener('click', () => deleteComment(commentId));
+    });
+
+    document.querySelectorAll('.comment-list ul li .editButton').forEach((button) => {
         const commentId = button.id;
         button.addEventListener('click', () => deleteComment(commentId));
     });
