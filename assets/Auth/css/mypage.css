@@ -241,7 +241,8 @@ button:hover {
     width: calc(50% - 10px);
 }
 
-.post-boxes, .postProject-boxes {
+.post-boxes,
+.postProject-boxes {
     border-radius: 10px;
     background-color: rgb(235, 233, 228);
     border: 1px solid white;
@@ -250,7 +251,6 @@ button:hover {
     flex-direction: column;
     gap: 10px;
 }
-
 
 .box1 {
     display: flex;
@@ -270,7 +270,7 @@ button:hover {
 }
 
 .posts {
-    width: 100%;
+    width: calc(100% - 105px);
 }
 
 .post {
@@ -292,6 +292,13 @@ button:hover {
 }
 
 .likeAndview > div {
+    display: flex;
+    width: 60px !important;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+}
+.likeAndview > div > div {
     width: 30px;
 }
 
@@ -299,6 +306,9 @@ button:hover {
     font-weight: 900;
     font-size: 25px;
     text-align: center;
+}
+
+.like {
 }
 
 .viewAndLike {
@@ -326,9 +336,160 @@ button:hover {
     align-items: center;
 }
 
-.title{
+.title {
     width: 70%;
     display: flex;
     justify-content: center;
     flex-direction: column;
+}
+
+.viewAndLike {
+    display: flex;
+    gap: 60px;
+}
+
+.views {
+    display: flex;
+    gap: 5px;
+    align-items: center;
+}
+
+.view {
+    width: 30px;
+}
+
+.like {
+    width: 30px;
+}
+
+.likes {
+    display: flex;
+    gap: 5px;
+    align-items: center;
+}
+
+.title {
+    width: 70%;
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+}
+
+.memberBtn,
+.applicantsBtn {
+    display: inline-block;
+    padding: 8px;
+    border-radius: 10px;
+    font-size: 14px;
+    border: 1px solid rgb(255, 114, 114);
+    background-color: white;
+    color: rgb(255, 114, 114);
+    cursor: pointer;
+}
+
+.memberBtn:hover,
+.applicantsBtn:hover {
+    background-color: rgb(255, 114, 114);
+    color: white;
+    transition: all 0.3s;
+}
+
+.applicantModalBox {
+    display: none;
+    position: fixed;
+    z-index: 1;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    background-color: rgba(0, 0, 0, 0.4);
+}
+
+.applicantModalBox .applicant {
+    position: absolute;
+    top: calc(50% + 61px);
+    left: calc(50% + 125px);
+    transform: translate(-50%, -50%);
+    width: 500px;
+    height: 500px;
+    background-color: white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    gap: 40px;
+    text-align: center;
+}
+
+.applicantModalBox .applicant {
+    position: relative;
+}
+
+.applicantModalBox .applicant .closeModalBtn {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    cursor: pointer;
+}
+
+.pickBtn,
+.applicantModalBox .applicant .applicantBtn {
+    display: inline-block;
+    padding: 8px;
+    border-radius: 10px;
+    border: 1px solid rgb(0, 207, 138);
+    background-color: white;
+    color: rgb(0, 207, 138);
+    cursor: pointer;
+}
+
+.pickBtn,
+.applicantModalBox .applicant .applicantBtn:hover {
+    background-color: rgb(0, 207, 138);
+    color: white;
+    transition: all 0.3s;
+}
+
+.contentInput {
+    width: 100%;
+}
+
+.memberModalBox {
+    display: none;
+    position: fixed;
+    z-index: 1;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    background-color: rgba(0, 0, 0, 0.4);
+}
+
+.memberModalBox .members {
+    position: absolute;
+    top: calc(50% + 61px);
+    left: calc(50% + 125px);
+    transform: translate(-50%, -50%);
+    width: 500px;
+    height: 500px;
+    background-color: white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    gap: 40px;
+    text-align: center;
+}
+
+.memberModalBox .members {
+    position: relative;
+}
+
+.memberModalBox .members .closeModalBtn {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    cursor: pointer;
 }

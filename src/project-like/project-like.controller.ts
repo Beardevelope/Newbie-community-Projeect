@@ -7,17 +7,6 @@ export class ProjectLikeController {
     constructor(private readonly projectLikeService: ProjectLikeService) {}
 
     @UseGuards(BearerTokenGuard)
-    @Post(':projectPostId')
-    create(@Param('projectPostId') projectPostId: string, @Req() req) {
-        return this.projectLikeService.create(+projectPostId, +req.userId);
-    }
-
-    @Get(':projectPostId')
-    findAll(@Param('projectPostId') projectPostId: string) {
-        return this.projectLikeService.findAll(+projectPostId);
-    }
-
-    @UseGuards(BearerTokenGuard)
     @Get('/myLike')
     findAllUser(@Req() req) {
         return this.projectLikeService.findAllUser(+req.userId);
@@ -27,6 +16,17 @@ export class ProjectLikeController {
     @Get('/myLike/:id')
     findOne(@Param('id') id: string, @Req() req) {
         return this.projectLikeService.findOne(+id, +req.userId);
+    }
+
+    @UseGuards(BearerTokenGuard)
+    @Post(':projectPostId')
+    create(@Param('projectPostId') projectPostId: string, @Req() req) {
+        return this.projectLikeService.create(+projectPostId, +req.userId);
+    }
+
+    @Get(':projectPostId')
+    findAll(@Param('projectPostId') projectPostId: string) {
+        return this.projectLikeService.findAll(+projectPostId);
     }
 
     @UseGuards(BearerTokenGuard)
