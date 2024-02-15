@@ -40,10 +40,10 @@ export class AlarmService {
     async createAlarm(userId: number, title: string, description: string) {
         // 알람을 여기서 저장하는 로직 작성
         const alarm = await this.alarmRepository.save({
-            title, 
+            title,
             description,
             userId,
         });
-        this.emitAlarmAddedEvent(userId, alarm.title, description)
+        this.emitAlarmAddedEvent(userId, alarm.title, description);
     }
 }

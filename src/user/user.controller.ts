@@ -106,16 +106,18 @@ export class UserController {
 
     @Get('userinfo')
     @UseGuards(BearerTokenGuard)
-    async getUserInfoAndPostByToken(@Req() request: Request,) {
-        return this.userService.getUserInfoAndPostsById(request['userId'])
+    async getUserInfoAndPostByToken(@Req() request: Request) {
+        return this.userService.getUserInfoAndPostsById(request['userId']);
     }
 
     @Put(':userId/banned')
     @UseGuards(AccessTokenGuard)
-    async banUser(
-        @Param('userId', ParseIntPipe) userId: number,
-    ) {
+    async banUser(@Param('userId', ParseIntPipe) userId: number) {
         return this.userService.banUser(userId);
     }
 
+    @Get('by-userId/:userId')
+    async getUserByUserId(@Param('userId') userId: number) {
+        return this.userService.getUserById(userId);
+    }
 }
