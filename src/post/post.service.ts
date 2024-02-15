@@ -168,7 +168,7 @@ export class PostService {
         if (updatedPost.status === 'unfinished') {
             return -1;
         }
-        return 1
+        return 1;
     }
 
     // 조회수 증가 api
