@@ -72,7 +72,7 @@ export class CommentService {
         const alarmComment = await this.findCommentById(saveComment.id);
         const post = await this.verifyPostId(postId);
         await this.alarmService.createAlarm(
-            alarmComment.userId,
+            alarmComment.postId,
             post.title,
             '게시글에 새로운 댓글이 달렸습니다.',
         );
@@ -121,7 +121,7 @@ export class CommentService {
         const savedReply = await this.commentRepository.save(reply);
 
         // 알림 보내기
-        const comment = await this.findCommentById(savedReply.id);
+        const comment = await this.findCommentById(savedReply.parentId);
         const post = await this.verifyPostId(postId);
         await this.alarmService.createAlarm(
             comment.userId,
