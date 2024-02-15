@@ -15,6 +15,9 @@ export class ProjectApplicant {
     @PrimaryGeneratedColumn()
     id: number;
 
+    @Column({ default: false })
+    accept: boolean;
+
     @CreateDateColumn()
     createdAt: Date;
 

@@ -91,6 +91,12 @@ export class ProjectPostController {
     }
 
     @UseGuards(BearerTokenGuard)
+    @Get(':id/projectApplicant')
+    findAcceptApplicant(@Param('id') id: string, @Req() req) {
+        return this.projectPostService.findAcceptApplicant(+id, +req.userId);
+    }
+
+    @UseGuards(BearerTokenGuard)
     @Delete(':id/projectApplicant')
     removeProjectApplicant(@Param('id') id: string, @Req() req) {
         return this.projectPostService.removeProjectApplicant(+id, +req.userId);

@@ -181,6 +181,23 @@ export class ProjectPostService {
         return result;
     }
 
+    // 프로젝트 멤버 조회
+    async findAcceptApplicant(id: number, userId: number) {
+        await this.findById(id);
+
+        const projectPostUser = await this.projectPostRepository.findOne({ where: { userId } });
+
+        if (userId !== projectPostUser.userId) {
+            throw new UnauthorizedException('권한이 없습니다.');
+        }
+
+        const result = await this.projectApplicantRepository.find({
+            where: { projectPostId: id, accept: true },
+        });
+
+        return result;
+    }
+
     // 프로젝트 지원 삭제
     async removeProjectApplicant(id: number, userId: number) {
         await this.findById(id);
