@@ -48,14 +48,6 @@ export class CommentService {
         }
     }
 
-    // 대댓글 기능 부모 댓글 확인
-    private async verifyParentId(parentId: number) {
-        const comment = await this.commentRepository.findOne({ where: { parentId } });
-        if (!comment) {
-            throw new NotFoundException('댓글을 찾을 수 없습니다.');
-        }
-    }
-
     async findCommentById(id: number) {
         const findComment = await this.commentRepository.findOne({ where: { id } });
         return findComment;
@@ -69,10 +61,9 @@ export class CommentService {
         const saveComment = await this.commentRepository.save(comment);
 
         // 알림 보내기
-        const alarmComment = await this.findCommentById(saveComment.id);
         const post = await this.verifyPostId(postId);
         await this.alarmService.createAlarm(
-            alarmComment.postId,
+            post.userId,
             post.title,
             '게시글에 새로운 댓글이 달렸습니다.',
         );
