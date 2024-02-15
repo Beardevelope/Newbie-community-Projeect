@@ -1,30 +1,3 @@
-const forms = document.querySelector('.forms'),
-    pwShowHide = document.querySelectorAll('.eye-icon'),
-    links = document.querySelectorAll('.link');
-
-pwShowHide.forEach((eyeIcon) => {
-    eyeIcon.addEventListener('click', () => {
-        let pwFields = eyeIcon.parentElement.parentElement.querySelectorAll('.password');
-
-        pwFields.forEach((password) => {
-            if (password.type === 'password') {
-                password.type = 'text';
-                eyeIcon.classList.replace('bx-hide', 'bx-show');
-                return;
-            }
-            password.type = 'password';
-            eyeIcon.classList.replace('bx-show', 'bx-hide');
-        });
-    });
-});
-
-links.forEach((link) => {
-    link.addEventListener('click', (e) => {
-        e.preventDefault(); //preventing form submit
-        forms.classList.toggle('show-signup');
-    });
-});
-
 /**회원가입 및 로그인 */
 const AUTH_API = 'http://localhost:3000';
 const signupButton = document.querySelector('#signup');
@@ -70,13 +43,16 @@ const signup = async () => {
 
 const login = async () => {
     try {
+        console.log('login2')
         const data = {
             email: loginEmail.value,
             password: loginPassword.value,
         };
+        console.log('data', data)
         const credentials = btoa(`${data.email}:${data.password}`);
         const token = `Basic ${credentials}`;
-        const response = await fetch(`${AUTH_API}/auth/login`, {
+        console.log(token)
+        const response = await axios.get(`${AUTH_API}/auth/login`, {
             method: 'POST',
             headers: {
                 Authorization: token,
@@ -99,15 +75,48 @@ const login = async () => {
 
 const googleLogin = async () => {
     try {
-        window.location.href = 'http://localhost:3000/auth/to-google'       
+        window.location.href = 'http://localhost:3000/auth/to-google'
     } catch (error) {
         console.error(error)
         alert('사바 에러')
     }
 }
 
-signupButton.addEventListener('click', signup);
-loginButton.addEventListener('click', login);
-googleButton.addEventListener('click', googleLogin)
+document.addEventListener("DOMContentLoaded", async () => {
+    const forms = document.querySelector('.forms'),
+        pwShowHide = document.querySelectorAll('.eye-icon'),
+        links = document.querySelectorAll('.link');
+
+    pwShowHide.forEach((eyeIcon) => {
+        eyeIcon.addEventListener('click', () => {
+            let pwFields = eyeIcon.parentElement.parentElement.querySelectorAll('.password');
+
+            pwFields.forEach((password) => {
+                if (password.type === 'password') {
+                    password.type = 'text';
+                    eyeIcon.classList.replace('bx-hide', 'bx-show');
+                    return;
+                }
+                password.type = 'password';
+                eyeIcon.classList.replace('bx-show', 'bx-hide');
+            });
+        });
+    });
+
+    links.forEach((link) => {
+        link.addEventListener('click', (e) => {
+            e.preventDefault(); //preventing form submit
+            forms.classList.toggle('show-signup');
+        });
+    });
+    signupButton.addEventListener('click', signup);
+    loginButton.addEventListener('click', async () => {
+        console.log('login')
+        console.log('')
+        await login()
+    });
+    googleButton.addEventListener('click', googleLogin)
+})
+
 
 

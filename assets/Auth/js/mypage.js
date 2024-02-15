@@ -4,7 +4,7 @@ function logout() {
 }
 
 const USER_API = 'http://localhost:3000/user'
-const USER_ID = 2
+let USER_ID = 2
 const TOKEN = sessionStorage.getItem('accessToken') || `eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NCwidHlwZSI6ImFjY2VzcyIsImlhdCI6MTcwNjc2MDQ3NiwiZXhwIjoxNzA2NzYwNzc2fQ.j5dxoMx--o6U2KRir4dm7013p4fszOUqVvH0CGmq2BI`
 
 const uploadImage = document.getElementById('uploadImage');
@@ -43,7 +43,7 @@ const getPost = async () => {
     return data.post
 }
 
-const uploadUserProfile= async (data) => {
+const uploadUserProfile = async (data) => {
     const response = await fetch(`${USER_API}/profile/${USER_ID}`, {
         method: "POST",
         headers: {
@@ -53,8 +53,13 @@ const uploadUserProfile= async (data) => {
     })
     const responseJson = await response.json()
     if (!response.ok) {
-        alert(`${data.message}`)
+        alert(`${responseJson.message}`)
         throw new Error('서버 오류')
+    }
+
+    if (response.ok) {
+        alert(`${responseJson.message}`)
+        location.reload()
     }
     return responseJson
 }
@@ -67,10 +72,9 @@ const defaultDisplay = async () => {
             headers: {
                 Authorization: `Bearer ${TOKEN}`,
             },
-        }); 
-        
+        });
+
         const responseData = await response.json();
-        console.log(responseData)
 
         const posts = responseData.posts
         const postProject = responseData.projectPost
@@ -86,9 +90,18 @@ const defaultDisplay = async () => {
             passwordConfirm.placeholder = "********"
             name.placeholder = responseData.number || "-"
             contact.placeholder = responseData.contact || '-'
-            uploadImage.src = responseData.profileImage || './images/profile2.png'
-            
-            
+            uploadImage.src = await responseData.profileImage || './images/profile2.png'
+
+            let currentUrl = window.location.href;
+
+            USER_ID = responseData.id
+            if (currentUrl.includes('?')) {
+                currentUrl += `&userId=${USER_ID}`;
+            } else {
+                currentUrl += `?userId=${USER_ID}`;
+            }
+
+
             posts.forEach((post) => {
                 const box = document.createElement('div')
                 const hr = document.createElement('hr')
@@ -150,7 +163,7 @@ const defaultDisplay = async () => {
                 postProjectBoxes.appendChild(box)
                 postProjectBoxes.appendChild(hr)
             })
-            
+
         }
     } catch (error) {
         alert('서버 에러');
@@ -178,7 +191,7 @@ const modifyUserInfo = async () => {
         if (!response.ok) alert(`${responseData.message}`);
 
         if (response.ok) {
-            
+
             alert(`${responseData.message}`);
             location.reload()
         }
@@ -200,5 +213,5 @@ fileInput.addEventListener('change', async (event) => {
     formData.append('image', selectedFile);
     await uploadUserProfile(formData)
 })
-    
+
 defaultDisplay()
