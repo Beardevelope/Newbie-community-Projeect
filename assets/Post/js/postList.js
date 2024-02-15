@@ -68,19 +68,19 @@ function displayPosts(posts) {
         const tags = post.tags;
 
         const questionElement = document.createElement('div');
-        questionElement.style.width = '820px';
+        questionElement.style.width = '100%';
         questionElement.classList.add('question');
         questionElement.innerHTML = `<h2 style="cursor: pointer; width: 550px;" class="post" id="${post.id}">${post.title}</h2>`;
         if (post.status === 'unfinished') {
-            questionElement.innerHTML += `<p>${post.content.slice(0, 20)}...<a id="statusPost">미해결</a><button id="${post.id}" class="warningPostButton">게시글 신고</button></p>`;
+            questionElement.innerHTML += `<p>${post.content.slice(0, 20)}...<a id="statusPost">미해결</a><button id="${post.id}" class="warningPostButton btn btn-outline-light">게시글 신고</button></p>`;
         } else if (post.status === 'finished') {
-            questionElement.innerHTML += `<p>${post.content.slice(0, 20)}...<a class="statusPost">해결</a><button id="${post.id}" class="warningPostButton">게시글 신고</button></p>`;
+            questionElement.innerHTML += `<p>${post.content.slice(0, 20)}...<a class="statusPost">해결</a><button id="${post.id}" class="warningPostButton btn btn-outline-light">게시글 신고</button></p>`;
         }
         for (let i = 0; i < tags.length; i++) {
             if (i > 3) {
                 break;
             }
-            questionElement.innerHTML += `<button id="${tags[i].name}" class="tagButton">${tags[i].name}</button>`;
+            questionElement.innerHTML += `<button id="${tags[i].name}" class="tagButton btn btn-outline-light">${tags[i].name}</button>`;
         }
         questionElement.innerHTML += `<h5 class="commentHitLike">댓글: ${post.comments.length} 조회수: ${post.hitCount} 좋아요: ${post.likes}</h5>`;
         questionsList.appendChild(questionElement);
@@ -89,7 +89,7 @@ function displayPosts(posts) {
     // 새로운 태그 버튼에 이벤트 리스너 추가
     addEventListenersToTagButtons();
 
-    addEventListenersToWarningButton()
+    addEventListenersToWarningButton();
 
     addEventListenersToPost();
 }
@@ -211,8 +211,7 @@ async function warningPost(clickedPostId) {
         const response = await fetch(`http://localhost:3000/warning/${clickedPostId}`, {
             method: 'post',
             headers: {
-                Authorization:
-                    'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjEsImVtYWlsIjoibWluaGVlQHlhaG9vLmNvbSIsImlkIjoxLCJ0eXBlIjoiYWNjZXNzIiwiaWF0IjoxNzA3ODQxNzY0LCJleHAiOjE3MDc4NDUzNjR9.QqtVzXEBhNMXxj9MTjv21GMJ6TzJINN_ck49kRE33oo',
+                Authorization: `Bearer ${TOKEN}`,
             },
         });
         const data = await response.json();
