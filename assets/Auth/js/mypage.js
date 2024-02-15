@@ -3,67 +3,60 @@ function logout() {
     alert('Logout button clicked!');
 }
 
-const USER_API = 'http://localhost:3000/user'
-let USER_ID = 2
-const TOKEN = sessionStorage.getItem('accessToken') || `eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NCwidHlwZSI6ImFjY2VzcyIsImlhdCI6MTcwNjc2MDQ3NiwiZXhwIjoxNzA2NzYwNzc2fQ.j5dxoMx--o6U2KRir4dm7013p4fszOUqVvH0CGmq2BI`
+const USER_API = 'http://localhost:3000/user';
+const USER_ID = 2;
+const TOKEN =
+    sessionStorage.getItem('accessToken') ||
+    `eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NCwidHlwZSI6ImFjY2VzcyIsImlhdCI6MTcwNjc2MDQ3NiwiZXhwIjoxNzA2NzYwNzc2fQ.j5dxoMx--o6U2KRir4dm7013p4fszOUqVvH0CGmq2BI`;
 
 const uploadImage = document.getElementById('uploadImage');
 const fileInput = document.getElementById('fileInput');
-const email = document.querySelector('#email')
-const nickname = document.querySelector("#NICKNAME")
-const password = document.querySelector('#PASSWORD')
-const passwordConfirm = document.querySelector("#PASSWORDCONFIRM")
-const name = document.querySelector('#NAME')
-const contact = document.querySelector("#CONTACT")
-const modifyButton = document.querySelector(".fixbutton")
+const email = document.querySelector('#email');
+const nickname = document.querySelector('#NICKNAME');
+const password = document.querySelector('#PASSWORD');
+const passwordConfirm = document.querySelector('#PASSWORDCONFIRM');
+const modifyButton = document.querySelector('.fixbutton');
 
-const postTitle = document.querySelector("#post-title")
-const postLike = document.querySelector("#post-like")
-const postView = document.querySelector("#post-view")
+const postTitle = document.querySelector('#post-title');
+const postLike = document.querySelector('#post-like');
+const postView = document.querySelector('#post-view');
 
-const postBoxes = document.querySelector(".post-boxes")
-const postProjectBoxes = document.querySelector(".postProject-boxes")
+const postBoxes = document.querySelector('.post-boxes');
+const postProjectBoxes = document.querySelector('.postProject-boxes');
 
-
-const projectTitle = document.querySelector(".title")
-const projectLike = document.querySelector(".like")
-const projectView = document.querySelector(".view")
+const projectTitle = document.querySelector('.title');
+const projectLike = document.querySelector('.like');
+const projectView = document.querySelector('.view');
 
 const POST_API = 'http://localhost:3000/post';
 
 const getPost = async () => {
     const response = await fetch(`${POST_API}/${POST_ID}`, {
-        method: "GET",
-    })
-    const data = await response.json()
+        method: 'GET',
+    });
+    const data = await response.json();
     if (!response.ok) {
-        alert(`${data.message}`)
-        throw new Error('서버 오류')
+        alert(`${data.message}`);
+        throw new Error('서버 오류');
     }
-    return data.post
-}
+    return data.post;
+};
 
 const uploadUserProfile = async (data) => {
     const response = await fetch(`${USER_API}/profile/${USER_ID}`, {
-        method: "POST",
+        method: 'POST',
         headers: {
             Authorization: `Bearer ${TOKEN}`,
         },
-        body: data
-    })
-    const responseJson = await response.json()
+        body: data,
+    });
+    const responseJson = await response.json();
     if (!response.ok) {
-        alert(`${responseJson.message}`)
-        throw new Error('서버 오류')
+        alert(`${data.message}`);
+        throw new Error('서버 오류');
     }
-
-    if (response.ok) {
-        alert(`${responseJson.message}`)
-        location.reload()
-    }
-    return responseJson
-}
-
+    return responseJson;
+};
 
 const defaultDisplay = async () => {
     try {
@@ -75,37 +68,28 @@ const defaultDisplay = async () => {
         });
 
         const responseData = await response.json();
+        console.log(responseData);
 
-        const posts = responseData.posts
-        const postProject = responseData.projectPost
+        const posts = responseData.posts;
+        const postProject = responseData.projectPost;
         if (!response.ok) {
             alert(`${responseData.message}`);
-            throw new Error('서버 에러')
+            throw new Error('서버 에러');
         }
 
         if (response.ok) {
-            email.placeholder = responseData.email
-            nickname.placeholder = responseData.nickname
-            password.placeholder = "*******"
-            passwordConfirm.placeholder = "********"
-            name.placeholder = responseData.number || "-"
-            contact.placeholder = responseData.contact || '-'
-            uploadImage.src = await responseData.profileImage || './images/profile2.png'
-
-            let currentUrl = window.location.href;
-
-            USER_ID = responseData.id
-            if (currentUrl.includes('?')) {
-                currentUrl += `&userId=${USER_ID}`;
-            } else {
-                currentUrl += `?userId=${USER_ID}`;
-            }
-
+            email.placeholder = responseData.email;
+            nickname.placeholder = responseData.nickname;
+            password.placeholder = '*******';
+            passwordConfirm.placeholder = '********';
+            name.placeholder = responseData.number || '-';
+            contact.placeholder = responseData.contact || '-';
+            uploadImage.src = responseData.profileImage || './images/profile2.png';
 
             posts.forEach((post) => {
-                const box = document.createElement('div')
-                const hr = document.createElement('hr')
-                box.className = 'box1'
+                const box = document.createElement('div');
+                const hr = document.createElement('hr');
+                box.className = 'box1';
 
                 box.innerHTML = `
                 <div class="imgBox">
@@ -128,16 +112,16 @@ const defaultDisplay = async () => {
                     </div>
                 </div>
 
-                `
-                postBoxes.appendChild(box)
-                postBoxes.appendChild(hr)
-            })
+                `;
+                postBoxes.appendChild(box);
+                postBoxes.appendChild(hr);
+            });
 
             postProject.forEach((post) => {
-                console.log(post)
-                const box = document.createElement('div')
-                const hr = document.createElement('hr')
-                box.className = 'box1'
+                console.log(post);
+                const box = document.createElement('div');
+                const hr = document.createElement('hr');
+                box.className = 'box1';
 
                 box.innerHTML = `
                 <div class="imgBox">
@@ -159,17 +143,16 @@ const defaultDisplay = async () => {
                         </div>
                     </div>
                 </div>
-                `
-                postProjectBoxes.appendChild(box)
-                postProjectBoxes.appendChild(hr)
-            })
-
+                `;
+                postProjectBoxes.appendChild(box);
+                postProjectBoxes.appendChild(hr);
+            });
         }
     } catch (error) {
         alert('서버 에러');
-        console.error(error)
+        console.error(error);
     }
-}
+};
 
 const modifyUserInfo = async () => {
     try {
@@ -182,26 +165,25 @@ const modifyUserInfo = async () => {
         const response = await fetch(`${USER_API}/${USER_ID}/update`, {
             method: 'PUT',
             headers: {
-                "Content-Type": "application/json",
+                'Content-Type': 'application/json',
                 Authorization: `Bearer ${TOKEN}`,
             },
-            body: JSON.stringify(data)
+            body: JSON.stringify(data),
         });
         const responseData = await response.json();
         if (!response.ok) alert(`${responseData.message}`);
 
         if (response.ok) {
-
             alert(`${responseData.message}`);
-            location.reload()
+            location.reload();
         }
     } catch (error) {
         alert('서버 에러');
-        console.error(error)
+        console.error(error);
     }
 };
 
-modifyButton.addEventListener('click', modifyUserInfo)
+modifyButton.addEventListener('click', modifyUserInfo);
 uploadImage.addEventListener('click', () => {
     fileInput.click();
 });
@@ -211,7 +193,7 @@ fileInput.addEventListener('change', async (event) => {
 
     const formData = new FormData();
     formData.append('image', selectedFile);
-    await uploadUserProfile(formData)
-})
+    await uploadUserProfile(formData);
+});
 
-defaultDisplay()
+defaultDisplay();

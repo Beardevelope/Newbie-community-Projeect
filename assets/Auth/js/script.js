@@ -52,7 +52,7 @@ const login = async () => {
         const credentials = btoa(`${data.email}:${data.password}`);
         const token = `Basic ${credentials}`;
         console.log(token)
-        const response = await axios.get(`${AUTH_API}/auth/login`, {
+        const response = await fetch(`${AUTH_API}/auth/login`, {
             method: 'POST',
             headers: {
                 Authorization: token,
@@ -69,7 +69,7 @@ const login = async () => {
         }
     } catch (error) {
         alert('서버 에러');
-        window.location.href = 'server-error';
+        console.error(error)
     }
 };
 
@@ -111,8 +111,6 @@ document.addEventListener("DOMContentLoaded", async () => {
     });
     signupButton.addEventListener('click', signup);
     loginButton.addEventListener('click', async () => {
-        console.log('login')
-        console.log('')
         await login()
     });
     googleButton.addEventListener('click', googleLogin)

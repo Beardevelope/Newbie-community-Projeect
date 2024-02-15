@@ -282,16 +282,20 @@ const editComment = async (commentId) => {
     const deleteButton = document.querySelector(`#delete-${commentId}`)
     const confirmButton = document.querySelector(`#confirm-${commentId}`)
     const cancelButton = document.querySelector(`#cancel-${commentId}`)
+    const editCommentInput = document.querySelector(`#editCommentInput_${commentId}`)
 
-    console.log(commentText.textContent)
-    editInput.hidden = false
+    editInput.hidden = true
     commentText.hidden = true
     writeButton.hidden = true
     deleteButton.hidden = true
+    editInput.hidden = true
+    editCommentInput.hidden = false
 
     confirmButton.hidden = false
     cancelButton.hidden = false
-    editInput.value = commentText.textContent
+
+    editCommentInput.value = commentText.textContent
+
 }
 
 document.addEventListener('DOMContentLoaded', async () => {
@@ -337,14 +341,16 @@ document.addEventListener('DOMContentLoaded', async () => {
         const deleteButton = document.querySelector(`#delete-${commentId}`)
         const confirmButton = document.querySelector(`#confirm-${commentId}`)
         const cancelButton = document.querySelector(`#cancel-${commentId}`)
+        const editCommentInput = document.querySelector(`#editCommentInput_${commentId}`)
         button.addEventListener('click', async () => {
-            editInput.hidden = true
+            editInput.hidden = false
             commentText.hidden = false
             writeButton.hidden = false
             deleteButton.hidden = false
-
+            editCommentInput.hidden = true
+        
             confirmButton.hidden = true
-            cancelButton.hidden = false
+            cancelButton.hidden = true
         })
     })
     const likeButton = document.getElementById('arrowUp'); // 여기서 likeButton을 찾음

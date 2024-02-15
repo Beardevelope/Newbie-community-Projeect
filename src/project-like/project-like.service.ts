@@ -39,11 +39,15 @@ export class ProjectLikeService {
     async findAllUser(userId: number) {
         const likes = await this.projectLikeRepository.find({ where: { userId } });
 
-        return likes.map(async (like) => {
+        const promises = likes.map(async (like) => {
             return await this.projectPostRepository.findOne({
                 where: { id: like.projectPostId },
             });
         });
+
+        const result = await Promise.all(promises);
+
+        return result;
     }
 
     async findOne(id: number, userId: number) {
@@ -69,6 +73,6 @@ export class ProjectLikeService {
         }
 
         await this.projectLikeRepository.delete({ projectPostId, userId });
-        return { message: '좋아요 삭제 성공' };
+        return { message: '좋아요 취소 완료' };
     }
 }

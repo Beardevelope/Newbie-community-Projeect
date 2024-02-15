@@ -17,12 +17,14 @@ import { CreateProjectPostDto } from './dto/create-project-post.dto';
 import { UpdateProjectPostDto } from './dto/update-project-post.dto';
 import { BearerTokenGuard } from 'src/auth/guard/bearer.guard';
 import { FileInterceptor } from '@nestjs/platform-express';
+import { VerifyGuard } from 'src/auth/guard/role.guard';
 
 @Controller('project-post')
 export class ProjectPostController {
     constructor(private readonly projectPostService: ProjectPostService) {}
 
     @UseGuards(BearerTokenGuard)
+    // @UseGuards(VerifyGuard)
     @Post()
     @UseInterceptors(FileInterceptor('image'))
     create(
@@ -38,12 +40,27 @@ export class ProjectPostController {
         return this.projectPostService.findAll(page);
     }
 
+    @UseGuards(BearerTokenGuard)
+    // @UseGuards(VerifyGuard)
+    @Get('/myProject')
+    findMyProject(@Req() req) {
+        return this.projectPostService.findMyProject(+req.userId);
+    }
+
+    @UseGuards(BearerTokenGuard)
+    // @UseGuards(VerifyGuard)
+    @Get('/myProjectApplicant')
+    myApplicant(@Req() req) {
+        return this.projectPostService.myApplicant(+req.userId);
+    }
+
     @Get(':id')
     findOne(@Param('id') id: string) {
         return this.projectPostService.findOne(+id);
     }
 
     @UseGuards(BearerTokenGuard)
+    // @UseGuards(VerifyGuard)
     @Patch(':id')
     @UseInterceptors(FileInterceptor('image'))
     update(
@@ -56,6 +73,7 @@ export class ProjectPostController {
     }
 
     @UseGuards(BearerTokenGuard)
+    // @UseGuards(VerifyGuard)
     @Delete(':id')
     remove(@Param('id') id: string, @Req() req) {
         return this.projectPostService.remove(+id, +req.userId);
@@ -67,18 +85,38 @@ export class ProjectPostController {
     }
 
     @UseGuards(BearerTokenGuard)
+    // @UseGuards(VerifyGuard)
     @Post(':id/projectApplicant')
     createProjectApplicant(@Param('id') id: string, @Req() req) {
         return this.projectPostService.createProjectApplicant(+id, +req.userId);
     }
 
     @UseGuards(BearerTokenGuard)
+    // @UseGuards(VerifyGuard)
     @Get(':id/projectApplicant')
     findProjectApplicant(@Param('id') id: string, @Req() req) {
         return this.projectPostService.findProjectApplicant(+id, +req.userId);
     }
 
     @UseGuards(BearerTokenGuard)
+    @Get(':id/projectApplicant')
+    findAcceptApplicant(@Param('id') id: string, @Req() req) {
+        return this.projectPostService.findAcceptApplicant(+id, +req.userId);
+    }
+
+    @UseGuards(BearerTokenGuard)
+    // @UseGuards(VerifyGuard)
+    @Patch(':id/projectApplicant')
+    acceptProjectApplicant(
+        @Param('id') id: string,
+        @Req() req,
+        @Body('userId') pickeduserId: number,
+    ) {
+        return this.projectPostService.acceptProjectApplicant(+id, +req.userId, pickeduserId);
+    }
+
+    @UseGuards(BearerTokenGuard)
+    // @UseGuards(VerifyGuard)
     @Delete(':id/projectApplicant')
     removeProjectApplicant(@Param('id') id: string, @Req() req) {
         return this.projectPostService.removeProjectApplicant(+id, +req.userId);

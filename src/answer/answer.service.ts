@@ -39,19 +39,22 @@ export class AnswerService {
     }
 
     // 답변 전체 목록 조회 (테스트하기)
-    async findAll(projectPostId: number) {
+    async findAll(projectPostId: number, userId: number) {
         const questions = await this.questionRepository.find({ where: { projectPostId } });
 
-        const result = questions.map(async (question) => {
+        const promises = questions.map(async (question) => {
             const answer = await this.answerRepository.findOne({
-                where: { questionId: question.id },
+                where: { questionId: question.id, userId },
             });
             const user = await this.userRepository.findOne({ where: { id: answer.userId } });
+
             return {
                 answer,
                 user,
             };
         });
+
+        const result = await Promise.all(promises);
 
         return result;
     }
