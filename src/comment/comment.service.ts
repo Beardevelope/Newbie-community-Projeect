@@ -63,8 +63,21 @@ export class CommentService {
 
     // 댓글 작성
     async createComment(postId: number, userId: number, createCommentDto: CreateCommentDto) {
+        await this.verifyPostId(postId);
         const comment = this.commentRepository.create({ postId, userId, ...createCommentDto });
-        return this.commentRepository.save(comment);
+
+        const saveComment = await this.commentRepository.save(comment);
+
+        // 알림 보내기
+        const alarmComment = await this.findCommentById(saveComment.id);
+        const post = await this.verifyPostId(postId);
+        await this.alarmService.createAlarm(
+            alarmComment.userId,
+            post.title,
+            '게시글에 새로운 댓글이 달렸습니다.',
+        );
+        console.log(saveComment);
+        return saveComment;
     }
 
     // 해당 게시글 댓글 전체 조회
