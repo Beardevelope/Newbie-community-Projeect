@@ -67,7 +67,7 @@ searchButton.addEventListener('click', () => {
     add();
 });
 
-// 검색 인풋으로 관련 영화 출력하기
+// 검색 인풋으로 관련 태그 출력하기
 function tagSearch(userInput) {
     tag.innerHTML = ``;
     console.log(userInput);
