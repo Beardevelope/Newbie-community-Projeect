@@ -44,7 +44,7 @@ export class Answer {
     @Column()
     userId: number;
 
-    @ManyToOne((type) => User, (user) => user.answer, { onDelete: 'CASCADE' })
+    @ManyToOne((type) => User, (user) => user.answers, { onDelete: 'CASCADE' })
     @JoinColumn({ name: 'user_id' })
     user: User;
 }

@@ -103,4 +103,21 @@ export class UserController {
     async getUserByNickName(@Param('nickname') nickname: string) {
         return this.userService.getUserByNickName(nickname);
     }
+
+    @Get('userinfo')
+    @UseGuards(BearerTokenGuard)
+    async getUserInfoAndPostByToken(@Req() request: Request) {
+        return this.userService.getUserInfoAndPostsById(request['userId']);
+    }
+
+    @Put(':userId/banned')
+    @UseGuards(AccessTokenGuard)
+    async banUser(@Param('userId', ParseIntPipe) userId: number) {
+        return this.userService.banUser(userId);
+    }
+
+    @Get('by-userId/:userId')
+    async getUserByUserId(@Param('userId') userId: number) {
+        return this.userService.getUserById(userId);
+    }
 }

@@ -17,9 +17,21 @@ export class AutoReply {
             apiKey: this.configservice.get<string>('OPENAI_API_KEY'),
         });
 
-        //completion 챗 생성
+        /**
+         * completions는 해당 대화라고 봐도 무방
+         * completion는 해당 대화의 답변
+         * model 처리할 엔진, 모델 고르기
+         * messages 대화 내역
+         * role 에서 나오는 system은 프롬프트 혹은 설정입니다
+         * user는 실제 유저의 요청 혹은 질문입니다. (content 내용물)
+         * temperature, maxtokens, top_p등은 세부사항으로
+         * 각각 랜덤성, 토큰(글자수)제한, 다양성
+         * temperature는 1의 가까울수록 같은 답이 안 나옴
+         * max_tokens 최대 토큰 수 제한 많을수록 글자 최대 수 높아짐
+         * top_p, 1 가까울 수록 선택지가 넓어지고 다양성이 높아짐
+         */
         const completion = await openai.chat.completions.create({
-            model: 'gpt-3.5-turbo',
+            model: 'gpt-3.5-turbo', 
             messages: [
                 {
                     role: 'system',
@@ -29,7 +41,6 @@ export class AutoReply {
                 },
                 { role: 'user', content: question },
             ],
-            //세부사항, 정밀도, 토큰 제한, 등등
             temperature: 0.8,
             max_tokens: 500,
             top_p: 1,

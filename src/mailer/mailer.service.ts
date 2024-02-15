@@ -26,7 +26,7 @@ export class EmailService {
             // 만료시간을 줄여줄 필요가 있음.
             { expiresIn: '1h' },
         );
-
+        // 리다이렉션 url에 email과 userId만 받는 token을 생성하여 인증처리
         const url = `http:/localhost:3000/auth/verify/${token}`;
 
         await this.mailerService.sendMail({

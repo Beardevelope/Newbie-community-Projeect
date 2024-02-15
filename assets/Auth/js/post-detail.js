@@ -143,7 +143,10 @@ const listDetailPageOfPost = async () => {
                         <form class="commentForm" id="form-${comment.id}">
                             <textarea class="commentText" rows="4" cols="50" placeholder="댓글 작성란"></textarea>
                             <button class="submitButton" id="${comment.id}" type="button">댓글 제출</button>
-                        </form>`;
+                        </form>
+                        <button class="deleteButton" id="${comment.id}">댓글 삭제</button>
+                        `;
+                        
 
                     if (commentsMap.has(comment.id)) {
                         const childUl = document.createElement('ul');
@@ -222,15 +225,40 @@ const registerComment = async (comment) => {
     location.reload();
 };
 
+const deleteComment = async (commentId) => {
+    const response = await fetch(`${COMMENT_API}/${POST_ID}/${commentId}`, {
+        method: 'DELETE',
+        headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${TOKEN}`,
+        },
+    });
+    const newComment = await response.json();
+
+    if (!response.ok) {
+        alert(`${newComment.message}`);
+        throw new Error('서버 오류');
+    }
+    alert('댓글 작성 완료');
+    commentTextArea.value = '';
+    location.reload();
+};
+
 document.addEventListener('DOMContentLoaded', async () => {
     await listDetailPageOfPost();
     document.querySelectorAll('.comment-list ul li .commentButton').forEach((button) => {
-        button.addEventListener('click', () => { console.log(button.id); toggleCommentForm(button.id)});
+        button.addEventListener('click', () => toggleCommentForm(button.id));
     });
     document.querySelectorAll('.comment-list ul li .submitButton').forEach((button) => {
         const commentId = button.id;
         button.addEventListener('click', () => submitButton(commentId));
     });
+
+    document.querySelectorAll('.comment-list ul li .deleteButton').forEach((button) => {
+        const commentId = button.id;
+        button.addEventListener('click', () => deleteComment(commentId));
+    });
+
     const likeButton = document.getElementById('arrowUp'); // 여기서 likeButton을 찾음
 
     likeButton.addEventListener('click', () => {

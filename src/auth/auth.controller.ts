@@ -29,13 +29,19 @@ export class AuthController {
         return this.authService.rotateToken(req['token'], false);
     }
     /**
-     *
+     * 구글 로그인 주소
      * @param req
      */
     @Get('to-google')
     @UseGuards(GoogleAuthGuard)
     async googleAuth(@Request() req) {}
 
+    /**
+     * 직접적인 구글 로그인을 통한 리다이렉션 url 설정 및 토큰 반환 코드
+     * @param req
+     * @param res
+     * @returns
+     */
     @Get('google')
     @UseGuards(GoogleAuthGuard)
     googleAuthRedirect(@Request() req: Request, @Res() res) {
@@ -45,8 +51,6 @@ export class AuthController {
         res.redirect(`http://localhost:3000/Auth/save-token.html?accessToken=${token}`);
         return token;
     }
-
-    // 만약에 누군가가 본인의 아이디를 알고, 해당 url을 입력하면 바로 적용이 되는데 해당부분에 대한 보안을 보완할 방법을 찾기.
 
     @Post('verify/:token')
     async verifiedUserUpdate(@Param('token') token: string) {
