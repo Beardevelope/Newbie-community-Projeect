@@ -36,15 +36,16 @@ updateBannerDetails();
 
 // 배너 삭제
 async function deleteBanner() {
-    const accessToken = "토큰";
-    // const accessToken = localStorage.getItem('accessToken');
+
+    const TOKEN = sessionStorage.getItem('accessToken');
+    // const TOKEN = "토큰"
 
     const bannerId = getBannerIdFromUrl();
     try {
         const response = await fetch(`http://localhost:3000/banner/${bannerId}`, {
             method: 'DELETE',
             headers: {
-                'Authorization': `Bearer ${accessToken}`,
+                Authorization: `Bearer ${TOKEN}`,
             },
         });
 

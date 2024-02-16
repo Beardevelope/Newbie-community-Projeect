@@ -19,8 +19,8 @@
         <header class="header">
             <div class="total-header">
                 <div class="title-logo">
-                    <img src="../../Auth/images/logo.png" alt="" class="logo-img" />
-                    Roomdevelope
+                    <div><img src="images/logo.png" alt="" class="logo-img" /></div>
+                    <div>Roomdevelope</div>
                 </div>
                 <form class="d-flex search-box">
                     <input
@@ -32,8 +32,15 @@
                     <button type="button" class="btn btn-outline-light">Search</button>
                 </form>
                 <div class="buttons">
-                    <button type="button" class="btn btn-outline-light">log-in</button>
-                    <button type="button" class="btn btn-outline-light">sign-up</button>
+                    <button type="button" class="btn btn-outline-light" id="loginButton">
+                        log-in
+                    </button>
+                    <button type="button" class="btn btn-outline-light" id="signupButton">
+                        sign-up
+                    </button>
+                    <button type="button" class="btn btn-outline-light" id="logoutButton" style="display: none;">
+                        log-out
+                    </button>
                 </div>
             </div>
         </header>
@@ -54,7 +61,7 @@
                 <hr />
                 <ul class="nav nav-pills flex-column mb-auto">
                     <li class="nav-item">
-                        <a href="#" class="nav-link active" aria-current="page">
+                        <a href="../../Auth/mainpage.html" class="nav-link text-white">
                             <svg class="bi pe-none me-2" width="16" height="16">
                                 <use xlink:href="#home"></use>
                             </svg>
@@ -78,7 +85,7 @@
                         </a>
                     </li>
                     <li>
-                        <a href="#" class="nav-link text-white">
+                        <a href="../../ProjectPost/projectPostMain.html" class="nav-link text-white">
                             <svg class="bi pe-none me-2" width="16" height="16">
                                 <use xlink:href="#table"></use>
                             </svg>
@@ -86,7 +93,7 @@
                         </a>
                     </li>
                     <li>
-                        <a href="./user.html" class="nav-link text-white">
+                        <a href="./user.html" class="nav-link active" aria-current="page">
                             <svg class="bi pe-none me-2" width="16" height="16">
                                 <use xlink:href="#grid"></use>
                             </svg>
@@ -157,4 +164,5 @@
         ></script>
     </body>
     <script src="../js/user.js"></script>
+    <script src="../../Post/js/transfer.js"></script>
 </html>

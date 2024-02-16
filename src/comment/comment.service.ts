@@ -48,14 +48,6 @@ export class CommentService {
         }
     }
 
-    // 대댓글 기능 부모 댓글 확인
-    private async verifyParentId(parentId: number) {
-        const comment = await this.commentRepository.findOne({ where: { parentId } });
-        if (!comment) {
-            throw new NotFoundException('댓글을 찾을 수 없습니다.');
-        }
-    }
-
     async findCommentById(id: number) {
         const findComment = await this.commentRepository.findOne({ where: { id } });
         return findComment;
@@ -63,8 +55,20 @@ export class CommentService {
 
     // 댓글 작성
     async createComment(postId: number, userId: number, createCommentDto: CreateCommentDto) {
+        await this.verifyPostId(postId);
         const comment = this.commentRepository.create({ postId, userId, ...createCommentDto });
-        return this.commentRepository.save(comment);
+
+        const saveComment = await this.commentRepository.save(comment);
+
+        // 알림 보내기
+        const post = await this.verifyPostId(postId);
+        await this.alarmService.createAlarm(
+            post.userId,
+            post.title,
+            '게시글에 새로운 댓글이 달렸습니다.',
+        );
+        console.log(saveComment);
+        return saveComment;
     }
 
     // 해당 게시글 댓글 전체 조회
@@ -108,7 +112,7 @@ export class CommentService {
         const savedReply = await this.commentRepository.save(reply);
 
         // 알림 보내기
-        const comment = await this.findCommentById(savedReply.id);
+        const comment = await this.findCommentById(savedReply.parentId);
         const post = await this.verifyPostId(postId);
         await this.alarmService.createAlarm(
             comment.userId,
