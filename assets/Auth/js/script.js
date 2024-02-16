@@ -52,13 +52,14 @@ const login = async () => {
         const credentials = btoa(`${data.email}:${data.password}`);
         const token = `Basic ${credentials}`;
         console.log(token)
+        console.log('before')
         const response = await fetch(`${AUTH_API}/auth/login`, {
             method: 'POST',
             headers: {
                 Authorization: token,
             },
         });
-        console.log(response);
+        console.log('after');
         const responseData = await response.json();
         if (!response.ok) alert(`${responseData.message}`);
 
