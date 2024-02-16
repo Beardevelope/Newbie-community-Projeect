@@ -6,6 +6,7 @@ export class CreateProjectPostDto extends PartialType(ProjectPost) {
     title: string;
     content: string;
     image?: string;
+    status?: string;
     @IsDateString()
     applicationDeadLine: Date;
     @IsDateString()

@@ -145,3 +145,7 @@ a {
 .active {
     font-weight: bold;
 }
+
+.done {
+    background-color: rgb(255, 114, 114) !important;
+}

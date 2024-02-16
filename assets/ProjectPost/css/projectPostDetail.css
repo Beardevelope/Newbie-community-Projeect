@@ -11,18 +11,16 @@ img {
 }
 
 .mainWrap {
-    width: 80%;
-    margin: 0 auto;
+    margin: 30px;
 }
 
 .mainWrap .mainBox {
     display: flex;
     gap: 30px;
-    margin: 30px 0;
 }
 
 .mainWrap .mainBox > div {
-    width: calc(50% - 15px);
+    width: calc(33.3333% - 20px);
     aspect-ratio: auto 1/1;
     background-color: white;
 }
@@ -39,16 +37,42 @@ img {
 }
 
 .mainWrap .mainBox .detailBox .needStackBox {
-    display: flex;
     margin-bottom: 20px;
 }
 
-.mainWrap .mainBox .detailBox .needStackBox > div {
-    width: 50%;
+.mainWrap .mainBox .detailBox .needStackBox .needStack {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin: 20px 0;
+}
+
+.stackInfoBox {
+    display: flex;
+    gap: 30px;
+}
+
+.mainWrap .mainBox .detailBox .needStackBox .needStack .stackTitleBox {
+    display: flex;
+    gap: 50px;
+    align-items: center;
     font-size: 15px;
 }
 
-.mainWrap .mainBox .detailBox .needStackBox > div .stackTitle,
+.stackInfo {
+    display: flex;
+    gap: 70px;
+    align-items: center;
+    font-size: 15px;
+}
+
+.stackInfo > div {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.stackTitle,
 .needPeopleTitle {
     font-weight: bold;
     font-size: 16px;
@@ -56,16 +80,49 @@ img {
 
 .mainWrap .mainBox .detailBox .dateBox {
     display: flex;
-    justify-content: center;
+    gap: 20px;
 }
 
 .mainWrap .mainBox .detailBox .dateBox .date {
     font-size: 13px;
-    width: 33.33%;
 }
 
 .mainWrap .mainBox .detailBox .dateBox .date .dateTitle {
     font-weight: bold;
+}
+
+.mainWrap .mainBox .detailBox .editQuestionBox {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin: 20px 0;
+}
+.mainWrap .mainBox .detailBox .editQuestionBox .editQuestion {
+    display: flex;
+    gap: 20px;
+    align-items: end;
+}
+
+.removeStackBtn,
+.mainWrap .mainBox .detailBox .editQuestionBox .editQuestion .removeQuestionBtn {
+    padding: 6px;
+    font-size: 12px;
+    border-radius: 10px;
+    border: 1px solid rgb(255, 114, 114);
+    background-color: white;
+    color: rgb(255, 114, 114);
+    cursor: pointer;
+}
+
+.mainWrap .mainBox .detailBox .editQuestionBox .editQuestion .removeQuestionBtn:hover {
+    background-color: rgb(255, 114, 114);
+    color: white;
+    transition: all 0.3s;
+}
+
+.mainWrap .mainBox .detailBox .recruitBox {
+    display: flex;
+    gap: 15px;
 }
 
 .mainWrap .mainBox .detailBox .applicantBox {

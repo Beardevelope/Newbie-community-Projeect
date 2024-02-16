@@ -61,6 +61,15 @@ export class QuestionService {
         return result;
     }
 
+    // 질문 삭제
+    async delete(projectPostId: number, id: number, userId: number) {
+        await this.findById(projectPostId, userId);
+
+        await this.questionRepository.delete({ projectPostId, id });
+
+        return { message: '질문 삭제 완료' };
+    }
+
     async findById(projectPostId: number, userId: number) {
         const findOne = await this.projectPostRepository.findOne({
             where: { id: projectPostId },

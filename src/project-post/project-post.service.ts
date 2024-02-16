@@ -82,7 +82,8 @@ export class ProjectPostService {
         userId: number,
         image?: Express.Multer.File,
     ) {
-        const { title, content, applicationDeadLine, startDate, dueDate } = updateProjectPostDto;
+        const { title, content, status, applicationDeadLine, startDate, dueDate } =
+            updateProjectPostDto;
 
         const findById = await this.findById(id);
 
@@ -100,6 +101,7 @@ export class ProjectPostService {
             {
                 title,
                 content,
+                status,
                 image: uploadImage,
                 applicationDeadLine: new Date(applicationDeadLine as any),
                 startDate: new Date(startDate as any),
