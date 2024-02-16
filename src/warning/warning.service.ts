@@ -137,10 +137,10 @@ export class WarningService {
         user.bannedDate = banDate;
 
         await this.userService.updateUser(userId, user);
-        return user
+        return user;
     }
 
-    @Cron('10 * * * * *')
+    @Cron('0 0 * * * *')
     async cancelBan() {
         // 벤당한 사람들을 찾아온다.
         // 벤 당한 날짜(banDate)를 벤 할 때 새로 넣어주는 것이 좋을듯 new Date() 이걸 사용해서 넣어주기
@@ -149,7 +149,7 @@ export class WarningService {
             const currentDate = new Date();
             const DateDiff = currentDate.getTime() - user.bannedDate.getTime();
             const DateDiffNumber = Math.floor(Math.abs(DateDiff / (1000 * 60 * 60 * 24)));
-            if (DateDiffNumber >= 0) {
+            if (DateDiffNumber >= 3) {
                 user.isBan = false;
                 user.warningCount = 0;
                 await this.userService.updateUser(user.id, user);
