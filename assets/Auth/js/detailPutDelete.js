@@ -56,7 +56,7 @@ async function putPost() {
             method: 'put',
             headers: {
                 Authorization:
-                    'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjEsImVtYWlsIjoibWluaGVlQHlhaG9vLmNvbSIsImlkIjoxLCJ0eXBlIjoiYWNjZXNzIiwiaWF0IjoxNzA3Njg0MTAwLCJleHAiOjE3MDc2ODc3MDB9.U3n99BTLvUSlmdPHux-ewpyMJrb18FpOF0-Jl0yrzT0',
+                    `Bearer ${TOKEN}`,
             },
             body: formData,
         });
@@ -108,7 +108,7 @@ async function deletePost() {
             method: 'delete',
             headers: {
                 Authorization:
-                    'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6OCwidHlwZSI6ImFjY2VzcyIsImlhdCI6MTcwNjcxNTMwNCwiZXhwIjoxNzA2NzE1NjA0fQ.SqioTkSXOx7iWNMH7-687OHtZGbRJhGUK7hwwtdGD_g',
+                    `Bearer ${TOKEN}`,
             },
         });
         if (response.status !== 200) {
