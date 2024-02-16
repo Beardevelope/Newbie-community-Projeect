@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Patch, Param, Req, UseGuards } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Req, UseGuards, Delete } from '@nestjs/common';
 import { QuestionService } from './question.service';
 import { CreateQuestionDto } from './dto/create-question.dto';
 import { UpdateQuestionDto } from './dto/update-question.dto';
@@ -32,5 +32,11 @@ export class QuestionController {
         @Req() req,
     ) {
         return this.questionService.update(+projectPostId, +id, updateQuestionDto, +req.userId);
+    }
+
+    @UseGuards(BearerTokenGuard)
+    @Delete('/:projectPostId/:id')
+    delete(@Param('projectPostId') projectPostId: string, @Param('id') id: string, @Req() req) {
+        return this.questionService.delete(+projectPostId, +id, +req.userId);
     }
 }

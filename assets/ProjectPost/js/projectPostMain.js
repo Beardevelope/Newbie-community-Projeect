@@ -76,32 +76,32 @@ async function getProject(page) {
             });
 
             project.innerHTML = `
-        <div class="projectContent">
-            <div class="projectImg">
-                <img src="${sortPost[i].image}"/>
-            </div>
-            <div class="statusBox">
-                <div class="status">${sortPost[i].status}</div>
-                <div class="stackBox">
+            <div class="projectContent">
+                <div class="projectImg">
+                    <img src="${sortPost[i].image}"/>
+                </div>
+                <div class="statusBox">
+                    <div class="status">${sortPost[i].status}</div>
+                    <div class="stackBox">
+                    </div>
                 </div>
             </div>
-        </div>
-        <div class="date">
-            <div class="projectTitle">${sortPost[i].title}</div>
-            <div class="period">기간 : ${sortPost[i].startDate.split('T')[0]} ~ ${sortPost[i].dueDate.split('T')[0]}</div>
-            <div class="deadLine">마감일 : ~${sortPost[i].applicationDeadLine.split('T')[0]}</div>
-        </div>
-        <div class="countBox">
-            <div class="hitCount">
-                <div>👀</div>
-                <div class="hitCounts">${sortPost[i].hitCount}</div>
+            <div class="date">
+                <div class="projectTitle">${sortPost[i].title}</div>
+                <div class="period">기간 : ${sortPost[i].startDate.split('T')[0]} ~ ${sortPost[i].dueDate.split('T')[0]}</div>
+                <div class="deadLine">마감일 : ~${sortPost[i].applicationDeadLine.split('T')[0]}</div>
             </div>
-            <div class="like">
-                <div>❤</div>
-                <div class="likeCounts">${like}</div>
+            <div class="countBox">
+                <div class="hitCount">
+                    <div>👀</div>
+                    <div class="hitCounts">${sortPost[i].hitCount}</div>
+                </div>
+                <div class="like">
+                    <div>❤</div>
+                    <div class="likeCounts">${like}</div>
+                </div>
             </div>
-        </div>
-        `;
+            `;
 
             projects.appendChild(project);
 
@@ -116,6 +116,14 @@ async function getProject(page) {
                 const stackBox = document.querySelectorAll('.stackBox');
 
                 stackBox[i].appendChild(getStack);
+            }
+
+            const status = document.querySelector('.status');
+
+            if (status.innerHTML === '모집완료') {
+                status.className = 'status done';
+            } else {
+                status.className = 'status';
             }
         }
     } catch (error) {

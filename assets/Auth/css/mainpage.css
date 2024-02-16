@@ -13,6 +13,7 @@
 }
 
 .title-logo {
+    gap: 5px;
     padding-left: 40px;
     color: white;
     font-family: 'Anton', sans-serif;
