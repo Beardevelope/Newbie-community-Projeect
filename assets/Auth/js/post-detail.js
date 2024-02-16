@@ -1,6 +1,6 @@
 const POST_API = 'http://localhost:3000/post';
 const COMMENT_API = 'http://localhost:3000/comment';
-const USER_ID = 1;
+const USER_ID = 3;
 const TOKEN = sessionStorage.getItem('accessToken');
 let StringPostId = window.location.search;
 const POST_ID = StringPostId.substr(4);
@@ -26,6 +26,24 @@ const getPost = async () => {
         throw new Error('서버 오류');
     }
     return data.post;
+};
+
+const updateComment = async (comment) => {
+    const response = await fetch(`${COMMENT_API}/${POST_ID}/${comment.id}`, {
+        method: 'PUT',
+        headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${TOKEN}`,
+        },
+        body: JSON.stringify({ content: comment.content }),
+    });
+
+    const updatedComment = await response.json();
+    if (!response.ok) {
+        alert(`${updatedComment.message}`);
+        throw new Error('서버 오류');
+    }
+    alert('댓글 수정 완료');
 };
 
 const listDetailPageOfPost = async () => {
@@ -138,15 +156,31 @@ const listDetailPageOfPost = async () => {
                     parentElement.appendChild(li);
                     li.id = `comment-id-${comment.id}`;
                     li.innerHTML = `
-                        ${comment.userId}: ${comment.content}
-                        <button class="commentButton" id="${comment.id}">댓글 작성</button>
-                        <form class="commentForm" id="form-${comment.id}">
-                            <textarea class="commentText" rows="4" cols="50" placeholder="댓글 작성란"></textarea>
-                            <button class="submitButton" id="${comment.id}" type="button">댓글 제출</button>
-                        </form>
-                        <button class="deleteButton" id="${comment.id}">댓글 삭제</button>
+                    <div class="commentBox">
+                        <div class="comment-content">
+                        <p id="userId_${comment.id}">${comment.userId}: </p>
+                        <p id="commentText_${comment.id}">${comment.content}</p>
+                    </div>
+
+                    <textarea id="editCommentInput_${comment.id}" hidden>${comment.content}</textarea>
+                    <form class="commentForm" id="form-${comment.id}">
+                        <textarea class="commentText" rows="4" cols="50" placeholder="댓글 작성란"></textarea>
+                        <button class="submitButton" id="${comment.id}" type="button">댓글 제출</button>
+                    </form>
+
+                    <div class="comment-buttons"> 
+                        <button class="commentButton" id="write-${comment.id}">댓글 작성</button>
+                        <button class="deleteButton" id="delete-${comment.id}">댓글 삭제</button>
+                        <button class="editButton" id="edit-${comment.id}">댓글 수정</button>
+                    </div>
+
+                    
+                    <button class="confirmButton" id="confirm-${comment.id}" hidden>댓글 완료</button>
+                    <button class="cancelButton" id="cancel-${comment.id}" hidden>댓글 취소</button>
+
+
+                        </div>
                         `;
-                        
 
                     if (commentsMap.has(comment.id)) {
                         const childUl = document.createElement('ul');
@@ -188,12 +222,10 @@ const listDetailPageOfPost = async () => {
 function toggleCommentForm(id) {
     const commentList = document.querySelector('.comment-list ul');
     const commentForm = commentList.querySelector(`#form-${id}`);
-    console.log(commentList, commentForm)
     commentForm.style.display = commentForm.style.display === 'none' ? 'block' : 'none';
 }
 
 const submitButton = async (id) => {
-    console.log(id);
     const textArea = document.querySelector(`#form-${id} textarea`);
     console.log(textArea);
     const comment = {
@@ -243,22 +275,84 @@ const deleteComment = async (commentId) => {
     commentTextArea.value = '';
     location.reload();
 };
+const editComment = async (commentId) => {
+    const editInput = document.querySelector(`#edit-${commentId}`)
+    const commentText = document.querySelector(`#commentText_${commentId}`)
+    const writeButton = document.querySelector(`#write-${commentId}`);
+    const deleteButton = document.querySelector(`#delete-${commentId}`)
+    const confirmButton = document.querySelector(`#confirm-${commentId}`)
+    const cancelButton = document.querySelector(`#cancel-${commentId}`)
+    const editCommentInput = document.querySelector(`#editCommentInput_${commentId}`)
+
+    editInput.hidden = true
+    commentText.hidden = true
+    writeButton.hidden = true
+    deleteButton.hidden = true
+    editInput.hidden = true
+    editCommentInput.hidden = false
+
+    confirmButton.hidden = false
+    cancelButton.hidden = false
+
+    editCommentInput.value = commentText.textContent
+
+}
 
 document.addEventListener('DOMContentLoaded', async () => {
     await listDetailPageOfPost();
     document.querySelectorAll('.comment-list ul li .commentButton').forEach((button) => {
-        button.addEventListener('click', () => toggleCommentForm(button.id));
+        const commentId = button.id.split('-').pop();
+        button.addEventListener('click', () => toggleCommentForm(commentId));
     });
     document.querySelectorAll('.comment-list ul li .submitButton').forEach((button) => {
-        const commentId = button.id;
         button.addEventListener('click', () => submitButton(commentId));
     });
 
     document.querySelectorAll('.comment-list ul li .deleteButton').forEach((button) => {
-        const commentId = button.id;
+        const commentId = button.id.split('-').pop();
+
         button.addEventListener('click', () => deleteComment(commentId));
     });
 
+    document.querySelectorAll('.comment-list ul li .editButton').forEach((button) => {
+        const commentId = button.id.split('-').pop();
+        button.addEventListener('click', () => editComment(commentId));
+    });
+
+    document.querySelectorAll('.comment-list ul li .confirmButton').forEach((button) => {
+        const commentId = button.id.split('-').pop();
+        button.addEventListener('click', async () => {
+            const editedCommentText = document.querySelector(`#editCommentInput_${commentId}`).value
+            console.log(editedCommentText)
+            const comment = {
+                id: commentId,
+                content: editedCommentText
+            }
+            await updateComment(comment)
+        })
+    })
+
+    document.querySelectorAll('.comment-list ul li .cancelButton').forEach((button) => {
+        const commentId = button.id.split('-').pop();
+
+        const editInput = document.querySelector(`#edit-${commentId}`)
+        const commentText = document.querySelector(`#commentText_${commentId}`)
+        const writeButton = document.querySelector(`#write-${commentId}`);
+        const deleteButton = document.querySelector(`#delete-${commentId}`)
+        const confirmButton = document.querySelector(`#confirm-${commentId}`)
+        const cancelButton = document.querySelector(`#cancel-${commentId}`)
+        const editCommentInput = document.querySelector(`#editCommentInput_${commentId}`)
+        button.addEventListener('click', async () => {
+            editInput.hidden = false
+            commentText.hidden = false
+            writeButton.hidden = false
+            deleteButton.hidden = false
+            editCommentInput.hidden = true
+        
+            confirmButton.hidden = true
+            cancelButton.hidden = true
+        })
+    })
     const likeButton = document.getElementById('arrowUp'); // 여기서 likeButton을 찾음
 
     likeButton.addEventListener('click', () => {
@@ -305,7 +399,7 @@ statusButton.addEventListener('click', () => {
 });
 console.log(statusButton)
 
-async function clickStatusButton () {
+async function clickStatusButton() {
     try {
         const response = await fetch(`http://localhost:3000/post/${currentPostId}/status`, {
             method: 'put',
