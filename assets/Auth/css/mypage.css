@@ -462,8 +462,8 @@ button:hover {
     cursor: pointer;
 }
 
-.removeMemberBtn,
-.pickBtn,
+.removeMemberBtn:hover,
+.pickBtn:hover,
 .applicantModalBox .applicant .applicantBtn:hover {
     background-color: rgb(0, 207, 138);
     color: white;

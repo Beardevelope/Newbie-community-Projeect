@@ -19,10 +19,12 @@
     <body>
         <header class="header">
             <div class="total-header">
-                <div class="title-logo">
-                    <img src="images/logo.png" alt="" class="logo-img" />
-                    Roomdevelope
-                </div>
+                <a href="../Auth/mainpage.html">
+                    <div class="title-logo">
+                        <div><img src="../Auth/images/logo.png" alt="" class="logo-img" /></div>
+                        <div>Roomdevelope</div>
+                    </div>
+                </a>
                 <form class="d-flex search-box">
                     <input
                         class="form-control me-2"
@@ -33,8 +35,20 @@
                     <button type="button" class="btn btn-outline-light">Search</button>
                 </form>
                 <div class="buttons">
-                    <button type="button" class="btn btn-outline-light">log-in</button>
-                    <button type="button" class="btn btn-outline-light">sign-up</button>
+                    <button type="button" class="btn btn-outline-light" id="loginButton">
+                        log-in
+                    </button>
+                    <button type="button" class="btn btn-outline-light" id="signupButton">
+                        sign-up
+                    </button>
+                    <button
+                        type="button"
+                        class="btn btn-outline-light"
+                        id="logoutButton"
+                        style="display: none"
+                    >
+                        log-out
+                    </button>
                 </div>
             </div>
         </header>
@@ -55,7 +69,11 @@
                 <hr />
                 <ul class="nav nav-pills flex-column mb-auto">
                     <li class="nav-item">
-                        <a href="../Auth/mainpage.html" class="nav-link active" aria-current="page">
+                        <a
+                            href="../Auth/mainpage.html"
+                            class="nav-link text-white"
+                            aria-current="page"
+                        >
                             <svg class="bi pe-none me-2" width="16" height="16">
                                 <use xlink:href="#home"></use>
                             </svg>
@@ -71,7 +89,7 @@
                         </a>
                     </li>
                     <li>
-                        <a href="../../Tag/html/tag.html" class="nav-link text-white">
+                        <a href="../Tag/html/tag.html" class="nav-link text-white">
                             <svg class="bi pe-none me-2" width="16" height="16">
                                 <use xlink:href="#speedometer2"></use>
                             </svg>
@@ -79,7 +97,7 @@
                         </a>
                     </li>
                     <li>
-                        <a href="../ProjectPost/projectPostMain.html" class="nav-link text-white">
+                        <a href="../ProjectPost/projectPostMain.html" class="nav-link active">
                             <svg class="bi pe-none me-2" width="16" height="16">
                                 <use xlink:href="#table"></use>
                             </svg>
@@ -87,19 +105,11 @@
                         </a>
                     </li>
                     <li>
-                        <a href="#" class="nav-link text-white">
+                        <a href="../User/html/user.html" class="nav-link text-white">
                             <svg class="bi pe-none me-2" width="16" height="16">
                                 <use xlink:href="#grid"></use>
                             </svg>
                             Users
-                        </a>
-                    </li>
-                    <li>
-                        <a href="#" class="nav-link text-white">
-                            <svg class="bi pe-none me-2" width="16" height="16">
-                                <use xlink:href="#people-circle"></use>
-                            </svg>
-                            Customers
                         </a>
                     </li>
                 </ul>
@@ -111,19 +121,25 @@
                         data-bs-toggle="dropdown"
                         aria-expanded="false"
                     >
-                        <img
-                            src="https://github.com/mdo.png"
-                            alt=""
-                            width="32"
-                            height="32"
-                            class="rounded-circle me-2"
-                        />
-                        <strong>mdo</strong>
+                        <div class="profileImage">
+                            <img
+                                src="https://github.com/mdo.png"
+                                alt=""
+                                width="32"
+                                height="32"
+                                class="rounded-circle me-2"
+                            />
+                            <strong>mdo</strong>
+                        </div>
                     </a>
                     <ul class="dropdown-menu dropdown-menu-dark text-small shadow">
-                        <li><a class="dropdown-item" href="#">New project...</a></li>
-                        <li><a class="dropdown-item" href="#">Settings</a></li>
-                        <li><a class="dropdown-item" href="#">Profile</a></li>
+                        <li>
+                            <a class="dropdown-item" href="./projectPostWrite.html">New project</a>
+                        </li>
+                        <li>
+                            <a class="dropdown-item" href="../Post/html/postList.html">New Q&A</a>
+                        </li>
+                        <li><a class="dropdown-item" href="../Auth/mypage.html">Profile</a></li>
                         <li><hr class="dropdown-divider" /></li>
                         <li><a class="dropdown-item" href="#">Sign out</a></li>
                     </ul>
@@ -210,101 +226,6 @@
                     </form>
                 </div>
             </main>
-
-            <form id='dataForm'> 
-                <div class="mainBox">
-                    <div class="imageBox">
-                        <div>
-                            <img src="${getProject.image}" class='projectImg' alt="">
-                        </div>
-                    </div>
-        
-                    <div class="detailBox">
-                        <input type="text" id="title" class="title" placeholder='${getProject.title}'></input>
-                        <div class="needStackBox">
-                            <div class='needStack'>
-                                <div class='stackTitleBox'>
-                                    <div class="stackTitle">요구 기술</div>
-                                    <div class="needPeopleTitle">모집 인원</div>
-                                </div>
-                                <div class='stackInfoBox'>
-                                    <div class='stackInfo'>
-                                        <div class="stacks"></div>
-                                        <div class="needPeoples"></div>
-                                        <div class='removeStackBox'></div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="dateBox">
-                                <div class="date">
-                                    <div>
-                                        <label for='deadLine' class="dateTitle">마감일</label>
-                                    </div>
-                                    <div>
-                                        <input type="date" id="deadLine" class="deadLine" required></input>
-                                    </div>
-                                </div>
-                                <div class="date">
-                                    <div>
-                                        <label for='startDate' class="dateTitle">시작일</label>
-                                    </div>
-                                    <div>
-                                        <input type="date" id="startDate" class="startDate" required></input>
-                                    </div>
-                                </div>
-                                <div class="date">
-                                    <div>
-                                        <label for='dueDate' class="dateTitle">종료일</label>
-                                    </div>
-                                    <div>
-                                        <input type="date" id="dueDate" class="dueDate" required></input>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class='editQuestionBox'>
-                                
-                            </div>
-                            <div class= 'recruitBox'>
-                                <div>
-                                    <input
-                                        type="radio"
-                                        id='recruiting'
-                                        class="recruitStatus"
-                                        name="status"
-                                        value="모집중"
-                                    />
-                                    <label for="recruiting">모집중</label>
-                                </div>
-                                <div>
-                                    <input
-                                        type="radio"
-                                        id='recruitDone'
-                                        class="recruitStatus"
-                                        name="status"
-                                        value="모집완료"
-                                    />
-                                    <label for="recruitDone">모집완료</label>
-                                </div>
-                            </div>
-                            <div class="editBox">
-                                <label for="editCompleteBtn" class='editBtn'>완료</label>
-                                <input type="submit" id="editCompleteBtn" class='editCompleteBtn'></input>
-                                <div class='deleteBtn'>삭제</div>
-                            </div>
-                            <div class="applicantBox">
-                                <div class="likeBtn">좋아요</div>
-                                <div class="openModalBtn">지원하기</div>
-                            </div>  
-                        </div>
-                    </div>
-                    <div class="contentBox">
-                        <div class='content'>
-                            <input type="text" id="contentInput" class="contentInput" placeholder='${getProject.content}'></input>
-                        </div>
-                    </div>
-                </div>
-            </form>`;
-
         </div>
         <script
             src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
@@ -312,5 +233,6 @@
             crossorigin="anonymous"
         ></script>
         <script src="./js/projectPostWrite.js"></script>
+        <script src="./js/transfer.js"></script>
     </body>
 </html>

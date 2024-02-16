@@ -16,6 +16,22 @@ async function fetchProjectAnswer(projectId, userId) {
     }
 }
 
+async function fetchProjectAnswer(projectId, userId) {
+    try {
+        const response = await fetch(`http://localhost:3000/answer/${projectId}/${userId}`, {
+            method: 'GET',
+        });
+
+        const responseData = await response.json();
+        console.log(responseData, '대답');
+
+        return responseData;
+    } catch (error) {
+        console.error('에러 --- ', error);
+        throw new error(error);
+    }
+}
+
 async function fetchProject() {
     try {
         const response = await fetch(`http://localhost:3000/project-post/myProject`, {
@@ -368,8 +384,8 @@ async function getApplicantProjectors(projectId) {
             <div class="stack">${getProjectAnswerData[i].answer.stack}</div>
         </div>
         <div class="applicantAnswerBox"></div>
-
-        <div class="pickBtn">뽑기</div> 
+ 
+        <div class="pickBtn">수락</div>
         `;
 
         applicant.appendChild(applicantInfo);

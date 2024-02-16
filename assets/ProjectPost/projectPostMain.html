@@ -19,10 +19,12 @@
     <body>
         <header class="header">
             <div class="total-header">
-                <div class="title-logo">
-                    <img src="images/logo.png" alt="" class="logo-img" />
-                    Roomdevelope
-                </div>
+                <a href="../Auth/mainpage.html">
+                    <div class="title-logo">
+                        <div><img src="../Auth/images/logo.png" alt="" class="logo-img" /></div>
+                        <div>Roomdevelope</div>
+                    </div>
+                </a>
                 <form class="d-flex search-box">
                     <input
                         class="form-control me-2"
@@ -33,8 +35,20 @@
                     <button type="button" class="btn btn-outline-light">Search</button>
                 </form>
                 <div class="buttons">
-                    <button type="button" class="btn btn-outline-light">log-in</button>
-                    <button type="button" class="btn btn-outline-light">sign-up</button>
+                    <button type="button" class="btn btn-outline-light" id="loginButton">
+                        log-in
+                    </button>
+                    <button type="button" class="btn btn-outline-light" id="signupButton">
+                        sign-up
+                    </button>
+                    <button
+                        type="button"
+                        class="btn btn-outline-light"
+                        id="logoutButton"
+                        style="display: none"
+                    >
+                        log-out
+                    </button>
                 </div>
             </div>
         </header>
@@ -55,7 +69,11 @@
                 <hr />
                 <ul class="nav nav-pills flex-column mb-auto">
                     <li class="nav-item">
-                        <a href="../Auth/mainpage.html" class="nav-link active" aria-current="page">
+                        <a
+                            href="../Auth/mainpage.html"
+                            class="nav-link text-white"
+                            aria-current="page"
+                        >
                             <svg class="bi pe-none me-2" width="16" height="16">
                                 <use xlink:href="#home"></use>
                             </svg>
@@ -71,7 +89,7 @@
                         </a>
                     </li>
                     <li>
-                        <a href="../../Tag/html/tag.html" class="nav-link text-white">
+                        <a href="../Tag/html/tag.html" class="nav-link text-white">
                             <svg class="bi pe-none me-2" width="16" height="16">
                                 <use xlink:href="#speedometer2"></use>
                             </svg>
@@ -79,7 +97,7 @@
                         </a>
                     </li>
                     <li>
-                        <a href="../ProjectPost/projectPostMain.html" class="nav-link text-white">
+                        <a href="../ProjectPost/projectPostMain.html" class="nav-link active">
                             <svg class="bi pe-none me-2" width="16" height="16">
                                 <use xlink:href="#table"></use>
                             </svg>
@@ -87,19 +105,11 @@
                         </a>
                     </li>
                     <li>
-                        <a href="#" class="nav-link text-white">
+                        <a href="../User/html/user.html" class="nav-link text-white">
                             <svg class="bi pe-none me-2" width="16" height="16">
                                 <use xlink:href="#grid"></use>
                             </svg>
                             Users
-                        </a>
-                    </li>
-                    <li>
-                        <a href="#" class="nav-link text-white">
-                            <svg class="bi pe-none me-2" width="16" height="16">
-                                <use xlink:href="#people-circle"></use>
-                            </svg>
-                            Customers
                         </a>
                     </li>
                 </ul>
@@ -154,5 +164,6 @@
             crossorigin="anonymous"
         ></script>
         <script src="./js/projectPostMain.js"></script>
+        <script src="./js/transfer.js"></script>
     </body>
 </html>
