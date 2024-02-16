@@ -31,7 +31,7 @@ export class AutoReply {
          * top_p, 1 가까울 수록 선택지가 넓어지고 다양성이 높아짐
          */
         const completion = await openai.chat.completions.create({
-            model: 'gpt-3.5-turbo', 
+            model: 'gpt-3.5-turbo',
             messages: [
                 {
                     role: 'system',
