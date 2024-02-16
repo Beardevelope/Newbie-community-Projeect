@@ -19,13 +19,13 @@ async function modifyBanner() {
         formData.append('pageUrl', pageUrl);
         formData.append('file', fileInput.files[0]);
 
-        const accessToken = "토큰";
-        // const accessToken = localStorage.getItem('accessToken');
+        const TOKEN = sessionStorage.getItem('accessToken');
+        // const TOKEN = "토큰"
 
         const response = await fetch(`http://localhost:3000/banner/${bannerId}`, {
             method: 'PUT',
             headers: {
-                'Authorization': `Bearer ${accessToken}`,
+                Authorization: `Bearer ${TOKEN}`,
             },
             body: formData,
         });
@@ -47,13 +47,13 @@ async function modifyBanner() {
 
 async function getBannerDetails(bannerId) {
     try {
-        const accessToken = "토큰";
-        // const accessToken = localStorage.getItem('accessToken');
+        const TOKEN = sessionStorage.getItem('accessToken');
+        // const TOKEN = "토큰"
 
         const response = await fetch(`http://localhost:3000/banner/${bannerId}`, {
             method: 'GET',
             headers: {
-                'Authorization': `Bearer ${accessToken}`,
+                Authorization: `Bearer ${TOKEN}`,
             },
         });
 

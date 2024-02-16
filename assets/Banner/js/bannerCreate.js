@@ -3,9 +3,8 @@ async function saveBanner() {
     const pageUrl = document.getElementById('pageUrl').value;
     const image = document.getElementById('image').files[0];
 
-    // 토큰 가져오기 >> 구글 로그인 토큰 정보 확인 후 결정.
-    const accessToken = "토큰";
-    // const accessToken = localStorage.getItem('accessToken');
+    const TOKEN = sessionStorage.getItem('accessToken');
+    // const TOKEN = "토큰"
 
     // 필수값 설정
     if (!title || !image || !pageUrl) {
@@ -21,7 +20,7 @@ async function saveBanner() {
         const response = await fetch('http://localhost:3000/banner/create', {
             method: 'POST',
             headers: {
-                'Authorization': `Bearer ${accessToken}`,
+                Authorization: `Bearer ${TOKEN}`,
             },
             body: formData,
             mode: 'cors',
