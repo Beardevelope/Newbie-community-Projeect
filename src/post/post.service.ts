@@ -36,6 +36,9 @@ export class PostService {
     // 게시글 생성
     async create(createPostDto: CreatePostDto, userId: number, file: any) {
         const { title, content, tag } = createPostDto;
+        if (!tag) {
+            throw new BadRequestException('태그를 입력해주세요')
+        }
         const url = file ? await this.uploadService.uploadFile(file) : null;
         const tagArray = tag.split(',');
 

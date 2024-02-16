@@ -16,7 +16,7 @@ const nickname = document.querySelector('#NICKNAME');
 const password = document.querySelector('#PASSWORD');
 const passwordConfirm = document.querySelector('#PASSWORDCONFIRM');
 const modifyButton = document.querySelector('.fixbutton');
-x;
+
 const postTitle = document.querySelector('#post-title');
 const postLike = document.querySelector('#post-like');
 const postView = document.querySelector('#post-view');

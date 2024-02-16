@@ -34,7 +34,7 @@ function addPost() {
                                     <div>
                                         <h3 style="cursor: pointer" onclick="location.href='./post-detail.html?id=${postFirst.id}'">${postFirst.title}</h3>
                                     </div>
-                                    <div>${postFirst.content.slice(0, 20)}...</div>
+                                    <div>내용은 해당 게시글에서 확인하세요</div>
                                 </div>
                                 <div class="viewAndLike">
                                     <div class="views">
@@ -57,7 +57,7 @@ function addPost() {
                                     <div>
                                         <h3 style="cursor: pointer" onclick="location.href='./post-detail.html?id=${postSecond.id}'">${postSecond.title}</h3>
                                     </div>
-                                    <div>${postSecond.content.slice(0, 20)}...</div>
+                                    <div>내용은 해당 게시글에서 확인하세요</div>
                                 </div>
                                 <div class="viewAndLike">
                                     <div class="views">

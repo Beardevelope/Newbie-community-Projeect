@@ -60,8 +60,12 @@ async function createPost() {
             },
             body: formData,
         });
+        if (response.status === 400) {
+            throw new Error(`입력값을 확인해주세요`);
+        }
+
         if (response.status !== 201) {
-            throw new Error('게시글 등록에 실패하였습니다.');
+            throw new Error(`게시글 등록에 실패하였습니다.`);
         }
 
         alert('게시글을 성공적으로 등록하였습니다.');
