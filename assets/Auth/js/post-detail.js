@@ -26,6 +26,18 @@ const getPost = async () => {
     return data.post;
 };
 
+const getCommentsByPostId = async () => {
+    const response = await fetch(`${COMMENT_API}/${POST_ID}`, {
+        method: 'GET',
+    });
+    const data = await response.json();
+    if (!response.ok) {
+        alert(`${data.message}`);
+        throw new Error('서버 오류');
+    }
+    return data;
+};
+
 const updateComment = async (comment) => {
     const response = await fetch(`${COMMENT_API}/${POST_ID}/${comment.id}`, {
         method: 'PUT',
@@ -48,7 +60,7 @@ const updateComment = async (comment) => {
 const listDetailPageOfPost = async () => {
     try {
         const post = await getPost();
-        const comments = post.comments;
+        const comments = await getCommentsByPostId();
         console.log(post)
         const timeDifferent = (initialDate) => {
             const date = new Date(initialDate);
@@ -148,7 +160,6 @@ const listDetailPageOfPost = async () => {
                 }
                 commentsMap.get(parentId).push(comment);
             });
-
             const generateCommentList = (parentComments, parentElement) => {
                 parentComments.forEach((comment) => {
                     const li = document.createElement('li');
@@ -157,7 +168,7 @@ const listDetailPageOfPost = async () => {
                     li.innerHTML = `
                     <div class="commentBox">
                         <div class="comment-content">
-                        <p id="userId_${comment.id}">${comment.userId}: </p>
+                        <p id="userId_${comment.id}">${comment.user.nickname}: </p>
                         <p id="commentText_${comment.id}">${comment.content}</p>
                     </div>
 
