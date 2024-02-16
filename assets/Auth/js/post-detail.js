@@ -1,6 +1,5 @@
 const POST_API = 'http://localhost:3000/post';
 const COMMENT_API = 'http://localhost:3000/comment';
-const USER_ID = 3;
 const TOKEN = sessionStorage.getItem('accessToken');
 let StringPostId = window.location.search;
 const POST_ID = StringPostId.substr(4);
@@ -12,7 +11,6 @@ const mainbar = document.getElementById('mainbar');
 const postLayout = document.getElementById('post-layout');
 const sidebar = document.getElementById('sidebar');
 const commentList = document.querySelector('.comment-list');
-const commentEditor = document.querySelector('.comment-editory');
 const commentSubmitBtn = document.querySelector('.commentSubmit');
 const commentTextArea = document.querySelector('#commentInput');
 
@@ -44,13 +42,14 @@ const updateComment = async (comment) => {
         throw new Error('서버 오류');
     }
     alert('댓글 수정 완료');
+    location.reload()
 };
 
 const listDetailPageOfPost = async () => {
     try {
         const post = await getPost();
         const comments = post.comments;
-
+        console.log(post)
         const timeDifferent = (initialDate) => {
             const date = new Date(initialDate);
             const currentDate = new Date();
@@ -200,7 +199,6 @@ const listDetailPageOfPost = async () => {
             const commentInput = document.getElementById('commentInput');
             const content = commentInput.value.trim();
             const comment = {
-                userId: USER_ID,
                 postID: POST_ID,
                 content: content,
             };
@@ -229,7 +227,6 @@ const submitButton = async (id) => {
     const textArea = document.querySelector(`#form-${id} textarea`);
     console.log(textArea);
     const comment = {
-        userId: USER_ID,
         postId: POST_ID,
         content: textArea.value,
         parentId: id,
@@ -271,7 +268,7 @@ const deleteComment = async (commentId) => {
         alert(`${newComment.message}`);
         throw new Error('서버 오류');
     }
-    alert('댓글 작성 완료');
+    alert('댓글  삭제 완료');
     commentTextArea.value = '';
     location.reload();
 };
