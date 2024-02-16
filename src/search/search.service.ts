@@ -25,24 +25,62 @@ export class SearchService {
     }
 
     // 검색 기본셋팅
-    async search(text: string) {
+    async search(
+        text: string,
+        page: number,
+        order: string,
+        filter: string,
+        tagName: string,
+        tab: string,
+    ) {
+        const take: number = 3;
+        const skip: number = (page - 1) * take;
+
+        const sortOption = [];
+        // const filterOption = [];
+
+        if (order) {
+            sortOption.push('createdAt:desc');
+        } else {
+            sortOption.push('createdAt:asc');
+        }
+
+        // if(filter) {
+        //     filterOption.push('createdAt:desc');
+        // }
+
         const { body } = await this.esService.search<any>({
             index: 'posts',
+            size: take,
+            from: skip,
             body: {
                 query: {
-                    multi_match: {
-                        query: text,
-                        fuzziness: 1,
-                        fields: ['title', 'content', 'tags.name'],
+                    match: {
+                        title: {
+                            query: text,
+                            fuzziness: 1,
+                        },
                     },
                 },
             },
+            sort: sortOption,
+            filter_path: [],
         });
 
         const hits = body.hits.hits;
-        console.log(body);
-        console.log(body.hits);
-        return hits.map((item: any) => item._source);
+        const total = body.hits.total.value;
+        const posts = hits.map((item: any) => item._source);
+
+        console.log(posts)
+        return {
+            data: posts,
+            meta: {
+                total,
+                itemsPerPage: take,
+                page,
+                lastPage: Math.ceil(total / take),
+            },
+        };
     }
 
     // 데이터 수정
@@ -50,13 +88,15 @@ export class SearchService {
         const newTags = post.tags;
 
         const script = `
-        ctx._source.id='${postId}'; 
+        ctx._source.id=${postId}; 
         ctx._source.title='${post.title}';
         ctx._source.content='${post.content}';
         ctx._source.image='${post.image}';
+        ctx._source.status='${post.status}';
+        ctx._source.likes=${post.likes};
+        ctx._source.hitCount=${post.hitCount};
         ctx._source.remove('tags');
         ctx._source.tags = params.newTags;
-        ctx._source.updatedAt='${new Date(post.updatedAt).toISOString()}';
         `;
 
         this.esService

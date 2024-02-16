@@ -122,7 +122,7 @@ body {
     flex-wrap: wrap;
     margin-bottom: 20px;
 }
-
+#newestButtonSearch,
 #newestButton,
 #answeredButton,
 #unAnsweredButton,
@@ -151,6 +151,11 @@ body {
 }
 
 #questionsList {
+    width: 100%;
+    padding: 10px;
+}
+
+#searchList {
     width: 100%;
     padding: 10px;
 }

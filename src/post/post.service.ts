@@ -47,6 +47,7 @@ export class PostService {
 
             if (!existedTag) {
                 tags.push({ name: tagArray[i] });
+                break;
             }
             tags.push(existedTag);
         }
@@ -59,7 +60,9 @@ export class PostService {
             userId,
         });
 
-        this.searchService.indexPost('posts', post);
+        const newPost = await this.findOne(post.id);
+
+        this.searchService.indexPost('posts', newPost);
 
         return post;
     }
@@ -165,6 +168,10 @@ export class PostService {
             status: updateStatus,
         });
 
+        const updatePost = await this.findOne(postId);
+
+        this.searchService.update('posts', postId, updatePost);
+
         if (updatedPost.status === 'unfinished') {
             return -1;
         }
@@ -190,6 +197,10 @@ export class PostService {
             id: postId,
             hitCount,
         });
+
+        const updatedPost = await this.findOne(postId);
+
+        this.searchService.update('posts', postId, updatedPost);
     }
 
     // 게시글 수정
@@ -234,8 +245,10 @@ export class PostService {
             tags,
         });
 
-        this.searchService.update('posts', postId, updatePost);
+        const updatedPost = await this.findOne(postId);
 
+        this.searchService.update('posts', postId, updatedPost);
+ 
         return updatePost;
     }
 
