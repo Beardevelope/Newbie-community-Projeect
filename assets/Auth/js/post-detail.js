@@ -378,7 +378,7 @@ async function clickLikeButton() {
             method: 'post',
             headers: {
                 Authorization:
-                    'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjIsImVtYWlsIjoibWluaGVlMkB5YWhvby5jb20iLCJpZCI6MiwidHlwZSI6ImFjY2VzcyIsImlhdCI6MTcwNzc3NTQ1NCwiZXhwIjoxNzA3Nzc5MDU0fQ.BTHmzDufXCEltpXSuzNMQ0g0irnoBmn6DusIpwRkfog',
+                    `Bearer ${TOKEN}`,
             },
         });
         const jsonData = await response.json();
@@ -413,7 +413,7 @@ async function clickStatusButton() {
             method: 'put',
             headers: {
                 Authorization:
-                    'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjEsImVtYWlsIjoibWluaGVlQHlhaG9vLmNvbSIsImlkIjoxLCJ0eXBlIjoiYWNjZXNzIiwiaWF0IjoxNzA3Nzc2OTcyLCJleHAiOjE3MDc3ODA1NzJ9.r3pbTSEu749jMAr-g69pQ1XKRcjmr9uS_guhZQ4d3h8',
+                    `Bearer ${TOKEN}`,
             },
         });
         const jsonData = await response.json();
