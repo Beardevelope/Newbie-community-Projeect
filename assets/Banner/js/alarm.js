@@ -1,5 +1,5 @@
-// const TOKEN = sessionStorage.getItem('accessToken');
-const TOKEN = "토큰"
+const TOKEN = sessionStorage.getItem('accessToken');
+// const TOKEN = "토큰"
 
 // userId를 추출하는 함수
 function extractUserId(token) {
