@@ -86,15 +86,15 @@ export class WarningService {
     }
 
     /**
-     * 담당자가 유저별로 게시글을 신고한 것을 볼 수 있게 하는 api
-     * @param userId
+     * 담당자가 게시글별로 누가 신고하였는지 얼마만큼 신고하였는지 조회하는 api
+     * @param postId
      * @returns
      */
 
-    async findAllByUser(userId: number) {
+    async findAllByUser(postId: number) {
         return await this.warningRepository.find({
             where: {
-                userId,
+                postId,
             },
         });
     }
