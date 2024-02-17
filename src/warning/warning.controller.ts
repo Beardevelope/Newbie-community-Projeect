@@ -59,9 +59,9 @@ export class WarningController {
 
     // admin 누가 어떤 게시글에 신고했는지 조회하는 api
     @UseGuards(BearerTokenGuard)
-    @Get(':userId')
-    async findAllByUser(@Param('userId') userId: string) {
-        const warnings = await this.warningService.findAllByUser(+userId);
+    @Get(':postId')
+    async findAllByUser(@Param('postId') postId: string) {
+        const warnings = await this.warningService.findAllByUser(+postId);
         return {
             statusCode: HttpStatus.OK,
             message: 'ok',
