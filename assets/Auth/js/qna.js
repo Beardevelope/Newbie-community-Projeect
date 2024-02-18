@@ -5,7 +5,7 @@ const contentSecond = document.getElementById('contentSecond');
 let foundPosts = [];
 async function postList() {
     try {
-        const response = await fetch(`http://localhost:3000/post?order=createdAt&page=1`, {
+        const response = await fetch(`/post?order=createdAt&page=1`, {
             accept: 'application/json',
         });
         const jsonData = await response.json();

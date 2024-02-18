@@ -25,7 +25,7 @@ const userId = extractUserId(TOKEN);
 let foundPosts = [];
 async function postList() {
     try {
-        const response = await fetch(`http://localhost:3000/post/myposts/${userId}`, {
+        const response = await fetch(`/post/myposts/${userId}`, {
             accept: 'application/json',
             headers: {
                 Authorization: `Bearer ${TOKEN}`,

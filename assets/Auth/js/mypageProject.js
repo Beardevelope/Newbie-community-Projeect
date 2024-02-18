@@ -2,7 +2,7 @@ const accessToken = sessionStorage.getItem('accessToken');
 
 async function fetchProjectAnswer(projectId, userId) {
     try {
-        const response = await fetch(`http://localhost:3000/answer/${projectId}/${userId}`, {
+        const response = await fetch(`/answer/${projectId}/${userId}`, {
             method: 'GET',
         });
 
@@ -18,7 +18,7 @@ async function fetchProjectAnswer(projectId, userId) {
 
 async function fetchProject() {
     try {
-        const response = await fetch(`http://localhost:3000/project-post/myProject`, {
+        const response = await fetch(`/project-post/myProject`, {
             method: 'GET',
             headers: {
                 Authorization: `Bearer ${accessToken}`,
@@ -37,7 +37,7 @@ async function fetchProject() {
 
 async function fetchLikeProject(projectId) {
     try {
-        const response = await fetch(`http://localhost:3000/project-like/${projectId}`, {
+        const response = await fetch(`/project-like/${projectId}`, {
             method: 'GET',
         });
 
@@ -52,7 +52,7 @@ async function fetchLikeProject(projectId) {
 
 async function fetchQuestion(projectId) {
     try {
-        const response = await fetch(`http://localhost:3000/question/${projectId}`, {
+        const response = await fetch(`/question/${projectId}`, {
             method: 'GET',
         });
 
@@ -69,7 +69,7 @@ async function fetchQuestion(projectId) {
 async function acceptUser(projectId, userId) {
     try {
         const response = await fetch(
-            `http://localhost:3000/project-post/${projectId}/projectApplicant`,
+            `/project-post/${projectId}/projectApplicant`,
             {
                 method: 'PATCH',
                 headers: {
@@ -92,7 +92,7 @@ async function acceptUser(projectId, userId) {
 async function fetchMember(projectId) {
     try {
         const response = await fetch(
-            `http://localhost:3000/project-post/${projectId}/acceptApplicant`,
+            `/project-post/${projectId}/acceptApplicant`,
             {
                 method: 'GET',
                 headers: {
@@ -112,7 +112,7 @@ async function fetchMember(projectId) {
 
 async function fetchMyLike() {
     try {
-        const response = await fetch(`http://localhost:3000/project-like/myLike`, {
+        const response = await fetch(`/project-like/myLike`, {
             method: 'GET',
             headers: {
                 Authorization: `Bearer ${accessToken}`,
@@ -131,7 +131,7 @@ async function fetchMyLike() {
 async function fetchProjectApplicant(projectId) {
     try {
         const response = await fetch(
-            `http://localhost:3000/project-post/${projectId}/projectApplicant`,
+            `/project-post/${projectId}/projectApplicant`,
             {
                 method: 'GET',
                 headers: {
@@ -151,7 +151,7 @@ async function fetchProjectApplicant(projectId) {
 
 async function fetchMyApplicant() {
     try {
-        const response = await fetch(`http://localhost:3000/project-post/myProjectApplicant`, {
+        const response = await fetch(`/project-post/myProjectApplicant`, {
             method: 'GET',
             headers: {
                 Authorization: `Bearer ${accessToken}`,
@@ -170,7 +170,7 @@ async function fetchMyApplicant() {
 
 async function removeLike(projectId) {
     try {
-        const response = await fetch(`http://localhost:3000/project-like/${projectId}`, {
+        const response = await fetch(`/project-like/${projectId}`, {
             method: 'DELETE',
             headers: {
                 Authorization: `Bearer ${accessToken}`,
@@ -189,7 +189,7 @@ async function removeLike(projectId) {
 async function removeApplicant(projectId) {
     try {
         const response = await fetch(
-            `http://localhost:3000/project-post/${projectId}/projectApplicant`,
+            `/project-post/${projectId}/projectApplicant`,
             {
                 method: 'DELETE',
                 headers: {
@@ -210,7 +210,7 @@ async function removeApplicant(projectId) {
 async function removeMember(projectId, userId) {
     try {
         const response = await fetch(
-            `http://localhost:3000/project-post/${projectId}/projectMember`,
+            `/project-post/${projectId}/projectMember`,
             {
                 method: 'DELETE',
                 headers: {

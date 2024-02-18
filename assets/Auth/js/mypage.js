@@ -3,7 +3,7 @@ function logout() {
     alert('Logout button clicked!');
 }
 
-const USER_API = 'http://localhost:3000/user';
+const USER_API = '/user';
 const USER_ID = 2;
 const TOKEN =
     sessionStorage.getItem('accessToken') ||
@@ -28,7 +28,7 @@ const projectTitle = document.querySelector('.title');
 const projectLike = document.querySelector('.like');
 const projectView = document.querySelector('.view');
 
-const POST_API = 'http://localhost:3000/post';
+const POST_API = '/post';
 
 const getPost = async () => {
     const response = await fetch(`${POST_API}/${POST_ID}`, {

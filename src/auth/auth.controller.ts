@@ -48,7 +48,7 @@ export class AuthController {
         console.log(req['user']);
         // return this.authService.googleLogin(req);
         const token = this.authService.signToken(req['user'], false);
-        res.redirect(`http://bumkyulee.shop:3000/Auth/save-token.html?accessToken=${token}`);
+        res.redirect(`http://newveloper.com/Auth/save-token.html?accessToken=${token}`);
         return token;
     }
 

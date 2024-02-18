@@ -3,7 +3,7 @@ const secondProject = document.getElementById('secondProject');
 
 async function fetchProject() {
     try {
-        const response = await fetch(`http://localhost:3000/project-post?page=1`, {
+        const response = await fetch(`/project-post?page=1`, {
             method: 'GET',
         });
 
@@ -18,7 +18,7 @@ async function fetchProject() {
 
 async function fetchLike(projectId) {
     try {
-        const response = await fetch(`http://localhost:3000/project-like/${projectId}`, {
+        const response = await fetch(`/project-like/${projectId}`, {
             method: 'GET',
         });
 
