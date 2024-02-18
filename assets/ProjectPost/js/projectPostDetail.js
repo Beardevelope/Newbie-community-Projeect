@@ -3,6 +3,25 @@ const projectId = urlParams.get('id');
 
 const accessToken = sessionStorage.getItem('accessToken');
 
+async function fetchUserInfo() {
+    try {
+        const response = await fetch(`http://localhost:3000/user/userinfo`, {
+            method: 'GET',
+            headers: {
+                Authorization: `Bearer ${accessToken}`,
+            },
+        });
+
+        const responseData = await response.json();
+        console.log(responseData, '유저');
+
+        return responseData;
+    } catch (error) {
+        console.error('에러 --- ', error);
+        throw new error(error);
+    }
+}
+
 async function fetchProjectDetail(projectId) {
     try {
         const response = await fetch(`http://localhost:3000/project-post/${projectId}`, {
@@ -525,6 +544,7 @@ async function getProjectDetail() {
     try {
         const data = await fetchProjectDetail(projectId);
         const getStack = await fetchStack(projectId);
+        const userInfo = await fetchUserInfo();
         await increaseHitCount(projectId);
 
         const mainWrap = document.createElement('div');
@@ -609,6 +629,11 @@ async function getProjectDetail() {
 
         const editBtn = document.querySelector('.editBtn');
 
+        if (userInfo.id !== data.userId) {
+            const editBox = document.querySelector('.editBox');
+            editBox.className = 'editBox hide';
+        }
+
         editBtn.addEventListener('click', () => {
             editProjectForm(projectId);
         });
@@ -623,6 +648,11 @@ async function getProjectDetail() {
         const likeBtn = document.querySelector('.likeBtn');
 
         likeBtn.addEventListener('click', () => {
+            if (!userInfo.isVerified) {
+                alert('이메일 인증을 먼저 해주세요');
+                return (window.location.href = '../Auth/mypage.html');
+            }
+
             postLike(projectId);
         });
 
@@ -631,6 +661,11 @@ async function getProjectDetail() {
         const openModalBtn = document.querySelector('.openModalBtn');
 
         openModalBtn.addEventListener('click', async () => {
+            if (!userInfo.isVerified) {
+                alert('이메일 인증을 먼저 해주세요');
+                return (window.location.href = '../Auth/mypage.html');
+            }
+
             document.querySelector('.modalBox').style.display = 'block';
         });
     } catch (error) {
