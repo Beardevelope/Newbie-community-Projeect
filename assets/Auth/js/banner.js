@@ -1,3 +1,4 @@
+c
 window.addEventListener('scroll', function () {
     var sideBanner = document.querySelector('.sideBanner');
     var scrollPosition = window.scrollY;
@@ -9,7 +10,7 @@ window.addEventListener('scroll', function () {
 // 배너 클릭시 조회수 증가
 async function handleClickBanner(bannerId) {
     try {
-        const response = await fetch(`http://localhost:3000/banner/click/${bannerId}`, {
+        const response = await fetch(`/banner/click/${bannerId}`, {
             method: 'POST',
         });
         if (response.ok) {
@@ -25,7 +26,7 @@ async function handleClickBanner(bannerId) {
 // 배너 랜덤 출력 및 광고 페이지 연결
 async function displayRandomBanner() {
 
-    const response = await fetch('http://localhost:3000/banner/random');
+    const response = await fetch('/banner/random');
     const data = await response.json();
 
     const bannerId = data.id;

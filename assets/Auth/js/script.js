@@ -1,5 +1,4 @@
 /**회원가입 및 로그인 */
-const AUTH_API = 'http://localhost:3000';
 const signupButton = document.querySelector('#signup');
 const email = document.querySelector('.email');
 const password = document.querySelector('.signup-password');

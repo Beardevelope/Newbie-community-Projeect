@@ -52,7 +52,7 @@ async function putPost() {
         // 현재 코드
         const formData = new FormData(form);
         formData.append('content', editor.getData());
-        const response = await fetch(`http://localhost:3000/post/${postId}`, {
+        const response = await fetch(`/post/${postId}`, {
             method: 'put',
             headers: {
                 Authorization:
@@ -76,7 +76,7 @@ async function putPost() {
 
 async function getPostDetail() {
     try {
-        const response = await fetch(`http://localhost:3000/post/${postId}`);
+        const response = await fetch(`/post/${postId}`);
         const postData = await response.json();
 
         // 폼에 기존 게시글 내용 채우기
@@ -104,7 +104,7 @@ deleteBtn.addEventListener('click', () => {
 
 async function deletePost() {
     try {
-        const response = await fetch(`http://localhost:3000/post/${postId}`, {
+        const response = await fetch(`/post/${postId}`, {
             method: 'delete',
             headers: {
                 Authorization:
