@@ -17,7 +17,7 @@ async function saveBanner() {
     formData.append('file', image);
 
     try {
-        const response = await fetch('http://localhost:3000/banner/create', {
+        const response = await fetch('/banner/create', {
             method: 'POST',
             headers: {
                 Authorization: `Bearer ${TOKEN}`,

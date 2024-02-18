@@ -14,7 +14,7 @@ const paginationContainer = document.getElementById('pagination-container');
 // 유저 붙이기
 async function userList() {
     try {
-        const response = await fetch(`http://localhost:3000/user/list`, {
+        const response = await fetch(`/user/list`, {
             accept: 'application/json',
         });
         const jsonData = await response.json();
