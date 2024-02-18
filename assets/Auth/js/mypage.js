@@ -82,8 +82,6 @@ const defaultDisplay = async () => {
             nickname.placeholder = responseData.nickname;
             password.placeholder = '*******';
             passwordConfirm.placeholder = '********';
-            name.placeholder = responseData.number || '-';
-            contact.placeholder = responseData.contact || '-';
             uploadImage.src = responseData.profileImage || './images/profile2.png';
 
             posts.forEach((post) => {
