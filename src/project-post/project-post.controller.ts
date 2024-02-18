@@ -17,14 +17,15 @@ import { CreateProjectPostDto } from './dto/create-project-post.dto';
 import { UpdateProjectPostDto } from './dto/update-project-post.dto';
 import { BearerTokenGuard } from 'src/auth/guard/bearer.guard';
 import { FileInterceptor } from '@nestjs/platform-express';
-import { VerifyGuard } from 'src/auth/guard/role.guard';
+import { BanGuard, VerifyGuard } from 'src/auth/guard/role.guard';
 
 @Controller('project-post')
+@UseGuards(BanGuard)
 export class ProjectPostController {
     constructor(private readonly projectPostService: ProjectPostService) {}
 
     @UseGuards(BearerTokenGuard)
-    // @UseGuards(VerifyGuard)
+    @UseGuards(VerifyGuard)
     @Post()
     @UseInterceptors(FileInterceptor('image'))
     create(

@@ -642,7 +642,7 @@ async function getProjectDetail() {
 
         deleteBtn.addEventListener('click', () => {
             deleteProjectPost(projectId);
-            window.location.href = './projectPostMain.html';
+            // window.location.href = './projectPostMain.html';
         });
 
         const likeBtn = document.querySelector('.likeBtn');
