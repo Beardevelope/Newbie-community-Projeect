@@ -15,6 +15,7 @@ import { WarningService } from './warning.service';
 import { CreateWarningDto } from './dto/create-warning.dto';
 import { UpdateWarningDto } from './dto/update-warning.dto';
 import { BearerTokenGuard } from 'src/auth/guard/bearer.guard';
+import { RoleGuard } from 'src/auth/guard/role.guard';
 
 @Controller('warning')
 export class WarningController {
@@ -35,6 +36,7 @@ export class WarningController {
 
     // admin 경고가 5회이상인 게시글 조회 api
     @UseGuards(BearerTokenGuard)
+    @UseGuards(RoleGuard)
     @Get('warningPost')
     async findAllPosts() {
         const posts = await this.warningService.findAllPosts();
@@ -47,6 +49,7 @@ export class WarningController {
 
     // 경고 전체 조회
     @UseGuards(BearerTokenGuard)
+    @UseGuards(RoleGuard)
     @Get()
     async findAll() {
         const warnings = await this.warningService.findAll();
@@ -59,6 +62,7 @@ export class WarningController {
 
     // admin 누가 어떤 게시글에 신고했는지 조회하는 api
     @UseGuards(BearerTokenGuard)
+    @UseGuards(RoleGuard)
     @Get(':postId')
     async findAllByUser(@Param('postId') postId: string) {
         const warnings = await this.warningService.findAllByUser(+postId);
@@ -72,6 +76,7 @@ export class WarningController {
     // 유저쪽에서 구현해야 할듯?
     // 유저에게 경고주는 시스템
     @UseGuards(BearerTokenGuard)
+    @UseGuards(RoleGuard)
     @Put('warningUser/:userId')
     async warningUser(@Param('userId') userId: string) {
         const user = await this.warningService.warningUser(+userId);
@@ -85,6 +90,7 @@ export class WarningController {
     // 유저쪽에서 서비스를 구현해야할듯?
     // admin이 유저한테 제한을 거는 api
     @UseGuards(BearerTokenGuard)
+    @UseGuards(RoleGuard)
     @Put('banUser/:userId')
     async restrictUser(@Param('userId') userId: string) {
         const user = await this.warningService.restrictUser(+userId);
