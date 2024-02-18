@@ -9,7 +9,7 @@ import {
 import { Banner } from './banner.entity';
 import { IsNumber } from 'class-validator';
 
-@Entity({ name: 'banner_cliclk' })
+@Entity({ name: 'banner_click' })
 export class BannerClick {
     @PrimaryGeneratedColumn()
     id: number;
