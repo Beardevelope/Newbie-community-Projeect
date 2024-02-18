@@ -1,4 +1,8 @@
 /**회원가입 및 로그인 */
+const forms = document.querySelector('.forms'),
+    pwShowHide = document.querySelectorAll('.eye-icon'),
+    links = document.querySelectorAll('.link');
+
 const signupButton = document.querySelector('#signup');
 const email = document.querySelector('.email');
 const password = document.querySelector('.signup-password');
@@ -83,9 +87,6 @@ const googleLogin = async () => {
 }
 
 document.addEventListener("DOMContentLoaded", async () => {
-    const forms = document.querySelector('.forms'),
-        pwShowHide = document.querySelectorAll('.eye-icon'),
-        links = document.querySelectorAll('.link');
 
     pwShowHide.forEach((eyeIcon) => {
         eyeIcon.addEventListener('click', () => {
