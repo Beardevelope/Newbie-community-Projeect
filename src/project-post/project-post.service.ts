@@ -8,6 +8,7 @@ import _ from 'lodash';
 import { ProjectApplicant } from './entities/project-applicant.entity';
 import { UploadServiceService } from 'src/upload-service/upload-service.service';
 import { AlarmService } from 'src/alarm/alarm.service';
+import { Cron } from '@nestjs/schedule';
 
 @Injectable()
 export class ProjectPostService {
@@ -281,5 +282,11 @@ export class ProjectPostService {
         }
 
         return result;
+    }
+
+    // 매주 일요일 자정에 모집완료 글 삭제
+    @Cron('0 0 0 * * 0')
+    async removeApplicantDone() {
+        await this.projectPostRepository.delete({ status: '모집완료' });
     }
 }

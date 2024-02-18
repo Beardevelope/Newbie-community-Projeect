@@ -86,7 +86,7 @@ export class ProjectPostController {
     }
 
     @UseGuards(BearerTokenGuard)
-    // @UseGuards(VerifyGuard)
+    @UseGuards(VerifyGuard)
     @Post(':id/projectApplicant')
     createProjectApplicant(@Param('id') id: string, @Req() req) {
         return this.projectPostService.createProjectApplicant(+id, +req.userId);

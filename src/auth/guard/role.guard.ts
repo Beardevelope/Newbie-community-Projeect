@@ -13,7 +13,7 @@ export class VerifyGuard implements CanActivate {
 
         const user = await this.userService.getUserById(req.userId);
 
-        console.log(user, 'Ddddddddddddddddddddd');
+        console.log(user, 'ㅂㅈㄷㄷㅂㅈ');
 
         if (!user.isVerified) {
             throw new NotAcceptableException();

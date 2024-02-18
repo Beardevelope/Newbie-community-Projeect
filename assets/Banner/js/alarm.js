@@ -48,12 +48,12 @@ function showAlarm(title, description) {
 
 // 알림을 드롭다운 메뉴에 추가하는 함수입니다.
 function addNotificationToDropdown(title, description) {
-    const notificationList = document.getElementById("notificationList");
-    const newNotification = document.createElement("li");
+    const notificationList = document.getElementById('notificationList');
+    const newNotification = document.createElement('li');
     newNotification.innerHTML = `<strong>${title}</strong>: ${description}`;
     notificationList.appendChild(newNotification);
     // 드롭다운 메뉴 표시
-    document.getElementById("notificationDropdown").classList.add("show");
+    document.getElementById('notificationDropdown').classList.add('show');
 }
 
 // 사용자 ID를 가져온 후에 SSE를 초기화합니다.
