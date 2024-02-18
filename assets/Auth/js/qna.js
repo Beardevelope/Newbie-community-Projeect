@@ -32,20 +32,20 @@ function addPost() {
                                 </div>
                                 <div class="titleAndContent">
                                     <div>
-                                        <h3 style="cursor: pointer" onclick="location.href='./post-detail.html?id=${postFirst.id}'">${postFirst.title}</h3>
+                                        <h3 style="cursor: pointer" onclick="location.href='./Auth/post-detail.html?id=${postFirst.id}'">${postFirst.title}</h3>
                                     </div>
                                     <div>내용은 해당 게시글에서 확인하세요</div>
                                 </div>
                                 <div class="viewAndLike">
                                     <div class="views">
                                         <div class="view">
-                                            <img src="./images/view.png" alt="" />
+                                            <img src="./Auth/images/view.png" alt="" />
                                         </div>
                                         <div>${postFirst.hitCount}</div>
                                     </div>
                                     <div class="likes">
                                         <div class="like">
-                                            <img src="./images/like.png" alt="" />
+                                            <img src="./Auth/images/like.png" alt="" />
                                         </div>
                                         <div>${postFirst.likes}</div>
                                     </div>
@@ -55,20 +55,20 @@ function addPost() {
                                 </div>
                                 <div class="titleAndContent">
                                     <div>
-                                        <h3 style="cursor: pointer" onclick="location.href='./post-detail.html?id=${postSecond.id}'">${postSecond.title}</h3>
+                                        <h3 style="cursor: pointer" onclick="location.href='./Auth/post-detail.html?id=${postSecond.id}'">${postSecond.title}</h3>
                                     </div>
                                     <div>내용은 해당 게시글에서 확인하세요</div>
                                 </div>
                                 <div class="viewAndLike">
                                     <div class="views">
                                         <div class="view">
-                                            <img src="./images/view.png" alt="" />
+                                            <img src="./Auth/images/view.png" alt="" />
                                         </div>
                                         <div>${postSecond.hitCount}</div>
                                     </div>
                                     <div class="likes">
                                         <div class="like">
-                                            <img src="./images/like.png" alt="" />
+                                            <img src="./Auth/images/like.png" alt="" />
                                         </div>
                                         <div>${postSecond.likes}</div>
                                     </div>
