@@ -66,7 +66,7 @@ const defaultDisplay = async () => {
             nickname.placeholder = responseData.nickname;
             password.placeholder = '*******';
             passwordConfirm.placeholder = '********';
-            uploadImage.src = responseData.profileImage || './images/profile2.png';
+            uploadImage.src = responseData.profileImage;
 
             posts.forEach((post) => {
                 const box = document.createElement('div');
