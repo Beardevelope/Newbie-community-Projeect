@@ -66,7 +66,7 @@ const defaultDisplay = async () => {
             nickname.placeholder = responseData.nickname;
             password.placeholder = '*******';
             passwordConfirm.placeholder = '********';
-            uploadImage.src = responseData.profileImage;
+            uploadImage.src = responseData.profileImage || './images/KakaoTalk_20240219_035136481.png';
 
             posts.forEach((post) => {
                 const box = document.createElement('div');
