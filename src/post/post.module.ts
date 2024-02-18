@@ -11,6 +11,7 @@ import { UploadServiceModule } from 'src/upload-service/upload-service.module';
 import { MulterModule } from '@nestjs/platform-express';
 import { extname } from 'path';
 import { SearchModule } from 'src/search/search.module';
+import { UserModule } from 'src/user/user.module';
 
 @Module({
     imports: [
@@ -18,6 +19,7 @@ import { SearchModule } from 'src/search/search.module';
         forwardRef(() => ChatBotModule),
         CommentModule,
         AuthModule,
+        UserModule,
         UploadServiceModule,
         MulterModule.register({
             limits: {
