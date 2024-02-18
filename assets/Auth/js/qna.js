@@ -11,9 +11,11 @@ async function postList() {
         const jsonData = await response.json();
         let posts = jsonData.posts.data;
 
-        posts.forEach((post) => {
-            foundPosts.push(post);
-        });
+        if (posts.length > 0) {
+            posts.forEach((post) => {
+                foundPosts.push(post);
+            });
+        }
     } catch (error) {
         console.log(error.message);
         alert(error.message);
