@@ -14,8 +14,8 @@ import { AuthService } from '../auth.service';
 export class VerifyGuard implements CanActivate {
     constructor(
         private readonly userService: UserService,
-        private readonly authService: AuthService
-        ) {}
+        private readonly authService: AuthService,
+    ) {}
 
     async canActivate(context: ExecutionContext): Promise<boolean> {
         const req = context.switchToHttp().getRequest();
@@ -40,8 +40,6 @@ export class VerifyGuard implements CanActivate {
 
         const user = await this.userService.getUserById(req.userId);
 
-
-
         if (!user.isVerified) {
             throw new NotAcceptableException();
         }
@@ -54,8 +52,8 @@ export class VerifyGuard implements CanActivate {
 export class RoleGuard implements CanActivate {
     constructor(
         private readonly userService: UserService,
-        private readonly authService: AuthService
-        ) {}
+        private readonly authService: AuthService,
+    ) {}
 
     async canActivate(context: ExecutionContext): Promise<boolean> {
         const req = context.switchToHttp().getRequest();
@@ -103,7 +101,6 @@ export class BanGuard implements CanActivate {
             throw new UnauthorizedException(INVALID_TOKEN);
         }
 
-        console.log(this.authService);
         const token = await this.authService.extractToken(rawToken, true);
         if (!token) {
             throw new UnauthorizedException(INVALID_TOKEN);
