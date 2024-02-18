@@ -37,6 +37,7 @@ export class RoleGuard implements CanActivate {
 
 export class BanGuard implements CanActivate {
     constructor(private readonly userService: UserService) {}
+
     async canActivate(context: ExecutionContext): Promise<boolean> {
         const req = context.switchToHttp().getRequest();
 
