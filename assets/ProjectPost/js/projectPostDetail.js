@@ -69,21 +69,60 @@ async function postLike(projectId) {
 }
 
 async function updateProjectDetail(formData, projectId) {
-    const responseProject = await fetch(`http://localhost:3000/project-post/${projectId}`, {
-        method: 'PATCH',
-        headers: {
-            Authorization: `Bearer ${accessToken}`,
-        },
-        body: formData,
-    });
+    try {
+        const responseProject = await fetch(`http://localhost:3000/project-post/${projectId}`, {
+            method: 'PATCH',
+            headers: {
+                Authorization: `Bearer ${accessToken}`,
+            },
+            body: formData,
+        });
+    } catch (error) {
+        console.error('에러 --- ', error);
+        throw new Error(error);
+    }
+}
+
+async function removeStack(projectId, stackId) {
+    try {
+        const response = await fetch(`http://localhost:3000/need-info/${projectId}/${stackId}`, {
+            method: 'DELETE',
+            headers: {
+                Authorization: `Bearer ${accessToken}`,
+            },
+        });
+
+        const data = response.json();
+
+        return data;
+    } catch (error) {
+        console.error('에러 --- ', error);
+        throw new Error(error);
+    }
+}
+
+async function removeQuestion(projectId, questionId) {
+    try {
+        const response = await fetch(`http://localhost:3000/question/${projectId}/${questionId}`, {
+            method: 'DELETE',
+            headers: {
+                Authorization: `Bearer ${accessToken}`,
+            },
+        });
+
+        const data = response.json();
+
+        return data;
+    } catch (error) {
+        console.error('에러 --- ', error);
+        throw new Error(error);
+    }
 }
 
 async function editProjectForm(projectId) {
+    const getProject = await fetchProjectDetail(projectId);
     const getStack = await fetchStack(projectId);
-
-    const title = document.querySelector('.title');
-    const projectImg = document.querySelector('.projectImg');
-    const content = document.querySelector('.content');
+    const getQuestion = await fetchQuestion(projectId);
 
     const mainWrap = document.querySelector('.mainWrap');
 
@@ -92,33 +131,76 @@ async function editProjectForm(projectId) {
         <div class="mainBox">
             <div class="imageBox">
                 <div>
-                    <img src="${projectImg.src}" class='projectImg' alt="">
+                    <img src="${getProject.image}" class='projectImg' alt="">
                 </div>
             </div>
+
             <div class="detailBox">
-                <input type="text" id="title" class="title" placeholder='${title.textContent}'></input>
+                <input type="text" id="title" class="title" placeholder='${getProject.title}'></input>
                 <div class="needStackBox">
-                    <div>
-                        <div class="stackTitle">요구 기술</div>
-                        <div class="stacks"></div>
-                    </div>
-                    <div>
-                        <div class="needPeopleTitle">모집 인원</div>
-                        <div class="needPeoples"></div>
+                    <div class='needStack'>
+                        <div class='stackTitleBox'>
+                            <div class="stackTitle">요구 기술</div>
+                            <div class="needPeopleTitle">모집 인원</div>
+                        </div>
+                        <div class='stackInfoBox'>
+                            <div class='stackInfo'>
+                                <div class="stacks"></div>
+                                <div class="needPeoples"></div>
+                                <div class='removeStackBox'></div>
+                            </div>
+                        </div>
                     </div>
                 </div>
                 <div class="dateBox">
                     <div class="date">
-                        <label for='deadLine' class="dateTitle">마감일</label>
-                        <input type="date" id="deadLine" class="deadLine" required></input>
+                        <div>
+                            <label for='deadLine' class="dateTitle">마감일</label>
+                        </div>
+                        <div>
+                            <input type="date" id="deadLine" class="deadLine" required></input>
+                        </div>
                     </div>
                     <div class="date">
-                        <label for='startDate' class="dateTitle">시작일</label>
-                        <input type="date" id="startDate" class="startDate" required></input>
+                        <div>
+                            <label for='startDate' class="dateTitle">시작일</label>
+                        </div>
+                        <div>
+                            <input type="date" id="startDate" class="startDate" required></input>
+                        </div>
                     </div>
                     <div class="date">
-                        <label for='dueDate' class="dateTitle">종료일</label>
-                        <input type="date" id="dueDate" class="dueDate" required></input>
+                        <div>
+                            <label for='dueDate' class="dateTitle">종료일</label>
+                        </div>
+                        <div>
+                            <input type="date" id="dueDate" class="dueDate" required></input>
+                        </div>
+                    </div>
+                </div>
+                <div class='editQuestionBox'>
+                        
+                </div>
+                <div class= 'recruitBox'>
+                    <div>
+                        <input
+                            type="radio"
+                            id='recruiting'
+                            class="recruitStatus"
+                            name="status"
+                            value="모집중"
+                        />
+                        <label for="recruiting">모집중</label>
+                    </div>
+                    <div>
+                        <input
+                            type="radio"
+                            id='recruitDone'
+                            class="recruitStatus"
+                            name="status"
+                            value="모집완료"
+                        />
+                        <label for="recruitDone">모집완료</label>
                     </div>
                 </div>
                 <div class="editBox">
@@ -129,31 +211,80 @@ async function editProjectForm(projectId) {
                 <div class="applicantBox">
                     <div class="likeBtn">좋아요</div>
                     <div class="openModalBtn">지원하기</div>
-                </div>
+                </div>  
             </div>
-        </div>
-        <div class="contentBox">
-            <div class='content'>
-                <input type="text" id="contentInput" class="contentInput" placeholder='${content.textContent}'></input>
+            <div class="contentBox">
+                <div class='content'>
+                    <input type="text" id="contentInput" class="contentInput" placeholder='${getProject.content}'></input>
+                </div>
             </div>
         </div>
     </form>`;
 
+    const recruitStatus = document.querySelectorAll('.recruitStatus');
+
+    for (let k = 0; k < recruitStatus.length; k++) {
+        if (getProject.status === recruitStatus[k].value) {
+            recruitStatus[k].checked = true;
+        }
+    }
+
     const stacks = document.querySelector('.stacks');
 
     const needPeoples = document.querySelector('.needPeoples');
+
+    const removeStackBox = document.querySelector('.removeStackBox');
 
     for (let i = 0; i < getStack.length; i++) {
         const stack = document.createElement('div');
         stack.className = 'stack';
         const needPeople = document.createElement('div');
         needPeople.className = 'needPeople';
+        const removeStackBtn = document.createElement('div');
+        removeStackBtn.className = 'removeStackBtn';
 
         stack.innerHTML = `${getStack[i].stack}`;
         needPeople.innerHTML = `<input type="text" id="needPeopleInput" class="needPeopleInput" placeholder='${getStack[i].numberOfPeople}'></input>`;
+        removeStackBtn.innerHTML = `삭제`;
 
         stacks.appendChild(stack);
         needPeoples.appendChild(needPeople);
+        removeStackBox.appendChild(removeStackBtn);
+
+        removeStackBtn.addEventListener('click', async () => {
+            if (getStack.length === 1) {
+                return alert('스택은 하나 이상 있어야합니다');
+            }
+            const removeStackData = await removeStack(projectId, getStack[i].id);
+            alert(removeStackData.message);
+        });
+    }
+
+    const editQuestionBox = document.querySelector('.editQuestionBox');
+
+    for (let j = 0; j < getQuestion.length; j++) {
+        const editQuestion = document.createElement('div');
+        editQuestion.className = 'editQuestion';
+
+        editQuestion.innerHTML = `
+        <div>
+            <div>질문 ${j + 1}</div>
+            <div>
+                <input type="text" id="questionInput" class="questionInput" placeholder='${getQuestion[j].question}'></input>
+            </div>
+        </div>
+        <div class="removeQuestionBtn">삭제</div>
+        `;
+
+        editQuestionBox.appendChild(editQuestion);
+
+        const removeQuestionBtn = document.querySelectorAll('.removeQuestionBtn');
+
+        removeQuestionBtn[j].addEventListener('click', async () => {
+            const removeQuestionData = await removeQuestion(projectId, getQuestion[j].id);
+            alert(removeQuestionData.message);
+            window.location.reload();
+        });
     }
 
     const dataForm = document.querySelector('#dataForm');
@@ -161,12 +292,37 @@ async function editProjectForm(projectId) {
     dataForm.addEventListener('submit', async (event) => {
         event.preventDefault();
 
+        let title = document.querySelector('.title').value;
+        let content = document.querySelector('.contentInput').value;
+        let applicationDeadLine = document.querySelector('.deadLine').value;
+        let startDate = document.querySelector('.startDate').value;
+        let dueDate = document.querySelector('.dueDate').value;
+        let status = document.querySelector('input[name="status"]:checked').value;
+
+        if (!title) {
+            title = getProject.title;
+        }
+
+        if (!content) {
+            content = getProject.content;
+        }
+        if (!applicationDeadLine) {
+            applicationDeadLine = getProject.applicationDeadLine.split('T')[0];
+        }
+        if (!startDate) {
+            startDate = getProject.startDate.split('T')[0];
+        }
+        if (!dueDate) {
+            dueDate = getProject.dueDate.split('T')[0];
+        }
+
         const formData = new FormData();
-        formData.append('title', document.querySelector('.title').value);
-        formData.append('content', document.querySelector('.contentInput').value);
-        formData.append('applicationDeadLine', document.querySelector('.deadLine').value);
-        formData.append('startDate', document.querySelector('.startDate').value);
-        formData.append('dueDate', document.querySelector('.dueDate').value);
+        formData.append('title', title);
+        formData.append('content', content);
+        formData.append('applicationDeadLine', applicationDeadLine);
+        formData.append('startDate', startDate);
+        formData.append('dueDate', dueDate);
+        formData.append('status', status);
 
         await updateProjectDetail(formData, projectId);
 
@@ -191,6 +347,30 @@ async function editProjectForm(projectId) {
                 },
             );
         }
+
+        const editQuestions = document.querySelectorAll('.editQuestion input');
+
+        for (let j = 0; j < editQuestions.length; j++) {
+            let editQuestion = editQuestions[j].value;
+
+            if (!editQuestion) {
+                editQuestion = getQuestion[j].question;
+            }
+
+            const responseQuestion = await fetch(
+                `http://localhost:3000/question/${projectId}/${getQuestion[j].id}`,
+                {
+                    method: 'PATCH',
+                    headers: {
+                        Authorization: `Bearer ${accessToken}`,
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ question: editQuestion }),
+                },
+            );
+        }
+        alert('수정 완료');
+
         window.location.href = `projectPostDetail.html?id=${projectId}`;
     });
 }
@@ -360,15 +540,20 @@ async function getProjectDetail() {
                     <div class="detailBox">
                         <div class="title">${data.title}</div>
                         <div class="needStackBox">
-                            <div>
-                                <div class="stackTitle">요구 기술</div>
-                                <div class="stacks"></div>
-                            </div>
-                            <div>
-                                <div class="needPeopleTitle">모집 인원</div>
-                                <div class="needPeoples"></div>
+                            <div class='needStack'>
+                                <div class='stackTitleBox'>
+                                    <div class="stackTitle">요구 기술</div>
+                                    <div class="needPeopleTitle">모집 인원</div>
+                                </div>
+                                <div class='stackInfoBox'>
+                                    <div class='stackInfo'>
+                                        <div class="stacks"></div>
+                                        <div class="needPeoples"></div>
+                                    </div>
+                                </div>
                             </div>
                         </div>
+                        
                         <div class="dateBox">
                             <div class="date">
                                 <div class="dateTitle">마감일</div>
@@ -392,10 +577,11 @@ async function getProjectDetail() {
                             <div class="openModalBtn">지원하기</div>
                         </div>
                     </div>
+                    <div class="contentBox">
+                        <div class ='content'>${data.content}</div>
+                    </div>
                 </div>
-                <div class="contentBox">
-                    <div class ='content'>${data.content}</div>
-                </div>
+               
           `;
 
         const main = document.querySelector('.main');

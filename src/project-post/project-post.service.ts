@@ -82,7 +82,8 @@ export class ProjectPostService {
         userId: number,
         image?: Express.Multer.File,
     ) {
-        const { title, content, applicationDeadLine, startDate, dueDate } = updateProjectPostDto;
+        const { title, content, status, applicationDeadLine, startDate, dueDate } =
+            updateProjectPostDto;
 
         const findById = await this.findById(id);
 
@@ -100,6 +101,7 @@ export class ProjectPostService {
             {
                 title,
                 content,
+                status,
                 image: uploadImage,
                 applicationDeadLine: new Date(applicationDeadLine as any),
                 startDate: new Date(startDate as any),
@@ -199,8 +201,8 @@ export class ProjectPostService {
     }
 
     // 프로젝트 지원 수락
-    async acceptProjectApplicant(id: number, userId: number, pickeduserId: number) {
-        await this.findById(id);
+    async acceptProjectApplicant(projectPostId: number, userId: number, pickeduserId: number) {
+        await this.findById(projectPostId);
 
         const projectApplicantUser = await this.projectApplicantRepository.findOne({
             where: { userId },
@@ -211,11 +213,11 @@ export class ProjectPostService {
         }
 
         await this.projectApplicantRepository.update(
-            { id, userId: pickeduserId },
+            { projectPostId, userId: pickeduserId },
             { accept: true },
         );
 
-        return { message: '지원자 완료' };
+        return { message: '지원자 채용 완료' };
     }
 
     // 프로젝트 지원 삭제
@@ -233,6 +235,19 @@ export class ProjectPostService {
         await this.projectApplicantRepository.delete({ projectPostId: id, userId: userId });
 
         return { message: '프로젝트 지원 삭제 완료' };
+    }
+
+    // 프로젝트 멤버 삭제
+    async removeProjectMember(id: number, userId: number, removeUserId: number) {
+        const projectAdmin = await this.findById(id);
+
+        if (userId !== projectAdmin.userId) {
+            throw new UnauthorizedException('권한이 없습니다');
+        }
+
+        await this.projectApplicantRepository.delete({ projectPostId: id, userId: removeUserId });
+
+        return { message: '프로젝트 멤버 삭제 완료' };
     }
 
     // Id로 찾는 함수

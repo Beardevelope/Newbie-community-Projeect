@@ -99,7 +99,7 @@ export class ProjectPostController {
     }
 
     @UseGuards(BearerTokenGuard)
-    @Get(':id/projectApplicant')
+    @Get(':id/acceptApplicant')
     findAcceptApplicant(@Param('id') id: string, @Req() req) {
         return this.projectPostService.findAcceptApplicant(+id, +req.userId);
     }
@@ -108,11 +108,15 @@ export class ProjectPostController {
     // @UseGuards(VerifyGuard)
     @Patch(':id/projectApplicant')
     acceptProjectApplicant(
-        @Param('id') id: string,
+        @Param('id') projectPostId: string,
         @Req() req,
         @Body('userId') pickeduserId: number,
     ) {
-        return this.projectPostService.acceptProjectApplicant(+id, +req.userId, pickeduserId);
+        return this.projectPostService.acceptProjectApplicant(
+            +projectPostId,
+            +req.userId,
+            pickeduserId,
+        );
     }
 
     @UseGuards(BearerTokenGuard)
@@ -120,5 +124,12 @@ export class ProjectPostController {
     @Delete(':id/projectApplicant')
     removeProjectApplicant(@Param('id') id: string, @Req() req) {
         return this.projectPostService.removeProjectApplicant(+id, +req.userId);
+    }
+
+    @UseGuards(BearerTokenGuard)
+    // @UseGuards(VerifyGuard)
+    @Delete(':id/projectMember')
+    removeProjectMember(@Param('id') id: string, @Req() req, @Body('userId') removeUserId: number) {
+        return this.projectPostService.removeProjectMember(+id, +req.userId, removeUserId);
     }
 }

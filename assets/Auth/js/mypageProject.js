@@ -16,6 +16,22 @@ async function fetchProjectAnswer(projectId, userId) {
     }
 }
 
+async function fetchProjectAnswer(projectId, userId) {
+    try {
+        const response = await fetch(`http://localhost:3000/answer/${projectId}/${userId}`, {
+            method: 'GET',
+        });
+
+        const responseData = await response.json();
+        console.log(responseData, '대답');
+
+        return responseData;
+    } catch (error) {
+        console.error('에러 --- ', error);
+        throw new error(error);
+    }
+}
+
 async function fetchProject() {
     try {
         const response = await fetch(`http://localhost:3000/project-post/myProject`, {
@@ -68,8 +84,6 @@ async function fetchQuestion(projectId) {
 
 async function acceptUser(projectId, userId) {
     try {
-        console.log(projectId, '프로젝트아이디');
-        console.log(userId, '유저아이디');
         const response = await fetch(
             `http://localhost:3000/project-post/${projectId}/projectApplicant`,
             {
@@ -83,7 +97,27 @@ async function acceptUser(projectId, userId) {
         );
 
         const data = await response.json();
-        console.log(data, 'dddddddddddddddd');
+
+        return data;
+    } catch (error) {
+        console.error('에러 --- ', error);
+        throw new error(error);
+    }
+}
+
+async function fetchMember(projectId) {
+    try {
+        const response = await fetch(
+            `http://localhost:3000/project-post/${projectId}/acceptApplicant`,
+            {
+                method: 'GET',
+                headers: {
+                    Authorization: `Bearer ${accessToken}`,
+                },
+            },
+        );
+
+        const data = await response.json();
 
         return data;
     } catch (error) {
@@ -189,6 +223,29 @@ async function removeApplicant(projectId) {
     }
 }
 
+async function removeMember(projectId, userId) {
+    try {
+        const response = await fetch(
+            `http://localhost:3000/project-post/${projectId}/projectMember`,
+            {
+                method: 'DELETE',
+                headers: {
+                    Authorization: `Bearer ${accessToken}`,
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ userId }),
+            },
+        );
+
+        const data = await response.json();
+
+        return data;
+    } catch (error) {
+        console.error('에러 --- ', error);
+        throw new error(error);
+    }
+}
+
 async function getRecentProject() {
     const getProjectData = await fetchProject();
 
@@ -236,9 +293,9 @@ async function getRecentProject() {
 
         const memberBtn = document.querySelectorAll('.memberBtn');
 
-        memberBtn[i].addEventListener('click', (event) => {
+        memberBtn[i].addEventListener('click', async (event) => {
             event.stopPropagation();
-            await getMember(getProjectData[i].id)
+            await getMember(getProjectData[i].id);
 
             const memberModalBox = document.querySelector('.memberModalBox');
 
@@ -256,15 +313,6 @@ async function getRecentProject() {
             applicantModalBox.style.display = 'block';
         });
 
-        const closeModalBtn = document.querySelectorAll('.closeModalBtn');
-
-        for (let i = 0; i < closeModalBtn.length; i++) {
-            closeModalBtn[i].addEventListener('click', () => {
-                document.querySelector('.applicantModalBox').style.display = 'none';
-                document.querySelector('.memberModalBox').style.display = 'none';
-            });
-        }
-
         recentProject.addEventListener('click', () => {
             window.location.href = `../projectPost/projectPostDetail.html?id=${getProjectData[i].id}`;
         });
@@ -272,13 +320,49 @@ async function getRecentProject() {
 }
 
 async function getMember(projectId) {
-    
+    const getMemberData = await fetchMember(projectId);
+
+    const members = document.querySelector('.members');
+
+    members.innerHTML = `<div class="closeModalBtn closeMemeberBtn">❌</div>`;
+
+    for (let i = 0; i < getMemberData.length; i++) {
+        const getProjectAnswerData = await fetchProjectAnswer(projectId, getMemberData[i].userId);
+
+        const memberInfo = document.createElement('div');
+
+        memberInfo.className = 'memberInfo';
+
+        memberInfo.innerHTML = `
+        <div class="nickName">${getProjectAnswerData[i].user.nickname}</div>
+        <div class="stack">${getProjectAnswerData[i].answer.stack}</div>
+        <div class="removeMemberBtn">지원자 삭제</div>
+        `;
+
+        members.appendChild(memberInfo);
+
+        const removeMemberBtn = document.querySelectorAll('.removeMemberBtn');
+
+        removeMemberBtn[i].addEventListener('click', async () => {
+            const removeMemberData = await removeMember(projectId, getProjectAnswerData[i].user.id);
+            alert(removeMemberData.message);
+            window.location.reload();
+        });
+    }
+
+    const closeMemeberBtn = document.querySelector('.closeMemeberBtn');
+
+    closeMemeberBtn.addEventListener('click', () => {
+        document.querySelector('.memberModalBox').style.display = 'none';
+    });
 }
 
 async function getApplicantProjectors(projectId) {
     const getProjectApplicantData = await fetchProjectApplicant(projectId);
 
     const applicant = document.querySelector('.applicant');
+
+    applicant.innerHTML = `<div class="closeModalBtn closeApplicantBtn">❌</div>`;
 
     for (let i = 0; i < getProjectApplicantData.length; i++) {
         const getQuestionData = await fetchQuestion(projectId);
@@ -294,13 +378,14 @@ async function getApplicantProjectors(projectId) {
         applicantInfo.className = 'applicantInfo';
 
         applicantInfo.innerHTML = `
+        
         <div class="applicantUser">
             <div class="nickName">${userInfo.nickname}</div>
             <div class="stack">${getProjectAnswerData[i].answer.stack}</div>
         </div>
         <div class="applicantAnswerBox"></div>
-
-        <div class="pickBtn">뽑기</div> 
+ 
+        <div class="pickBtn">수락</div>
         `;
 
         applicant.appendChild(applicantInfo);
@@ -322,9 +407,17 @@ async function getApplicantProjectors(projectId) {
         const pickBtn = document.querySelectorAll('.pickBtn');
 
         pickBtn[i].addEventListener('click', async () => {
-            await acceptUser(projectId, userInfo.id);
+            const acceptDone = await acceptUser(projectId, userInfo.id);
+            alert(acceptDone.message);
+            window.location.reload();
         });
     }
+
+    const closeApplicantBtn = document.querySelector('.closeApplicantBtn');
+
+    closeApplicantBtn.addEventListener('click', () => {
+        document.querySelector('.applicantModalBox').style.display = 'none';
+    });
 }
 
 async function getLikeProject() {
@@ -383,6 +476,7 @@ async function getLikeProject() {
         });
     }
 }
+
 async function getApplicantProject() {
     const getMyApplicantData = await fetchMyApplicant();
 
