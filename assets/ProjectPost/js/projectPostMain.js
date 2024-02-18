@@ -1,3 +1,24 @@
+const accessToken = sessionStorage.getItem('accessToken');
+
+async function fetchUserInfo() {
+    try {
+        const response = await fetch(`http://localhost:3000/user/userinfo`, {
+            method: 'GET',
+            headers: {
+                Authorization: `Bearer ${accessToken}`,
+            },
+        });
+
+        const responseData = await response.json();
+        console.log(responseData, '유저');
+
+        return responseData;
+    } catch (error) {
+        console.error('에러 --- ', error);
+        throw new error(error);
+    }
+}
+
 async function fetchProject(page) {
     try {
         const response = await fetch(`http://localhost:3000/project-post?page=${page}`, {
@@ -53,7 +74,6 @@ async function getProject(page) {
 
         projects.innerHTML = '';
 
-        console.log(page, '페이지입니다');
         if (page === 1) {
             await getPages(data);
         }
@@ -126,6 +146,18 @@ async function getProject(page) {
                 status.className = 'status';
             }
         }
+
+        const writeBtn = document.querySelector('.writeBtn');
+        const userInfo = await fetchUserInfo();
+
+        writeBtn.addEventListener('click', () => {
+            if (!userInfo.isVerified) {
+                alert('이메일 인증을 먼저 해주세요');
+                return (window.location.href = '../Auth/mypage.html');
+            }
+
+            window.location.href = 'projectPostWrite.html';
+        });
     } catch (error) {
         console.error('에러 --- ', error);
         throw new error(error);

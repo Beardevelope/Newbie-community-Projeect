@@ -28,6 +28,12 @@ export class AnswerService {
 
         await this.findStack(projectPostId, stack);
 
+        const existAnswer = await this.answerRepository.findOne({ where: { questionId, userId } });
+
+        if (existAnswer) {
+            throw new BadRequestException('이미 지원한 프로젝트입니다');
+        }
+
         const result = await this.answerRepository.save({
             questionId,
             answer,
