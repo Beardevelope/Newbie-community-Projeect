@@ -23,12 +23,7 @@ async function bootstrap() {
     app.use(helmet())
     app.use(
         helmet.contentSecurityPolicy({
-            directives: {
-                defaultSrc: ["'self'"],
-                scriptSrc: ["'self'"],
-                styleSrc: ["'self'"],
-                imgSrc: ["'self'", 'https://nestjs-project-images.s3.ap-northeast-2.amazonaws.com/'],
-            },
+            useDefaults: false,
         })
     );
 
