@@ -19,7 +19,7 @@
     <body>
         <header class="header">
             <div class="total-header">
-                <a href="../Auth/mainpage.html">
+                <a href="../index.html">
                     <div class="title-logo">
                         <div><img src="../Auth/images/logo.png" alt="" class="logo-img" /></div>
                         <div>Roomdevelope</div>
@@ -34,6 +34,23 @@
                     />
                     <button type="button" class="btn btn-outline-light">Search</button>
                 </form>
+                <!-- 알림 -->
+                <div class="dropdown">
+                    <button
+                        class="btn btn-outline-light dropdown-toggle"
+                        type="button"
+                        id="notificationDropdown"
+                        data-bs-toggle="dropdown"
+                        aria-expanded="false"
+                    >
+                        알림
+                    </button>
+                    <ul
+                        class="dropdown-menu"
+                        aria-labelledby="notificationDropdown"
+                        id="notificationList"
+                    ></ul>
+                </div>
                 <div class="buttons">
                     <button type="button" class="btn btn-outline-light" id="loginButton">
                         log-in
@@ -70,7 +87,7 @@
                 <ul class="nav nav-pills flex-column mb-auto">
                     <li class="nav-item">
                         <a
-                            href="../Auth/mainpage.html"
+                            href="../index.html"
                             class="nav-link text-white"
                             aria-current="page"
                         >
@@ -145,7 +162,7 @@
                 <div class="mainWrap">
                     <div class="titleBox">
                         <div class="categoryTitle">TOY PROJECT</div>
-                        <div class="writeBtn"><a href="projectPostWrite.html">작성하기</a></div>
+                        <div class="writeBtn">작성하기</div>
                     </div>
 
                     <!-- 프로젝트 박스 -->
@@ -165,5 +182,6 @@
         ></script>
         <script src="./js/projectPostMain.js"></script>
         <script src="./js/transfer.js"></script>
+        <script src="../Banner/js/alarm.js"></script>
     </body>
 </html>

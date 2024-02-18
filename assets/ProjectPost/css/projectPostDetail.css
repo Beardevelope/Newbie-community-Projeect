@@ -288,3 +288,7 @@ a {
 .contentInput {
     width: 100%;
 }
+
+.hide {
+    display: none !important;
+}

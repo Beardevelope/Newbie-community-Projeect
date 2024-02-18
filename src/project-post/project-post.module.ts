@@ -9,6 +9,7 @@ import { UserModule } from 'src/user/user.module';
 import { UploadServiceModule } from 'src/upload-service/upload-service.module';
 import { MulterModule } from '@nestjs/platform-express';
 import { extname } from 'path';
+import { AlarmModule } from 'src/alarm/alarm.module';
 
 @Module({
     imports: [
@@ -30,6 +31,7 @@ import { extname } from 'path';
         }),
         UserModule,
         UploadServiceModule,
+        AlarmModule,
     ],
     controllers: [ProjectPostController],
     providers: [ProjectPostService],
