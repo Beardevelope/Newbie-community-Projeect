@@ -59,9 +59,9 @@ import { SearchModule } from './search/search.module';
         }),
         TagModule,
         AlarmModule,
-        // ServeStaticModule.forRoot({
-        //     rootPath: join(__dirname, '..', 'assets'),
-        // }),
+        ServeStaticModule.forRoot({
+            rootPath: join(__dirname, '..', 'assets'),
+        }),
         PostLikeModule,
         EmailModule,
         MailerModule.forRoot({
