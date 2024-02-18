@@ -1,6 +1,9 @@
 const USER_API = '/user';
 const accessToken = sessionStorage.getItem('accessToken');
-const adminPage = document.getElementById('adminPage')
+const adminPage = document.getElementById('adminPage');
+
+console.log('accessToken', accessToken);
+console.log('adminPage', adminPage);
 
 // userId를 추출하는 함수
 function extractUserId(token) {
@@ -35,14 +38,12 @@ const getUserList = async (userId) => {
     return responseData;
 };
 
+async function showAdminPage() {
+    const user = await getUserList();
+    const userIsAdmin = user[0].isAdmin;
 
-function showAdminPage() {
-    
-}
-const user = await getUserList();
-const userIsAdmin = user[0].isAdmin
-
-if (userIsAdmin) {
-    adminPage.style.display= 'inline-block';
+    if (userIsAdmin) {
+        adminPage.style.display = 'inline-block';
+    }
 }
 showAdminPage();

@@ -41,7 +41,7 @@ async function fetchProject() {
         });
 
         const data = await response.json();
-        if (data.message === 406) return false
+        if (data.message === 406) return false;
         console.log(data);
 
         return data;
@@ -84,17 +84,14 @@ async function fetchQuestion(projectId) {
 
 async function acceptUser(projectId, userId) {
     try {
-        const response = await fetch(
-            `/project-post/${projectId}/projectApplicant`,
-            {
-                method: 'PATCH',
-                headers: {
-                    Authorization: `Bearer ${accessToken}`,
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({ userId }),
+        const response = await fetch(`/project-post/${projectId}/projectApplicant`, {
+            method: 'PATCH',
+            headers: {
+                Authorization: `Bearer ${accessToken}`,
+                'Content-Type': 'application/json',
             },
-        );
+            body: JSON.stringify({ userId }),
+        });
 
         const data = await response.json();
 
@@ -107,15 +104,12 @@ async function acceptUser(projectId, userId) {
 
 async function fetchMember(projectId) {
     try {
-        const response = await fetch(
-            `/project-post/${projectId}/acceptApplicant`,
-            {
-                method: 'GET',
-                headers: {
-                    Authorization: `Bearer ${accessToken}`,
-                },
+        const response = await fetch(`/project-post/${projectId}/acceptApplicant`, {
+            method: 'GET',
+            headers: {
+                Authorization: `Bearer ${accessToken}`,
             },
-        );
+        });
 
         const data = await response.json();
 
@@ -146,15 +140,12 @@ async function fetchMyLike() {
 
 async function fetchProjectApplicant(projectId) {
     try {
-        const response = await fetch(
-            `/project-post/${projectId}/projectApplicant`,
-            {
-                method: 'GET',
-                headers: {
-                    Authorization: `Bearer ${accessToken}`,
-                },
+        const response = await fetch(`/project-post/${projectId}/projectApplicant`, {
+            method: 'GET',
+            headers: {
+                Authorization: `Bearer ${accessToken}`,
             },
-        );
+        });
 
         const data = await response.json();
 
@@ -204,15 +195,12 @@ async function removeLike(projectId) {
 
 async function removeApplicant(projectId) {
     try {
-        const response = await fetch(
-            `/project-post/${projectId}/projectApplicant`,
-            {
-                method: 'DELETE',
-                headers: {
-                    Authorization: `Bearer ${accessToken}`,
-                },
+        const response = await fetch(`/project-post/${projectId}/projectApplicant`, {
+            method: 'DELETE',
+            headers: {
+                Authorization: `Bearer ${accessToken}`,
             },
-        );
+        });
 
         const data = await response.json();
 
@@ -225,17 +213,14 @@ async function removeApplicant(projectId) {
 
 async function removeMember(projectId, userId) {
     try {
-        const response = await fetch(
-            `/project-post/${projectId}/projectMember`,
-            {
-                method: 'DELETE',
-                headers: {
-                    Authorization: `Bearer ${accessToken}`,
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({ userId }),
+        const response = await fetch(`/project-post/${projectId}/projectMember`, {
+            method: 'DELETE',
+            headers: {
+                Authorization: `Bearer ${accessToken}`,
+                'Content-Type': 'application/json',
             },
-        );
+            body: JSON.stringify({ userId }),
+        });
 
         const data = await response.json();
 
@@ -255,7 +240,7 @@ async function getRecentProject() {
 
     for (let i = 0; i < getProjectData.length; i++) {
         const getLikeProjectData = await fetchLikeProject(getProjectData[i].id);
-        const userInfo = await fetchProjectAnswer()
+        const userInfo = await fetchProjectAnswer();
 
         const recentProject = document.createElement('div');
         recentProject.className = 'box1 recentProject';
@@ -536,9 +521,9 @@ async function getApplicantProject() {
 }
 
 async function pageLoading() {
-    const fetchUserInfoData = await fetchUserInfo()
+    const fetchUserInfoData = await fetchUserInfo();
 
-    if(!fetchUserInfoData.isVerified) {
+    if (!fetchUserInfoData.isVerified) {
         return;
     }
 
