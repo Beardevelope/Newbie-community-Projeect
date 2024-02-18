@@ -50,7 +50,6 @@ export class PostService {
 
             if (!existedTag) {
                 tags.push({ name: tagArray[i] });
-                break;
             }
             tags.push(existedTag);
         }

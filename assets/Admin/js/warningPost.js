@@ -22,10 +22,11 @@ const getpostList = async () => {
 const listpost = async () => {
     try {
         const posts = await getpostList();
-        const postTable = document.createElement('table');
-        postTable.className = 'postTable';
+        if (posts.length > 0) {
+            const postTable = document.createElement('table');
+            postTable.className = 'postTable';
 
-        postTable.innerHTML = `
+            postTable.innerHTML = `
             <caption>
                 Developers Rating
             </caption>
@@ -46,15 +47,15 @@ const listpost = async () => {
             </tfoot>
         `;
 
-        const tbody = postTable.querySelector('tbody');
-        const foundPosts = posts.posts;
-        foundPosts.forEach((post) => {
-            const row = document.createElement('tr');
-            row.style.borderBottom = '1px solid #000';
-            if (post.isBan) {
-                row.classList.add('banned-post');
-            }
-            row.innerHTML = `
+            const tbody = postTable.querySelector('tbody');
+            const foundPosts = posts.posts;
+            foundPosts.forEach((post) => {
+                const row = document.createElement('tr');
+                row.style.borderBottom = '1px solid #000';
+                if (post.isBan) {
+                    row.classList.add('banned-post');
+                }
+                row.innerHTML = `
                 <td>
                     <img src="${post.image}" alt="img" onerror="this.src='https://i.postimg.cc/yYYd1HV1/katara.jpg'" />
                 </td>
@@ -65,20 +66,21 @@ const listpost = async () => {
                 <button class="view" data-postid="${post.id}">follow</button>
                 </td>
             `;
-            tbody.appendChild(row);
-        });
+                tbody.appendChild(row);
+            });
 
-        postTable.addEventListener('click', async (event) => {
-            const targetButton = event.target.closest('button.view');
+            postTable.addEventListener('click', async (event) => {
+                const targetButton = event.target.closest('button.view');
 
-            const postId = targetButton.getAttribute('data-postid');
-            console.log(`Button with postId ${postId} clicked.`);
-            const detailPageURL = `./detailWarningPost.html?id=${postId}`;
-            window.location.href = detailPageURL;
-        });
+                const postId = targetButton.getAttribute('data-postid');
+                console.log(`Button with postId ${postId} clicked.`);
+                const detailPageURL = `./detailWarningPost.html?id=${postId}`;
+                window.location.href = detailPageURL;
+            });
 
-        postList.appendChild(postTable);
-        addEventListenerPostTitle();
+            postList.appendChild(postTable);
+            addEventListenerPostTitle();
+        }
     } catch (error) {
         console.error(error);
     }

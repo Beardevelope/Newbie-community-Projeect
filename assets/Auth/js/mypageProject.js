@@ -1,5 +1,20 @@
 const accessToken = sessionStorage.getItem('accessToken');
 
+async function fetchUserInfo() {
+    try {
+        const response = await fetch(`/user/userinfo`, {
+            method: 'GET',
+        });
+
+        const responseData = await response.json();
+
+        return responseData;
+    } catch (error) {
+        console.error('에러 --- ', error);
+        throw new error(error);
+    }
+}
+
 async function fetchProjectAnswer(projectId, userId) {
     try {
         const response = await fetch(`/answer/${projectId}/${userId}`, {
@@ -26,6 +41,7 @@ async function fetchProject() {
         });
 
         const data = await response.json();
+        if (data.message === 406) return false
         console.log(data);
 
         return data;
@@ -239,6 +255,7 @@ async function getRecentProject() {
 
     for (let i = 0; i < getProjectData.length; i++) {
         const getLikeProjectData = await fetchLikeProject(getProjectData[i].id);
+        const userInfo = await fetchProjectAnswer()
 
         const recentProject = document.createElement('div');
         recentProject.className = 'box1 recentProject';
@@ -519,6 +536,12 @@ async function getApplicantProject() {
 }
 
 async function pageLoading() {
+    const fetchUserInfoData = await fetchUserInfo()
+
+    if(!fetchUserInfoData.isVerified) {
+        return;
+    }
+
     await getRecentProject();
     await getLikeProject();
     await getApplicantProject();

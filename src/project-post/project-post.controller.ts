@@ -20,7 +20,6 @@ import { FileInterceptor } from '@nestjs/platform-express';
 import { BanGuard, VerifyGuard } from 'src/auth/guard/role.guard';
 
 @Controller('project-post')
-@UseGuards(BanGuard)
 export class ProjectPostController {
     constructor(private readonly projectPostService: ProjectPostService) {}
 

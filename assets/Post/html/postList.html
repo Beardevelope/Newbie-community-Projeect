@@ -14,6 +14,7 @@
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
         <link href="https://fonts.googleapis.com/css2?family=Anton&display=swap" rel="stylesheet" />
         <link rel="stylesheet" href="../css/postList.css" />
+        <link rel="stylesheet" href="../../Auth/css/banner.css" />
     </head>
     <body>
         <header class="header">
@@ -22,15 +23,21 @@
                     <div><img src="../../Auth/images/logo.png" alt="" class="logo-img" /></div>
                     <div>Roomdevelope</div>
                 </div>
-                <form class="d-flex search-box">
-                    <input
-                        class="form-control me-2"
-                        type="search"
-                        placeholder="Search"
-                        aria-label="Search"
-                    />
-                    <button type="button" class="btn btn-outline-light">Search</button>
-                </form>
+                <form
+                action="https://www.google.com/search"
+                method="GET"
+                target="_blank"
+                class="d-flex search-box"
+            >
+                <input
+                    class="form-control me-2"
+                    type="search"
+                    placeholder="Google search box"
+                    aria-label="Search"
+                    name="q"
+                />
+                <button type="submit" class="btn btn-outline-light">Search</button>
+            </form>
                 <div class="buttons">
                     <button type="button" class="btn btn-outline-light" id="loginButton">
                         log-in
@@ -196,7 +203,6 @@
                 </button>
             </div>
         </div>
-
         <!-- 모달 창 게시판 등록-->
         <div id="askModal" class="modal">
             <div class="modal-content">
@@ -224,6 +230,11 @@
                 <button type="button" class="close-button" onclick="closeAskModal()">Close</button>
             </div>
         </div>
+        <div class="banners">
+            <a href="#" class="sideBanner">
+                <span class="txt-label"></span>
+            </a>
+        </div>
         </div>
         <script src="https://cdn.ckeditor.com/ckeditor5/36.0.1/classic/ckeditor.js"></script>
         <script
@@ -237,4 +248,8 @@
     <script src="../js/postFilterModal.js"></script>
     <script src="../js/mdo.js"></script>
     <script src="../js/transfer.js"></script>
+    <script src="../../Auth/js/banner.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" ;
+    integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" ; crossorigin="anonymous" ;>
+    </script>
 </html>
