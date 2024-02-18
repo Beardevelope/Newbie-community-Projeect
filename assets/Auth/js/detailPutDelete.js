@@ -1,5 +1,6 @@
 let StringPostId = window.location.search;
 const postId = StringPostId.substr(4);
+const accessToken = sessionStorage.getItem('accessToken');
 
 document.addEventListener('DOMContentLoaded', function () {
     const putBtn = document.getElementById('putBtn');
@@ -56,7 +57,7 @@ async function putPost() {
             method: 'put',
             headers: {
                 Authorization:
-                    `Bearer ${TOKEN}`,
+                    `Bearer ${accessToken}`,
             },
             body: formData,
         });
@@ -108,7 +109,7 @@ async function deletePost() {
             method: 'delete',
             headers: {
                 Authorization:
-                    `Bearer ${TOKEN}`,
+                    `Bearer ${accessToken}`,
             },
         });
         if (response.status !== 200) {
