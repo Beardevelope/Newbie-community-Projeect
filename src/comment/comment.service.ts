@@ -74,17 +74,17 @@ export class CommentService {
     // 해당 게시글 댓글 전체 조회
     async findAllCommentByPostId(postId: number) {
         await this.verifyPostId(postId);
-        const comments = this.commentRepository.find({ 
+        const comments = this.commentRepository.find({
             where: { postId },
             select: {
                 content: true,
                 user: {
                     nickname: true,
-                }
+                },
             },
             relations: {
-                user: true
-            }
+                user: true,
+            },
         });
         return comments;
     }
