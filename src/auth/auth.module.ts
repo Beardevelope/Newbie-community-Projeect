@@ -6,7 +6,7 @@ import { JwtModule } from '@nestjs/jwt';
 import { AccessTokenGuard, BearerTokenGuard, RefreshTokenGuard } from './guard/bearer.guard';
 import { BasicTokenGuard } from './guard/basic.guard';
 import { GoogleStrategy } from './google.strategy';
-import { BanGuard } from './guard/role.guard';
+import { BanGuard, VerifyGuard } from './guard/role.guard';
 
 @Module({
     controllers: [AuthController],
@@ -18,6 +18,7 @@ import { BanGuard } from './guard/role.guard';
         AccessTokenGuard,
         RefreshTokenGuard,
         BanGuard,
+        VerifyGuard,
         GoogleStrategy,
     ],
     exports: [
@@ -27,6 +28,7 @@ import { BanGuard } from './guard/role.guard';
         AccessTokenGuard,
         RefreshTokenGuard,
         BanGuard,
+        VerifyGuard,
     ],
 })
 export class AuthModule {}

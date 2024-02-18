@@ -52,6 +52,7 @@ export class UserService {
      * @param id
      */
     getUserById(id: number) {
+        console.log(id, '아이디입니다');
         return this.usersRepository.findOne({
             where: {
                 id,

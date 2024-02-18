@@ -46,6 +46,8 @@ export class BanGuard implements CanActivate {
     async canActivate(context: ExecutionContext): Promise<boolean> {
         const req = context.switchToHttp().getRequest();
 
+        console.log(req, 'ㄷㄷㄷㄷㄷㄷㄷㄷㄷ');
+
         const user = await this.userService.getUserById(req.userId);
 
         console.log(user, 'ffffffffffffffffff');
