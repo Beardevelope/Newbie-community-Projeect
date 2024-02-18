@@ -120,14 +120,14 @@ export class ProjectPostController {
     }
 
     @UseGuards(BearerTokenGuard)
-    // @UseGuards(VerifyGuard)
+    @UseGuards(VerifyGuard)
     @Delete(':id/projectApplicant')
     removeProjectApplicant(@Param('id') id: string, @Req() req) {
         return this.projectPostService.removeProjectApplicant(+id, +req.userId);
     }
 
     @UseGuards(BearerTokenGuard)
-    // @UseGuards(VerifyGuard)
+    @UseGuards(VerifyGuard)
     @Delete(':id/projectMember')
     removeProjectMember(@Param('id') id: string, @Req() req, @Body('userId') removeUserId: number) {
         return this.projectPostService.removeProjectMember(+id, +req.userId, removeUserId);
