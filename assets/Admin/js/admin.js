@@ -1,4 +1,4 @@
-const USER_API = 'http://localhost:3000/user'
+const USER_API = '/user'
 const userList = document.querySelector('.userList')
 const TOKEN = sessionStorage.getItem('accessToken') || 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjIsImVtYWlsIjoidGVzdDAxQHRlc3QuY29tIiwiaWQiOjIsInR5cGUiOiJhY2Nlc3MiLCJpYXQiOjE3MDc5MTQ1NjEsImV4cCI6MTcwNzkxODE2MX0.ZxKe_q_QWeez4rZupHypDJeQlq_6CPr938Tzz37_FFk'
 

@@ -45,7 +45,6 @@ export class AuthController {
     @Get('google')
     @UseGuards(GoogleAuthGuard)
     googleAuthRedirect(@Request() req: Request, @Res() res) {
-        console.log(req['user']);
         // return this.authService.googleLogin(req);
         const token = this.authService.signToken(req['user'], false);
         res.redirect(`http://newveloper.com/Auth/save-token.html?accessToken=${token}`);

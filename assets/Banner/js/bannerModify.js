@@ -22,7 +22,7 @@ async function modifyBanner() {
         const TOKEN = sessionStorage.getItem('accessToken');
         // const TOKEN = "토큰"
 
-        const response = await fetch(`http://localhost:3000/banner/${bannerId}`, {
+        const response = await fetch(`/banner/${bannerId}`, {
             method: 'PUT',
             headers: {
                 Authorization: `Bearer ${TOKEN}`,

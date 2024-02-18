@@ -3,7 +3,7 @@ let banners = [];
 document.addEventListener("DOMContentLoaded", async function () {
     const bannerList = document.getElementById("bannerList");
 
-    const response = await fetch("http://localhost:3000/banner");
+    const response = await fetch("/banner");
     const data = await response.json();
 
     // 데이터를 테이블에 추가

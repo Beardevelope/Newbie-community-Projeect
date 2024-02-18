@@ -1,4 +1,4 @@
-const USER_API = 'http://localhost:3000/user'
+const USER_API = '/user'
 const userList = document.querySelector('.userList')
 
 const getUserList = async () => {

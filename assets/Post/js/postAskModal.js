@@ -53,7 +53,7 @@ async function createPost() {
         const form = document.getElementById('askForm');
         const formData = new FormData(form);
         formData.append('content', editor.getData());
-        const response = await fetch(`http://localhost:3000/post`, {
+        const response = await fetch(`/post`, {
             method: 'post',
             headers: {
                 Authorization: `Bearer ${TOKEN}`,

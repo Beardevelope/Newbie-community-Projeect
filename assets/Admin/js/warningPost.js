@@ -1,4 +1,4 @@
-const post_API = 'http://localhost:3000/warning';
+const post_API = '/warning';
 const postList = document.querySelector('.postList');
 const TOKEN =
     sessionStorage.getItem('accessToken') ||
