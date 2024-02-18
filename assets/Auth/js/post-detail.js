@@ -374,7 +374,7 @@ const currentPostId = pagePostId.substr(4);
 
 async function clickLikeButton() {
     try {
-        const response = await fetch(`http://localhost:3000/post-like/${currentPostId}`, {
+        const response = await fetch(`/post-like/${currentPostId}`, {
             method: 'post',
             headers: {
                 Authorization:
@@ -409,7 +409,7 @@ console.log(statusButton)
 
 async function clickStatusButton() {
     try {
-        const response = await fetch(`http://localhost:3000/post/${currentPostId}/status`, {
+        const response = await fetch(`${POST_API}/${currentPostId}/status`, {
             method: 'put',
             headers: {
                 Authorization:
