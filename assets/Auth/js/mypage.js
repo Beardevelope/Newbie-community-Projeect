@@ -16,7 +16,7 @@ const nickname = document.querySelector('#NICKNAME');
 const password = document.querySelector('#PASSWORD');
 const passwordConfirm = document.querySelector('#PASSWORDCONFIRM');
 const modifyButton = document.querySelector('.fixbutton');
-
+x
 const postTitle = document.querySelector('#post-title');
 const postLike = document.querySelector('#post-like');
 const postView = document.querySelector('#post-view');
@@ -82,7 +82,9 @@ const defaultDisplay = async () => {
             nickname.placeholder = responseData.nickname;
             password.placeholder = '*******';
             passwordConfirm.placeholder = '********';
-            uploadImage.src = responseData.profileImage || './images/profile.png';
+            name.placeholder = responseData.number || '-';
+            contact.placeholder = responseData.contact || '-';
+            uploadImage.src = responseData.profileImage || './images/profile2.png';
 
             posts.forEach((post) => {
                 const box = document.createElement('div');

@@ -26,11 +26,9 @@ document.addEventListener("DOMContentLoaded", async function () {
 // 배너 상세조회 페이지로 이동
 function goToBannerDetailPage(bannerId) {
     document.location.href = `bannerDetail.html?bannerId=${bannerId}`;
-}
+};
 
 // 배너 생성 페이지로 이동
 function goToCreatePage() {
     document.location.href = '../html/bannerCreate.html';
-}
-
-
+};

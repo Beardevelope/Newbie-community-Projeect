@@ -1,9 +1,7 @@
 document.getElementById('dataForm').addEventListener('submit', async function (event) {
     event.preventDefault();
 
-    const accessToken =
-        sessionStorage.getItem('accessToken') ||
-        'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjcsImVtYWlsIjoiOTg4NzZAbmF2ZXIuY29tIiwiaWQiOjcsInR5cGUiOiJhY2Nlc3MiLCJpYXQiOjE3MDczNjY2NDgsImV4cCI6MTcwNzM3MDI0OH0.J5dxuHtOLfP7_aEYvq8afuws98dNEWRAW1jzggXq41Y';
+    const accessToken = sessionStorage.getItem('accessToken');
 
     const formData = new FormData();
     formData.append('title', document.getElementById('title').value);
