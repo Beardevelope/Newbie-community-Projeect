@@ -7,6 +7,7 @@ import { Repository } from 'typeorm';
 import _ from 'lodash';
 import { ProjectApplicant } from './entities/project-applicant.entity';
 import { UploadServiceService } from 'src/upload-service/upload-service.service';
+import { AlarmService } from 'src/alarm/alarm.service';
 
 @Injectable()
 export class ProjectPostService {
@@ -16,6 +17,7 @@ export class ProjectPostService {
         @InjectRepository(ProjectApplicant)
         private readonly projectApplicantRepository: Repository<ProjectApplicant>,
         private readonly uploadService: UploadServiceService,
+        private readonly alarmService: AlarmService,
     ) {}
 
     // 토이프로젝트 생성
@@ -165,6 +167,14 @@ export class ProjectPostService {
 
         await this.projectApplicantRepository.save({ projectPostId: id, userId: userId });
 
+        const projectPostUser = await this.projectPostRepository.findOne({ where: { id } });
+
+        await this.alarmService.createAlarm(
+            projectPostUser.userId,
+            projectPostUser.title,
+            '프로젝트에 새로운 지원이 있습니다.',
+        );
+
         return { message: '프로젝트 지원 완료' };
     }
 
@@ -202,7 +212,7 @@ export class ProjectPostService {
 
     // 프로젝트 지원 수락
     async acceptProjectApplicant(projectPostId: number, userId: number, pickeduserId: number) {
-        await this.findById(projectPostId);
+        const project = await this.findById(projectPostId);
 
         const projectApplicantUser = await this.projectApplicantRepository.findOne({
             where: { userId },
@@ -215,6 +225,12 @@ export class ProjectPostService {
         await this.projectApplicantRepository.update(
             { projectPostId, userId: pickeduserId },
             { accept: true },
+        );
+
+        await this.alarmService.createAlarm(
+            pickeduserId,
+            project.title,
+            '지원한 프로젝트에 합류하셨습니다.',
         );
 
         return { message: '지원자 채용 완료' };
@@ -246,6 +262,12 @@ export class ProjectPostService {
         }
 
         await this.projectApplicantRepository.delete({ projectPostId: id, userId: removeUserId });
+
+        await this.alarmService.createAlarm(
+            removeUserId,
+            projectAdmin.title,
+            '지원한 프로젝트 활동이 취소되셨습니다.',
+        );
 
         return { message: '프로젝트 멤버 삭제 완료' };
     }

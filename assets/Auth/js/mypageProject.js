@@ -16,22 +16,6 @@ async function fetchProjectAnswer(projectId, userId) {
     }
 }
 
-async function fetchProjectAnswer(projectId, userId) {
-    try {
-        const response = await fetch(`/answer/${projectId}/${userId}`, {
-            method: 'GET',
-        });
-
-        const responseData = await response.json();
-        console.log(responseData, '대답');
-
-        return responseData;
-    } catch (error) {
-        console.error('에러 --- ', error);
-        throw new error(error);
-    }
-}
-
 async function fetchProject() {
     try {
         const response = await fetch(`/project-post/myProject`, {
