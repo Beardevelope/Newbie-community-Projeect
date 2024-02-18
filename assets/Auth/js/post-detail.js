@@ -1,5 +1,5 @@
-const POST_API = 'http://localhost:3000/post';
-const COMMENT_API = 'http://localhost:3000/comment';
+const POST_API = '/post';
+const COMMENT_API = '/comment';
 const TOKEN = sessionStorage.getItem('accessToken');
 let StringPostId = window.location.search;
 const POST_ID = StringPostId.substr(4);

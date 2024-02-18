@@ -9,7 +9,7 @@ const handleGoogleAuthBack = async () => {
         console.log(param1Value)
         if (param1Value) {
             sessionStorage.setItem('accessToken', param1Value)
-            window.location.href = 'http://localhost:3000/Auth/mainpage.html'
+            window.location.href = '/index.html'
         }
     } catch (error) {
         console.error(error)

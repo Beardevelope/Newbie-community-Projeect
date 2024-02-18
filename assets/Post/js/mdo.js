@@ -24,7 +24,7 @@ const userId = extractUserId(accessToken);
 
 async function findByUserId() {
     try {
-        const response = await fetch(`http://localhost:3000/user/by-userId/${userId}`, {
+        const response = await fetch(`/user/by-userId/${userId}`, {
             accept: 'application/json',
         });
         const jsonData = await response.json();
