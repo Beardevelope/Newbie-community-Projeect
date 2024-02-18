@@ -71,7 +71,7 @@ export class AuthService {
                 id: user.id,
                 type: isRefreshToken ? 'refresh' : 'access',
             },
-            { expiresIn: isRefreshToken ? '1h' : '1h' },
+            { expiresIn: isRefreshToken ? '1h' : '12h' },
         );
 
         return token;
@@ -184,5 +184,26 @@ export class AuthService {
         await this.userService.updateUser(user.id, { isVerified: true });
 
         return user;
+    }
+
+    /**
+     * 새로운 refreshToken을 발급합니다.
+     * @param user
+     * @returns refreshToken
+     */
+    generateRefreshToken(user: Pick<User, 'email' | 'id'>) {
+        return this.signToken(user, true);
+    }
+
+    /**
+     * 새로운 refreshToken을 발급하고, accessToken과 함께 반환합니다.
+     * @param user
+     * @returns { accessToken, refreshToken }
+     */
+    generateTokens(user: Pick<User, 'email' | 'id'>) {
+        return {
+            accessToken: this.signToken(user, false),
+            refreshToken: this.generateRefreshToken(user),
+        };
     }
 }
