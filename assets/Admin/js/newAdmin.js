@@ -17,7 +17,7 @@ const getUserList = async () => {
 };
 
 const modifyUserInfo = async (userId) => {
-    const response = await fetch(`http://localhost:3000/warning/banUser/${userId}`, {
+    const response = await fetch(`/warning/banUser/${userId}`, {
         method: 'PUT',
         headers: {
             Authorization: `Bearer ${TOKEN}`,
@@ -36,7 +36,7 @@ const modifyUserInfo = async (userId) => {
 };
 
 const modifyUserInfoWarning = async (userId) => {
-    const response = await fetch(`http://localhost:3000/warning/warningUser/${userId}`, {
+    const response = await fetch(`/warning/warningUser/${userId}`, {
         method: 'PUT',
         headers: {
             Authorization: `Bearer ${TOKEN}`,
