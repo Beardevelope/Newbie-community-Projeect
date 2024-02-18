@@ -15,26 +15,34 @@
 </head>
 
 <body>
-    <header class=" header">
+    <header class="header">
         <div class="total-header">
             <div class="title-logo">
-                <img src="../../Auth/images/logo.png" alt="" class="logo-img" />
-                Roomdevelope
+                <div><img src="images/logo.png" alt="" class="logo-img" /></div>
+                <div>Roomdevelope</div>
             </div>
             <form class="d-flex search-box">
                 <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search" />
                 <button type="button" class="btn btn-outline-light">Search</button>
             </form>
-            <!-- 알림 드롭다운 테스트 -->
+
             <div class="dropdown">
                 <button class="btn btn-outline-light dropdown-toggle" type="button" id="notificationDropdown"
                     data-bs-toggle="dropdown" aria-expanded="false"> 알림 </button>
                 <ul class="dropdown-menu" aria-labelledby="notificationDropdown" id="notificationList">
                 </ul>
             </div>
+
             <div class="buttons">
-                <button type="button" class="btn btn-outline-light">log-in</button>
-                <button type="button" class="btn btn-outline-light">sign-up</button>
+                <button type="button" class="btn btn-outline-light" id="loginButton">
+                    log-in
+                </button>
+                <button type="button" class="btn btn-outline-light" id="signupButton">
+                    sign-up
+                </button>
+                <button type="button" class="btn btn-outline-light" id="logoutButton" style="display: none">
+                    log-out
+                </button>
             </div>
         </div>
     </header>
@@ -57,43 +65,27 @@
                     </a>
                 </li>
                 <li>
-                    <a href="../../Post/html/postList.html" class="nav-link text-white">
-                        <svg class="bi pe-none me-2" width="16" height="16">
-                            <use xlink:href="#speedometer2"></use>
-                        </svg>
-                        Q & A
-                    </a>
-                </li>
-                <li>
-                    <a href="../../Tag/html/tag.html" class="nav-link text-white">
-                        <svg class="bi pe-none me-2" width="16" height="16">
-                            <use xlink:href="#speedometer2"></use>
-                        </svg>
-                        Tag
-                    </a>
-                </li>
-                <li>
-                    <a href="../../ProjectPost/projectPostMain.html" class="nav-link text-white">
-                        <svg class="bi pe-none me-2" width="16" height="16">
-                            <use xlink:href="#table"></use>
-                        </svg>
-                        Toy project
-                    </a>
-                </li>
-                <li>
                     <a href="../../User/html/user.html" class="nav-link text-white">
                         <svg class="bi pe-none me-2" width="16" height="16">
-                            <use xlink:href="#grid"></use>
+                            <use xlink:href="#speedometer2"></use>
                         </svg>
                         Users
                     </a>
                 </li>
                 <li>
-                    <a href="#" class="nav-link text-white">
+                    <a href="../../Admin/html/bannedUser.html" class="nav-link text-white">
                         <svg class="bi pe-none me-2" width="16" height="16">
-                            <use xlink:href="#people-circle"></use>
+                            <use xlink:href="#table"></use>
                         </svg>
-                        Customers
+                        Banned User
+                    </a>
+                </li>
+                <li>
+                    <a href="../../Banner/html/bannerList.html" class="nav-link text-white">
+                        <svg class="bi pe-none me-2" width="16" height="16">
+                            <use xlink:href="#table"></use>
+                        </svg>
+                        Banner
                     </a>
                 </li>
             </ul>
@@ -104,10 +96,24 @@
                     <img src="https://github.com/mdo.png" alt="" width="32" height="32" class="rounded-circle me-2" />
                     <strong>mdo</strong>
                 </a>
-                <ul class="dropdown-menu dropdown-menu-dark text-small shadow">
+                <!-- 드롭박스 기본 
+                    <ul class="dropdown-menu dropdown-menu-dark text-small shadow">
                     <li><a class="dropdown-item" href="#">New project...</a></li>
                     <li><a class="dropdown-item" href="#">Settings</a></li>
                     <li><a class="dropdown-item" href="#">Profile</a></li>
+                    <li>
+                        <hr class="dropdown-divider" />
+                    </li>
+                    <li><a class="dropdown-item" href="#">Sign out</a></li>
+                </ul> -->
+                <ul class="dropdown-menu dropdown-menu-dark text-small shadow">
+                    <li>
+                        <a class="dropdown-item" href="../../ProjectPost/projectPostWrite.html">New project</a>
+                    </li>
+                    <li>
+                        <a class="dropdown-item" href="../../Post/html/postList.html">New Q&A</a>
+                    </li>
+                    <li><a class="dropdown-item" href="../../Auth/mypage.html">Profile</a></li>
                     <li>
                         <hr class="dropdown-divider" />
                     </li>
@@ -136,6 +142,7 @@
         integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
         crossorigin="anonymous"></script>
     <script src="../js/alarm.js"></script>
+    <script src="../../Auth/js/transfer.js"></script>
 </body>
 
 </html>
