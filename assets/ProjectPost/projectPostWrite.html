@@ -25,14 +25,20 @@
                         <div>Roomdevelope</div>
                     </div>
                 </a>
-                <form class="d-flex search-box">
+                <form
+                    action="https://www.google.com/search"
+                    method="GET"
+                    target="_blank"
+                    class="d-flex search-box"
+                >
                     <input
                         class="form-control me-2"
                         type="search"
-                        placeholder="Search"
+                        placeholder="Google search box"
                         aria-label="Search"
+                        name="q"
                     />
-                    <button type="button" class="btn btn-outline-light">Search</button>
+                    <button type="submit" class="btn btn-outline-light">Search</button>
                 </form>
                 <!-- 알림 -->
                 <div class="dropdown">
@@ -86,11 +92,7 @@
                 <hr />
                 <ul class="nav nav-pills flex-column mb-auto">
                     <li class="nav-item">
-                        <a
-                            href="../index.html"
-                            class="nav-link text-white"
-                            aria-current="page"
-                        >
+                        <a href="../index.html" class="nav-link text-white" aria-current="page">
                             <svg class="bi pe-none me-2" width="16" height="16">
                                 <use xlink:href="#home"></use>
                             </svg>

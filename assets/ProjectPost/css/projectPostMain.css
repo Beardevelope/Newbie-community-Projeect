@@ -34,11 +34,8 @@ a {
 
 .mainWrap .titleBox .writeBtn:hover {
     background-color: black;
-    transition: all 0.3s;
-}
-
-.mainWrap .titleBox .writeBtn:hover > a {
     color: white;
+    transition: all 0.3s;
 }
 
 .mainWrap .projectBox {

@@ -20,11 +20,11 @@ import { FileInterceptor } from '@nestjs/platform-express';
 import { BanGuard, VerifyGuard } from 'src/auth/guard/role.guard';
 
 @Controller('project-post')
-@UseGuards(BanGuard)
 export class ProjectPostController {
     constructor(private readonly projectPostService: ProjectPostService) {}
 
     @UseGuards(BearerTokenGuard)
+    @UseGuards(BanGuard)
     @UseGuards(VerifyGuard)
     @Post()
     @UseInterceptors(FileInterceptor('image'))
@@ -42,6 +42,7 @@ export class ProjectPostController {
     }
 
     @UseGuards(BearerTokenGuard)
+    @UseGuards(BanGuard)
     @UseGuards(VerifyGuard)
     @Get('/myProject')
     findMyProject(@Req() req) {
@@ -49,6 +50,7 @@ export class ProjectPostController {
     }
 
     @UseGuards(BearerTokenGuard)
+    @UseGuards(BanGuard)
     @UseGuards(VerifyGuard)
     @Get('/myProjectApplicant')
     myApplicant(@Req() req) {
@@ -61,6 +63,7 @@ export class ProjectPostController {
     }
 
     @UseGuards(BearerTokenGuard)
+    @UseGuards(BanGuard)
     @UseGuards(VerifyGuard)
     @Patch(':id')
     @UseInterceptors(FileInterceptor('image'))
@@ -74,6 +77,7 @@ export class ProjectPostController {
     }
 
     @UseGuards(BearerTokenGuard)
+    @UseGuards(BanGuard)
     @UseGuards(VerifyGuard)
     @Delete(':id')
     remove(@Param('id') id: string, @Req() req) {
@@ -86,6 +90,7 @@ export class ProjectPostController {
     }
 
     @UseGuards(BearerTokenGuard)
+    @UseGuards(BanGuard)
     @UseGuards(VerifyGuard)
     @Post(':id/projectApplicant')
     createProjectApplicant(@Param('id') id: string, @Req() req) {
@@ -93,6 +98,7 @@ export class ProjectPostController {
     }
 
     @UseGuards(BearerTokenGuard)
+    @UseGuards(BanGuard)
     @UseGuards(VerifyGuard)
     @Get(':id/projectApplicant')
     findProjectApplicant(@Param('id') id: string, @Req() req) {
@@ -100,12 +106,14 @@ export class ProjectPostController {
     }
 
     @UseGuards(BearerTokenGuard)
+    @UseGuards(BanGuard)
     @Get(':id/acceptApplicant')
     findAcceptApplicant(@Param('id') id: string, @Req() req) {
         return this.projectPostService.findAcceptApplicant(+id, +req.userId);
     }
 
     @UseGuards(BearerTokenGuard)
+    @UseGuards(BanGuard)
     @UseGuards(VerifyGuard)
     @Patch(':id/projectApplicant')
     acceptProjectApplicant(
@@ -121,6 +129,7 @@ export class ProjectPostController {
     }
 
     @UseGuards(BearerTokenGuard)
+    @UseGuards(BanGuard)
     @UseGuards(VerifyGuard)
     @Delete(':id/projectApplicant')
     removeProjectApplicant(@Param('id') id: string, @Req() req) {
@@ -128,6 +137,7 @@ export class ProjectPostController {
     }
 
     @UseGuards(BearerTokenGuard)
+    @UseGuards(BanGuard)
     @UseGuards(VerifyGuard)
     @Delete(':id/projectMember')
     removeProjectMember(@Param('id') id: string, @Req() req, @Body('userId') removeUserId: number) {
