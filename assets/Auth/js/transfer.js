@@ -8,10 +8,10 @@ const logoutButton = document.querySelector('#logoutButton')
  */
 
 loginButton.addEventListener('click', () => {
-    window.location.href = './Auth/auth.html'; //나중에 ip로 경로 관리
+    window.location.href = './auth.html'; //나중에 ip로 경로 관리
 })
 signupButton.addEventListener('click', () => {
-    window.location.href = './Auth/auth.html'; //나중에 ip로 경로 관리
+    window.location.href = './auth.html'; //나중에 ip로 경로 관리
 })
 
 /**
