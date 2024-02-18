@@ -1,10 +1,9 @@
-c
 window.addEventListener('scroll', function () {
     var sideBanner = document.querySelector('.sideBanner');
     var scrollPosition = window.scrollY;
 
     // 배너가 화면 위에 고정되도록 설정합니다.
-    sideBanner.style.top = (5 + scrollPosition) + 'px';
+    sideBanner.style.top = 5 + scrollPosition + 'px';
 });
 
 // 배너 클릭시 조회수 증가
@@ -25,7 +24,6 @@ async function handleClickBanner(bannerId) {
 
 // 배너 랜덤 출력 및 광고 페이지 연결
 async function displayRandomBanner() {
-
     const response = await fetch('/banner/random');
     const data = await response.json();
 
