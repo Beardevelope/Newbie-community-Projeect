@@ -20,6 +20,7 @@ import { AuthGuard } from '@nestjs/passport';
 import { BearerTokenGuard } from 'src/auth/guard/bearer.guard';
 import { BasicTokenGuard } from 'src/auth/guard/basic.guard';
 import { FileInterceptor } from '@nestjs/platform-express';
+import { BanGuard, RoleGuard, VerifyGuard } from 'src/auth/guard/role.guard';
 
 @Controller('post')
 export class PostController {
@@ -27,6 +28,7 @@ export class PostController {
 
     // 게시글 생성
     @UseGuards(BearerTokenGuard)
+    @UseGuards(BanGuard)
     @Post()
     @UseInterceptors(FileInterceptor('file'))
     async create(@Body() createPostDto: CreatePostDto, @Req() req, @UploadedFile() file) {
@@ -76,6 +78,7 @@ export class PostController {
 
     // 게시글 채택 - 상태 변화
     @UseGuards(BearerTokenGuard)
+    @UseGuards(BanGuard)
     @Put(':postId/status')
     async statusUpdate(@Param('postId') postId: string, @Req() req) {
         const userId = req.userId;
@@ -88,20 +91,9 @@ export class PostController {
         };
     }
 
-    // 게시글 좋아요 추가
-    @Put(':postId/hit')
-    async addHitCount(@Param('postId') postId: string) {
-        const post = await this.postService.addHitCount(+postId);
-
-        return {
-            statusCode: HttpStatus.OK,
-            message: 'ok',
-            post,
-        };
-    }
-
     // 게시글 수정
     @UseGuards(BearerTokenGuard)
+    @UseGuards(BanGuard)
     @Put(':postId')
     @UseInterceptors(FileInterceptor('file'))
     async update(
@@ -122,6 +114,7 @@ export class PostController {
 
     // 게시글 삭제
     @UseGuards(BearerTokenGuard)
+    @UseGuards(BanGuard)
     @Delete(':postId')
     async remove(@Param('postId') postId: string, @Req() req) {
         const userId = req.userId;

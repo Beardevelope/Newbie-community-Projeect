@@ -19,6 +19,7 @@ export class VerifyGuard implements CanActivate {
     }
 }
 
+@Injectable()
 export class RoleGuard implements CanActivate {
     constructor(private readonly userService: UserService) {}
 
@@ -35,6 +36,7 @@ export class RoleGuard implements CanActivate {
     }
 }
 
+@Injectable()
 export class BanGuard implements CanActivate {
     constructor(private readonly userService: UserService) {}
 
