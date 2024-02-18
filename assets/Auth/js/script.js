@@ -20,7 +20,7 @@ const signup = async () => {
             passwordConfirm: confirmPassword.value,
             nickname: nickname.value,
         };
-        const response = await fetch(`${AUTH_API}/user/signup`, {
+        const response = await fetch(`/user/signup`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -53,7 +53,7 @@ const login = async () => {
         const token = `Basic ${credentials}`;
         console.log(token)
         console.log('before')
-        const response = await fetch(`${AUTH_API}/auth/login`, {
+        const response = await fetch(`/auth/login`, {
             method: 'POST',
             headers: {
                 Authorization: token,
@@ -76,7 +76,7 @@ const login = async () => {
 
 const googleLogin = async () => {
     try {
-        window.location.href = 'http://localhost:3000/auth/to-google'
+        window.location.href = '/auth/to-google'
     } catch (error) {
         console.error(error)
         alert('사바 에러')
