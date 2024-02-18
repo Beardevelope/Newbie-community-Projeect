@@ -33,8 +33,15 @@
                     <button type="button" class="btn btn-outline-light">Search</button>
                 </form>
                 <div class="buttons">
-                    <button type="button" class="btn btn-outline-light">log-in</button>
-                    <button type="button" class="btn btn-outline-light">sign-up</button>
+                    <button type="button" class="btn btn-outline-light" id="loginButton">
+                        log-in
+                    </button>
+                    <button type="button" class="btn btn-outline-light" id="signupButton">
+                        sign-up
+                    </button>
+                    <button type="button" class="btn btn-outline-light" id="logoutButton" style="display: none;">
+                        log-out
+                    </button>
                 </div>
             </div>
         </header>
@@ -208,6 +215,7 @@
         ></script>
         <script type="module" src="js/post-detail.js"></script>
         <script type="module" src="js/detailPutDelete.js"></script>
+        <script src="js/transfer.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/marked@11.1.1/lib/marked.umd.min.js"></script>
     </body>
 </html>
