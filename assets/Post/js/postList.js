@@ -28,7 +28,7 @@ async function postList(orderAndFilter) {
     try {
         // 이전에 추가한 코드는 유지
         if (orderAndFilter) {
-            const response = await fetch(`http://localhost:3000/post${orderAndFilter}`, {
+            const response = await fetch(`/post${orderAndFilter}`, {
                 accept: 'application/json',
             });
             const jsonData = await response.json();
@@ -44,7 +44,7 @@ async function postList(orderAndFilter) {
             return;
         }
 
-        const response = await fetch(`http://localhost:3000/post?page=1`, {
+        const response = await fetch(`/post?page=1`, {
             accept: 'application/json',
         });
         const jsonData = await response.json();
@@ -71,7 +71,7 @@ async function searchPost(text) {
     try {
         // 이전에 추가한 코드는 유지
         if (text) {
-            const response = await fetch(`http://localhost:3000/search?text=${text}`, {
+            const response = await fetch(`/search?text=${text}`, {
                 accept: 'application/json',
             });
             const jsonData = await response.json();
@@ -237,7 +237,7 @@ async function addHit(clickedPostId) {
         const newInformation = {
             id: clickedPostId,
         };
-        const response = await fetch(`http://localhost:3000/post/${clickedPostId}/hit`, {
+        const response = await fetch(`/post/${clickedPostId}/hit`, {
             method: 'put',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(newInformation),
@@ -279,7 +279,7 @@ function addEventListenersToWarningButton() {
 
 async function warningPost(clickedPostId) {
     try {
-        const response = await fetch(`http://localhost:3000/warning/${clickedPostId}`, {
+        const response = await fetch(`/warning/${clickedPostId}`, {
             method: 'post',
             headers: {
                 Authorization: `Bearer ${TOKEN}`,

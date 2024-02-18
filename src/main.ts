@@ -20,7 +20,13 @@ async function bootstrap() {
         optionsSuccessStatus: 204,
     });
 
-    app.use(helmet())
+    // app.use(helmet())
+    // app.use(
+    //     helmet.contentSecurityPolicy({
+    //         useDefaults: false,
+    //     })
+    // );
+
     await app.listen(parseInt(process.env.PORT) || 3000);
 }
 

@@ -1,4 +1,4 @@
-c
+
 window.addEventListener('scroll', function () {
     var sideBanner = document.querySelector('.sideBanner');
     var scrollPosition = window.scrollY;

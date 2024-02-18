@@ -54,7 +54,6 @@ export class BannerService {
     // 배너 페이지 URL 조회
     async getBannerPageUrl(bannerId: number) {
         const banner = await this.getOneBanner(bannerId);
-        console.log({ banner });
         return banner.pageUrl;
     }
 

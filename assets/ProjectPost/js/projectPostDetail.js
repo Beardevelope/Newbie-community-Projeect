@@ -5,7 +5,7 @@ const accessToken = sessionStorage.getItem('accessToken');
 
 async function fetchUserInfo() {
     try {
-        const response = await fetch(`http://localhost:3000/user/userinfo`, {
+        const response = await fetch(`/user/userinfo`, {
             method: 'GET',
             headers: {
                 Authorization: `Bearer ${accessToken}`,
@@ -24,7 +24,7 @@ async function fetchUserInfo() {
 
 async function fetchProjectDetail(projectId) {
     try {
-        const response = await fetch(`http://localhost:3000/project-post/${projectId}`, {
+        const response = await fetch(`/project-post/${projectId}`, {
             method: 'GET',
         });
 
@@ -40,7 +40,7 @@ async function fetchProjectDetail(projectId) {
 
 async function fetchStack(projectId) {
     try {
-        const response = await fetch(`http://localhost:3000/need-info/${projectId}`, {
+        const response = await fetch(`/need-info/${projectId}`, {
             method: 'GET',
         });
 
@@ -57,7 +57,7 @@ async function fetchStack(projectId) {
 async function increaseHitCount(projectId) {
     try {
         const response = await fetch(
-            `http://localhost:3000/project-post/${projectId}/increaseHitCount`,
+            `/project-post/${projectId}/increaseHitCount`,
             {
                 method: 'PATCH',
             },
@@ -70,7 +70,7 @@ async function increaseHitCount(projectId) {
 
 async function postLike(projectId) {
     try {
-        const response = await fetch(`http://localhost:3000/project-like/${projectId}`, {
+        const response = await fetch(`/project-like/${projectId}`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -89,7 +89,7 @@ async function postLike(projectId) {
 
 async function updateProjectDetail(formData, projectId) {
     try {
-        const responseProject = await fetch(`http://localhost:3000/project-post/${projectId}`, {
+        const responseProject = await fetch(`/project-post/${projectId}`, {
             method: 'PATCH',
             headers: {
                 Authorization: `Bearer ${accessToken}`,
@@ -104,7 +104,7 @@ async function updateProjectDetail(formData, projectId) {
 
 async function removeStack(projectId, stackId) {
     try {
-        const response = await fetch(`http://localhost:3000/need-info/${projectId}/${stackId}`, {
+        const response = await fetch(`/need-info/${projectId}/${stackId}`, {
             method: 'DELETE',
             headers: {
                 Authorization: `Bearer ${accessToken}`,
@@ -122,7 +122,7 @@ async function removeStack(projectId, stackId) {
 
 async function removeQuestion(projectId, questionId) {
     try {
-        const response = await fetch(`http://localhost:3000/question/${projectId}/${questionId}`, {
+        const response = await fetch(`/question/${projectId}/${questionId}`, {
             method: 'DELETE',
             headers: {
                 Authorization: `Bearer ${accessToken}`,
@@ -355,7 +355,7 @@ async function editProjectForm(projectId) {
             }
 
             const responseStack = await fetch(
-                `http://localhost:3000/need-info/${projectId}/${getStack[i].id}`,
+                `/need-info/${projectId}/${getStack[i].id}`,
                 {
                     method: 'PATCH',
                     headers: {
@@ -377,7 +377,7 @@ async function editProjectForm(projectId) {
             }
 
             const responseQuestion = await fetch(
-                `http://localhost:3000/question/${projectId}/${getQuestion[j].id}`,
+                `/question/${projectId}/${getQuestion[j].id}`,
                 {
                     method: 'PATCH',
                     headers: {
@@ -396,7 +396,7 @@ async function editProjectForm(projectId) {
 
 async function deleteProjectPost(projectId) {
     try {
-        const response = await fetch(`http://localhost:3000/project-post/${projectId}`, {
+        const response = await fetch(`/project-post/${projectId}`, {
             method: 'DELETE',
             headers: {
                 'Content-Type': 'application/json',
@@ -415,7 +415,7 @@ async function deleteProjectPost(projectId) {
 
 async function fetchQuestion(projectId) {
     try {
-        const response = await fetch(`http://localhost:3000/question/${projectId}`, {
+        const response = await fetch(`/question/${projectId}`, {
             method: 'GET',
         });
 
@@ -433,7 +433,7 @@ async function postStack(projectId, questionId, selectStack, answer) {
     try {
         const answerJSON = { answer, stack: selectStack };
 
-        const stack = await fetch(`http://localhost:3000/answer/${projectId}/${questionId}`, {
+        const stack = await fetch(`/answer/${projectId}/${questionId}`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -454,7 +454,7 @@ async function postStack(projectId, questionId, selectStack, answer) {
 async function postApplicant(projectId) {
     try {
         const applicant = await fetch(
-            `http://localhost:3000/project-post/${projectId}/projectApplicant`,
+            `/project-post/${projectId}/projectApplicant`,
             {
                 method: 'POST',
                 headers: {

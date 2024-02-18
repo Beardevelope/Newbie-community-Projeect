@@ -2,7 +2,7 @@ const accessToken = sessionStorage.getItem('accessToken');
 
 async function fetchUserInfo() {
     try {
-        const response = await fetch(`http://localhost:3000/user/userinfo`, {
+        const response = await fetch(`/user/userinfo`, {
             method: 'GET',
             headers: {
                 Authorization: `Bearer ${accessToken}`,
@@ -21,7 +21,7 @@ async function fetchUserInfo() {
 
 async function fetchProject(page) {
     try {
-        const response = await fetch(`http://localhost:3000/project-post?page=${page}`, {
+        const response = await fetch(`/project-post?page=${page}`, {
             method: 'GET',
         });
 
@@ -37,7 +37,7 @@ async function fetchProject(page) {
 
 async function fetchStack(projectPostId) {
     try {
-        const response = await fetch(`http://localhost:3000/need-info/${projectPostId}`, {
+        const response = await fetch(`/need-info/${projectPostId}`, {
             method: 'GET',
         });
 
@@ -53,7 +53,7 @@ async function fetchStack(projectPostId) {
 
 async function fetchLike(projectPostId) {
     try {
-        const response = await fetch(`http://localhost:3000/project-like/${projectPostId}`, {
+        const response = await fetch(`/project-like/${projectPostId}`, {
             method: 'GET',
         });
 

@@ -9,11 +9,9 @@ export class VerifyGuard implements CanActivate {
     async canActivate(context: ExecutionContext): Promise<boolean> {
         const req = context.switchToHttp().getRequest();
 
-        console.log(req, 'sssssssssssssssss');
 
         const user = await this.userService.getUserById(req.userId);
 
-        console.log(user, 'Ddddddddddddddddddddd');
 
         if (!user.isVerified) {
             throw new NotAcceptableException();
@@ -48,7 +46,6 @@ export class BanGuard implements CanActivate {
 
         const user = await this.userService.getUserById(req.userId);
 
-        console.log(user, 'ffffffffffffffffff');
 
         if (user.isBan) {
             throw new NotAcceptableException();

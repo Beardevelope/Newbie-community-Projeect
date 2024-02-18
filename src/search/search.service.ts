@@ -71,7 +71,6 @@ export class SearchService {
         const total = body.hits.total.value;
         const posts = hits.map((item: any) => item._source);
 
-        console.log(posts)
         return {
             data: posts,
             meta: {
@@ -148,7 +147,6 @@ export class SearchService {
         });
 
         // 필드 및 데이터 타입 정보 출력
-        console.log(body[index]?.mappings.properties);
         return body[index]?.mappings;
     }
 }

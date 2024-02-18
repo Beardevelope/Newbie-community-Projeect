@@ -12,7 +12,7 @@ document.getElementById('dataForm').addEventListener('submit', async function (e
     formData.append('dueDate', document.getElementById('dueDate').value);
 
     try {
-        const responseProject = await fetch('http://localhost:3000/project-post', {
+        const responseProject = await fetch('/project-post', {
             method: 'POST',
             headers: {
                 Authorization: `Bearer ${accessToken}`,
@@ -29,7 +29,7 @@ document.getElementById('dataForm').addEventListener('submit', async function (e
             const stack = stacks[i].value;
             const numberOfPeople = parseInt(numberOfPeoples[i].value);
 
-            const responseStack = await fetch(`http://localhost:3000/need-info/${projectId}`, {
+            const responseStack = await fetch(`/need-info/${projectId}`, {
                 method: 'POST',
                 headers: {
                     Authorization: `Bearer ${accessToken}`,
@@ -44,7 +44,7 @@ document.getElementById('dataForm').addEventListener('submit', async function (e
         for (let j = 0; j < questions.length; j++) {
             const question = questions[j].value;
 
-            const responseQuestion = await fetch(`http://localhost:3000/question/${projectId}`, {
+            const responseQuestion = await fetch(`/question/${projectId}`, {
                 method: 'POST',
                 headers: {
                     Authorization: `Bearer ${accessToken}`,
