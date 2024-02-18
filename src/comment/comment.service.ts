@@ -67,7 +67,6 @@ export class CommentService {
             post.title,
             '게시글에 새로운 댓글이 달렸습니다.',
         );
-        console.log(saveComment);
         return saveComment;
     }
 
@@ -130,7 +129,6 @@ export class CommentService {
             post.title,
             '댓글에 새로운 댓글이 달렸습니다.',
         );
-        console.log(savedReply);
         return savedReply;
     }
 

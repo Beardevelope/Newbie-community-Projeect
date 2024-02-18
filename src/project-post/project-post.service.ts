@@ -46,6 +46,7 @@ export class ProjectPostService {
 
     // 토이프로젝트 목록 조회
     async findAll(page: number) {
+        console.time('project-post')
         const pageSize = 10;
 
         const skip = (page - 1) * pageSize;
@@ -55,6 +56,7 @@ export class ProjectPostService {
             skip: skip,
             take: pageSize,
         });
+        console.timeEnd('project-post')
         return { sortPost, total, page, pageSize, lastPage: Math.ceil(total / pageSize) };
     }
 
@@ -67,7 +69,6 @@ export class ProjectPostService {
 
     // 내가 작성한 토이프로젝트
     async findMyProject(userId: number) {
-        console.log(userId, '유저아이디');
 
         const result = await this.projectPostRepository.find({
             where: { userId },
