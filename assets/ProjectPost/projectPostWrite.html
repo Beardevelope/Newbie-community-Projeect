@@ -15,6 +15,7 @@
         <link href="https://fonts.googleapis.com/css2?family=Anton&display=swap" rel="stylesheet" />
         <link rel="stylesheet" href="../Auth/css/header.css" />
         <link rel="stylesheet" href="./css/projectPostWrite.css" />
+        <link rel="stylesheet" href="../Auth/css/banner.css" />
     </head>
     <body>
         <header class="header">
@@ -26,20 +27,20 @@
                     </div>
                 </a>
                 <form
-                action="https://www.google.com/search"
-                method="GET"
-                target="_blank"
-                class="d-flex search-box"
-            >
-                <input
-                    class="form-control me-2"
-                    type="search"
-                    placeholder="Google search box"
-                    aria-label="Search"
-                    name="q"
-                />
-                <button type="submit" class="btn btn-outline-light">Search</button>
-            </form>
+                    action="https://www.google.com/search"
+                    method="GET"
+                    target="_blank"
+                    class="d-flex search-box"
+                >
+                    <input
+                        class="form-control me-2"
+                        type="search"
+                        placeholder="Google search box"
+                        aria-label="Search"
+                        name="q"
+                    />
+                    <button type="submit" class="btn btn-outline-light">Search</button>
+                </form>
                 <!-- 알림 -->
                 <div class="dropdown">
                     <button
@@ -92,11 +93,7 @@
                 <hr />
                 <ul class="nav nav-pills flex-column mb-auto">
                     <li class="nav-item">
-                        <a
-                            href="../index.html"
-                            class="nav-link text-white"
-                            aria-current="page"
-                        >
+                        <a href="../index.html" class="nav-link text-white" aria-current="page">
                             <svg class="bi pe-none me-2" width="16" height="16">
                                 <use xlink:href="#home"></use>
                             </svg>
@@ -248,6 +245,11 @@
                         <input type="submit" value="데이터 전송" />
                     </form>
                 </div>
+                <div class="banners">
+                    <a href="#" class="sideBanner">
+                        <span class="txt-label"></span>
+                    </a>
+                </div>
             </main>
         </div>
         <script
@@ -258,5 +260,14 @@
         <script src="./js/projectPostWrite.js"></script>
         <script src="./js/transfer.js"></script>
         <script src="../Banner/js/alarm.js"></script>
+        <script src="../Auth/js/banner.js"></script>
+        <script
+            src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
+            ;
+            integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
+            ;
+            crossorigin="anonymous"
+            ;
+        ></script>
     </body>
 </html>

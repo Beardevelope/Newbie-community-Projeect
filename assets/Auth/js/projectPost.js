@@ -3,13 +3,13 @@ const secondProject = document.getElementById('secondProject');
 
 async function fetchProject() {
     try {
-        console.time('project-post')
+        console.time('project-post');
         const response = await fetch(`/project-post?page=1`, {
             method: 'GET',
         });
 
         const data = await response.json();
-        console.timeEnd('project-post')
+        console.timeEnd('project-post');
         return data.sortPost;
     } catch (error) {
         console.error('에러 --- ', error);
@@ -73,7 +73,7 @@ async function getProject() {
         projectBox.appendChild(contentBox);
 
         contentBox.addEventListener('click', () => {
-            window.location.href = `../projectPost/projectPostDetail.html?id=${fetchProjectData[i].id}`;
+            window.location.href = `../ProjectPost/projectPostDetail.html?id=${fetchProjectData[i].id}`;
         });
     }
 }
