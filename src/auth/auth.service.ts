@@ -43,13 +43,12 @@ export class AuthService {
      */
 
     async authenticate(user: Pick<User, 'email' | 'password'>) {
-        console.log(user, '---------------------');
         const existingUser = await this.userService.getUserByEmail(user.email);
 
         if (!existingUser) {
             throw new UnauthorizedException(EMPTY_USER);
         }
-        console.log(existingUser);
+        (existingUser);
         const comparingPassword = await bcrypt.compare(user.password, existingUser.password);
         if (!comparingPassword) {
             throw new UnauthorizedException(NOT_EQUALS_PASSWORD);

@@ -26,7 +26,7 @@ const userId = extractUserId(TOKEN);
 async function initializeSSE(userId) {
     try {
         // SSE를 초기화합니다.
-        const eventSource = new EventSource(`http://localhost:3000/alarm/${userId}`, {
+        const eventSource = new EventSource(`/alarm/${userId}`, {
             headers: { Authorization: `Bearer ${TOKEN}` },
         });
 

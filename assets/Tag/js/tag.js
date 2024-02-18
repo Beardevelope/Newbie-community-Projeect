@@ -15,7 +15,7 @@ const paginationContainer = document.getElementById('pagination-container');
 async function tagList(order) {
     try {
         if (order) {
-            const response = await fetch(`http://localhost:3000/tag${order}`, {
+            const response = await fetch(`/tag${order}`, {
                 accept: 'application/json',
             });
             const jsonData = await response.json();
@@ -28,7 +28,7 @@ async function tagList(order) {
             updatePagination();
             return;
         }
-        const response = await fetch(`http://localhost:3000/tag`, {
+        const response = await fetch(`/tag`, {
             accept: 'application/json',
         });
         const jsonData = await response.json();

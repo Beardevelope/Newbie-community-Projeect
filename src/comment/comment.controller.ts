@@ -75,7 +75,6 @@ export class CommentController {
         @Param('postId', ParseIntPipe) postId: number,
     ) {
         const comment = await this.commentService.findCommentById(id);
-        console.log(comment.userId, req.userId)
         if (comment.userId !== req.userId) {
             throw new ForbiddenException('권한이 없습니다.');
         }

@@ -14,7 +14,6 @@ export const typeOrmModuleOptions: TypeOrmModuleAsyncOptions = {
         database: configService.get<string>('DB_NAME'),
         autoLoadEntities: true,
         synchronize: configService.get<boolean>('DB_SYNC'),
-        logging: true,
         namingStrategy: new SnakeNamingStrategy(),
     }),
 };

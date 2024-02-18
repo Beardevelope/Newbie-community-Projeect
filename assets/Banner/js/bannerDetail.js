@@ -11,10 +11,10 @@ function getBannerIdFromUrl() {
 async function updateBannerDetails() {
     const bannerId = getBannerIdFromUrl();
     try {
-        const response = await fetch(`http://localhost:3000/banner/${bannerId}`);
+        const response = await fetch(`/banner/${bannerId}`);
         const banner = await response.json();
 
-        const clickResponse = await fetch(`http://localhost:3000/banner/click/${bannerId}`, {
+        const clickResponse = await fetch(`/banner/click/${bannerId}`, {
             method: 'POST'
         });
         const Click = await clickResponse.json();
@@ -42,7 +42,7 @@ async function deleteBanner() {
 
     const bannerId = getBannerIdFromUrl();
     try {
-        const response = await fetch(`http://localhost:3000/banner/${bannerId}`, {
+        const response = await fetch(`/banner/${bannerId}`, {
             method: 'DELETE',
             headers: {
                 Authorization: `Bearer ${TOKEN}`,
