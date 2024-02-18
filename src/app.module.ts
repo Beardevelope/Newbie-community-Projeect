@@ -1,6 +1,5 @@
 import { Module, NestModule, MiddlewareConsumer } from '@nestjs/common';
-import { AppController } from './app.controller';
-import { AppService } from './app.service';
+
 import { AuthModule } from './auth/auth.module';
 import { UserModule } from './user/user.module';
 import { PostModule } from './post/post.module';
@@ -61,6 +60,7 @@ import { SearchModule } from './search/search.module';
         AlarmModule,
         ServeStaticModule.forRoot({
             rootPath: join(__dirname, '..', 'assets'),
+
         }),
         PostLikeModule,
         EmailModule,
@@ -76,8 +76,6 @@ import { SearchModule } from './search/search.module';
         WarningModule,
         SearchModule,
     ],
-    controllers: [AppController],
-    providers: [AppService],
 })
 export class AppModule implements NestModule {
     configure(consumer: MiddlewareConsumer) {
