@@ -308,6 +308,7 @@ const editComment = async (commentId) => {
 document.addEventListener('DOMContentLoaded', async () => {
     await listDetailPageOfPost();
     document.querySelectorAll('.comment-list ul li .commentButton').forEach((button) => {
+        const commentId = button.id.split('-').pop();
         button.addEventListener('click', () => toggleCommentForm(commentId));
     });
 

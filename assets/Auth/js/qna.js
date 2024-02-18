@@ -1,5 +1,5 @@
-const contentBoxFirst = document.getElementById('contentBoxFirst');
-const contentSecond = document.getElementById('contentSecond');
+const firstPostBox = document.getElementById('contentBoxFirst');
+const secondPostBox = document.getElementById('contentSecond');
 
 // 포스트 데이터 불러오기
 let foundPosts = [];
@@ -29,7 +29,7 @@ function addPost() {
     const postSecond = foundPosts[1];
     console.log(postFirst, postSecond);
 
-    contentBoxFirst.innerHTML = `<div class="image">
+    firstPostBox.innerHTML = `<div class="image">
                                     <img src="${postFirst.image}" alt="" />
                                 </div>
                                 <div class="titleAndContent">
@@ -52,7 +52,7 @@ function addPost() {
                                         <div>${postFirst.likes}</div>
                                     </div>
                                 </div>`;
-    contentSecond.innerHTML = `<div class="image">
+    secondPostBox.innerHTML = `<div class="image">
                                     <img src="${postSecond.image}" alt="" />
                                 </div>
                                 <div class="titleAndContent">
