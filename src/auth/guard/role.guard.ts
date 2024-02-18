@@ -101,7 +101,6 @@ export class BanGuard implements CanActivate {
             throw new UnauthorizedException(INVALID_TOKEN);
         }
 
-        console.log(this.authService);
         const token = await this.authService.extractToken(rawToken, true);
         if (!token) {
             throw new UnauthorizedException(INVALID_TOKEN);
