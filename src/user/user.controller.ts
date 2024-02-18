@@ -47,7 +47,7 @@ export class UserController {
         @Req() request: Request,
     ) {
         const authenticatedUser = request['userId'];
-
+        console.log(authenticatedUser, userId)
         if (authenticatedUser !== userId) {
             throw new UnauthorizedException(NOT_AUTHORIZED_USER);
         }
