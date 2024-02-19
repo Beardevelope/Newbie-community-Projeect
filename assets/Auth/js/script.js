@@ -69,7 +69,7 @@ const login = async () => {
         if (response.ok) {
             alert(`로그인 성공`);
             sessionStorage.setItem('accessToken', responseData.accessToken)
-            window.location.href = './';
+            window.location.href = '../../';
         }
     } catch (error) {
         alert('서버 에러');
