@@ -250,7 +250,7 @@ async function getRecentProject() {
 
         recentProject.innerHTML = `  
             <div class="imgBox">
-                <img src=${getProjectData[i].image} alt="" />
+                <img src=${getProjectData[i].image || './images/no-image.png'} alt="" />
             </div>
             <div class="posts">
                 <div class="post">
@@ -422,7 +422,7 @@ async function getLikeProject() {
 
         likeProject.innerHTML = `  
             <div class="imgBox">
-                <img src=${getMyLikeData[i].image} alt="" />
+                <img src=${getMyLikeData[i].image || './images/no-image.png'} alt="" />
             </div>
             <div class="posts">
                 <div class="post">
@@ -479,7 +479,7 @@ async function getApplicantProject() {
 
         applicantProject.innerHTML = `  
             <div class="imgBox">
-                <img src=${getMyApplicantData[i].image} alt="" />
+                <img src=${getMyApplicantData[i].image || './images/no-image.png'} alt="" />
             </div>
             <div class="posts">
                 <div class="post">
