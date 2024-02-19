@@ -34,7 +34,7 @@ function addPost() {
                                 </div>
                                 <div class="titleAndContent">
                                     <div>
-                                        <h3 style="cursor: pointer" onclick="location.href='./Auth/post-detail.html?id=${postFirst.id}'">${postFirst.title}</h3>
+                                        <h3 class="post" id=${postFirst.id} style="cursor: pointer" onclick="location.href='./Auth/post-detail.html?id=${postFirst.id}'">${postFirst.title}</h3>
                                     </div>
                                     <div>내용은 해당 게시글에서 확인하세요</div>
                                 </div>
@@ -57,7 +57,7 @@ function addPost() {
                                 </div>
                                 <div class="titleAndContent">
                                     <div>
-                                        <h3 style="cursor: pointer" onclick="location.href='./Auth/post-detail.html?id=${postSecond.id}'">${postSecond.title}</h3>
+                                        <h3 class="post" id=${postSecond.id} style="cursor: pointer" onclick="location.href='./Auth/post-detail.html?id=${postSecond.id}'">${postSecond.title}</h3>
                                     </div>
                                     <div>내용은 해당 게시글에서 확인하세요</div>
                                 </div>
@@ -80,6 +80,40 @@ function addPost() {
 async function fetchDataAndAddPost() {
     await postList();
     addPost();
+    addEventListenersToPost()
 }
 
 fetchDataAndAddPost();
+
+// 조회수 늘리는 함수
+async function addHit(clickedPostId) {
+    try {
+        const newInformation = {
+            id: clickedPostId,
+        };
+        const response = await fetch(`/post/${clickedPostId}/hit`, {
+            method: 'put',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(newInformation),
+        });
+        const information = await response.json();
+        if (response.status !== 200) {
+            throw new Error(information.message);
+        }
+    } catch (error) {
+        console.log(error.message);
+    }
+}
+
+// 게시글 제목 클릭했을 때 실행되는 로직
+function addEventListenersToPost() {
+    const posts = document.querySelectorAll('.post');
+    posts.forEach((post) => {
+        post.addEventListener('click', function (event) {
+            const clickedPostId = event.target.id;
+            console.log(clickedPostId)
+            // 조회수 늘리는 함수 실행
+            addHit(clickedPostId);
+        });
+    });
+}
