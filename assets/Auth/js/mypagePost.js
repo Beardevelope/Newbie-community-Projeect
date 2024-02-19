@@ -50,10 +50,9 @@ postList();
 function addPost() {
     const postFirst = foundPosts[foundPosts.length - 1];
 
-    if (postFirst.image) {
         contentBox.innerHTML = `<div class="box1">
                     <div class="imgBox">
-                        <img src="${postFirst.image}" alt="" />
+                        <img src="${postFirst.image || './images/no-image.png'}" alt="" />
                     </div>
                     <div class="posts">
                         <div class="post">
@@ -71,26 +70,7 @@ function addPost() {
                     </div>
                 </div>`;
         return;
-    }
-    contentBox.innerHTML = `<div class="box1">
-                    <div class="imgBox">
-                        <img src="" alt="" />
-                    </div>
-                    <div class="posts">
-                        <div class="post">
-                            <div class="title">${postFirst.title}</div>
-                            <div class="likeAndview">
-                                <div class="like">
-                                    <img src="./images/like.png" />${postFirst.likes}
-                                </div>
-                                <div class="view">
-                                    <img src="./images/view.png" />${postFirst.hitCount}
-                                </div>
-                            </div>
-                        </div>
-                        <div></div>
-                    </div>
-                </div>`;
+
 }
 
 async function fetchDataAndAddPost() {
