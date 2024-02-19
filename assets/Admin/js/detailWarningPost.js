@@ -13,6 +13,11 @@ const response = await fetch(`${WARNING_API}/${POST_ID}`, {
             Authorization: `Bearer ${TOKEN}`,
         },
     });
+
+    if(response.status === 406) {
+        throw new Error('관리자만 접근 가능합니다.')
+    }
+
     const responseData = await response.json();
     const responseWarnings = responseData.warnings;
     if (!response.ok) {
