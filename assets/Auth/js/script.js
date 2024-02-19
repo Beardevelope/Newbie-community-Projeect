@@ -56,7 +56,7 @@ const login = async () => {
         const token = `Basic ${credentials}`;
         console.log(token);
         console.log('before');
-        const response = await fetch(`http://localhost:3000/auth/login`, {
+        const response = await fetch(`/auth/login`, {
             method: 'POST',
             headers: {
                 Authorization: token,
@@ -69,7 +69,7 @@ const login = async () => {
         if (response.ok) {
             alert(`로그인 성공`);
             sessionStorage.setItem('accessToken', responseData.accessToken);
-            window.location.href = '../';
+            window.location.href = '../../';
         }
     } catch (error) {
         alert('서버 에러');

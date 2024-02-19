@@ -15,6 +15,7 @@ const statusDone = document.getElementById('statusDone');
 const statusUnfinished = document.getElementById('statusUnfinished');
 const searchInput = document.getElementById('searchInput');
 const searchButton = document.getElementById('searchButton');
+const TOKEN_ACCESS_POST = sessionStorage.getItem('accessToken');
 
 let foundPosts = [];
 let metaData = [];
@@ -44,7 +45,7 @@ async function postList(orderAndFilter) {
             return;
         }
 
-        const response = await fetch(`http://localhost:3000/post?page=1`, {
+        const response = await fetch(`/post?page=1`, {
             accept: 'application/json',
         });
         const jsonData = await response.json();
@@ -280,7 +281,7 @@ async function warningPost(clickedPostId) {
         const response = await fetch(`/warning/${clickedPostId}`, {
             method: 'post',
             headers: {
-                Authorization: `Bearer ${TOKEN}`,
+                Authorization: `Bearer ${TOKEN_ACCESS_POST}`,
             },
         });
         const data = await response.json();

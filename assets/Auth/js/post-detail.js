@@ -16,7 +16,7 @@ const commentSubmitBtn = document.querySelector('.commentSubmit');
 const commentTextArea = document.querySelector('#commentInput');
 
 const getPost = async () => {
-    const response = await fetch(`http://localhost:3000${POST_API}/${POST_ID}`, {
+    const response = await fetch(`{POST_API}/${POST_ID}`, {
         method: 'GET',
     });
     const data = await response.json();
@@ -28,7 +28,7 @@ const getPost = async () => {
 };
 
 const getCommentsByPostId = async () => {
-    const response = await fetch(`http://localhost:3000${COMMENT_API}/${POST_ID}`, {
+    const response = await fetch(`${COMMENT_API}/${POST_ID}`, {
         method: 'GET',
     });
     const data = await response.json();
@@ -40,7 +40,7 @@ const getCommentsByPostId = async () => {
 };
 
 const updateComment = async (comment) => {
-    const response = await fetch(`http://localhost:3000${COMMENT_API}/${POST_ID}/${comment.id}`, {
+    const response = await fetch(`${COMMENT_API}/${POST_ID}/${comment.id}`, {
         method: 'PUT',
         headers: {
             'Content-Type': 'application/json',
@@ -250,7 +250,7 @@ const submitButton = async (id) => {
 };
 
 const registerComment = async (comment) => {
-    const response = await fetch(`http://localhost:3000${COMMENT_API}/${POST_ID}`, {
+    const response = await fetch(`${COMMENT_API}/${POST_ID}`, {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
@@ -270,7 +270,7 @@ const registerComment = async (comment) => {
 };
 
 const deleteComment = async (commentId) => {
-    const response = await fetch(`http://localhost:3000${COMMENT_API}/${POST_ID}/${commentId}`, {
+    const response = await fetch(`${COMMENT_API}/${POST_ID}/${commentId}`, {
         method: 'DELETE',
         headers: {
             'Content-Type': 'application/json',
@@ -381,7 +381,7 @@ const currentPostId = pagePostId.substr(4);
 
 async function clickLikeButton() {
     try {
-        const response = await fetch(`http://localhost:3000/post-like/${currentPostId}`, {
+        const response = await fetch(`/post-like/${currentPostId}`, {
             method: 'post',
             headers: {
                 Authorization: `Bearer ${TOKEN}`,
@@ -415,7 +415,7 @@ console.log(statusButton);
 
 async function clickStatusButton() {
     try {
-        const response = await fetch(`http://localhost:3000${POST_API}/${currentPostId}/status`, {
+        const response = await fetch(`${POST_API}/${currentPostId}/status`, {
             method: 'put',
             headers: {
                 Authorization: `Bearer ${TOKEN}`,
@@ -423,6 +423,19 @@ async function clickStatusButton() {
         });
         const jsonData = await response.json();
         const postStatus = jsonData.postStatus;
+
+        if (response.status === 401) {
+            throw new Error(`로그인 후 이용해주세요`);
+        }
+
+        if (response.status === 403) {
+            throw new Error(`접근 권한이 없습니다.`);
+        }
+
+        if (response.status === 406) {
+            throw new Error(`정지 기간에는  사용하실 수 없습니다.`);
+        }
+
         if (response.status !== 200) {
             //cry catch 구문에서 throw는 에러가 발생했을 때 catch에다가 error를 던져준다.
             throw new Error('게시글 상태변경에 실패하였습니다.');

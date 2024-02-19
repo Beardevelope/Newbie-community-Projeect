@@ -27,7 +27,7 @@ export class EmailService {
             { expiresIn: '1h' },
         );
         // 리다이렉션 url에 email과 userId만 받는 token을 생성하여 인증처리
-        const url = `http:/localhost:3000/auth/verify/${token}`;
+        const url = `/auth/verify/${token}`;
 
         await this.mailerService.sendMail({
             to: email,

@@ -12,7 +12,6 @@ async function modifyBanner() {
     const pageUrl = document.getElementById('pageUrl').value;
     const fileInput = document.getElementById('file');
 
-
     try {
         const formData = new FormData();
         formData.append('title', title);
@@ -50,7 +49,7 @@ async function getBannerDetails(bannerId) {
         const TOKEN = sessionStorage.getItem('accessToken');
         // const TOKEN = "토큰"
 
-        const response = await fetch(`http://localhost:3000/banner/${bannerId}`, {
+        const response = await fetch(`/banner/${bannerId}`, {
             method: 'GET',
             headers: {
                 Authorization: `Bearer ${TOKEN}`,
@@ -73,7 +72,7 @@ async function getBannerDetails(bannerId) {
 async function populateBannerDetails() {
     const bannerId = getBannerIdFromUrl();
     const bannerDetails = await getBannerDetails(bannerId);
-    console.log({ bannerDetails })
+    console.log({ bannerDetails });
 
     if (bannerDetails) {
         document.getElementById('title').value = bannerDetails.title;
@@ -89,6 +88,6 @@ populateBannerDetails();
 
 // 취소 버튼 : 상세페이지로 이동
 function cancelModify() {
-    const bannerId = getBannerIdFromUrl()
+    const bannerId = getBannerIdFromUrl();
     document.location.href = `bannerDetail.html?bannerId=${bannerId}`;
 }

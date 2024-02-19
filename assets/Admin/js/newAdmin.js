@@ -42,6 +42,11 @@ const modifyUserInfoWarning = async (userId) => {
             Authorization: `Bearer ${TOKEN}`,
         },
     });
+
+    if(response.status === 406) {
+        throw new Error('관리자만 접근 가능합니다.')
+    }
+
     const responseData = await response.json();
     if (!response.ok) {
         alert(`${responseData.message}`);

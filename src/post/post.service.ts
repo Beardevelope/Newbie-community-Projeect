@@ -1,5 +1,6 @@
 import {
     BadRequestException,
+    ForbiddenException,
     Inject,
     Injectable,
     NotAcceptableException,
@@ -160,7 +161,7 @@ export class PostService {
         }
 
         if (userId !== foundPost.userId) {
-            throw new NotAcceptableException('수정할 권한이 없습니다.');
+            throw new ForbiddenException('수정할 권한이 없습니다.');
         }
 
         const updateStatus = foundPost.status === 'unfinished' ? 'finished' : 'unfinished';
@@ -221,7 +222,7 @@ export class PostService {
         }
 
         if (userId !== foundPost.userId) {
-            throw new NotAcceptableException('수정할 권한이 없습니다.');
+            throw new ForbiddenException('수정할 권한이 없습니다.');
         }
 
         const url = file ? await this.uploadService.uploadFile(file) : null;
@@ -268,7 +269,7 @@ export class PostService {
         }
 
         if (userId !== foundPost.userId) {
-            throw new NotAcceptableException('수정할 권한이 없습니다.');
+            throw new ForbiddenException('수정할 권한이 없습니다.');
         }
 
         await this.postRepository.delete(postId);

@@ -2,7 +2,7 @@ const accessToken = sessionStorage.getItem('accessToken');
 
 async function fetchUserInfo() {
     try {
-        const response = await fetch(`http://localhost:3000/user/userinfo`, {
+        const response = await fetch(`/user/userinfo`, {
             method: 'GET',
             headers: {
                 Authorization: `Bearer ${accessToken}`,

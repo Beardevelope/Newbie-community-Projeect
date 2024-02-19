@@ -1,5 +1,5 @@
-const USER_API = '/user';
-const accessToken = sessionStorage.getItem('accessToken');
+const userApi = '/user';
+const accessTokenAdmin = sessionStorage.getItem('accessToken');
 const adminPage = document.getElementById('adminPage');
 
 // userId를 추출하는 함수
@@ -21,13 +21,13 @@ function extractUserId(token) {
     }
 }
 
-const userId = extractUserId(accessToken);
+const userId = extractUserId(accessTokenAdmin);
 
 const getUserList = async () => {
-    const response = await fetch(`${USER_API}/by-userId/${userId}`, {
+    const response = await fetch(`${userApi}/by-userId/${userId}`, {
         method: 'GET',
         headers: {
-            Authorization: `Bearer ${accessToken}`,
+            Authorization: `Bearer ${accessTokenAdmin}`,
         },
     });
     const responseData = await response.json();
@@ -46,6 +46,6 @@ async function showAdminPage() {
         adminPage.style.display = 'inline-block';
     }
 }
-if (accessToken) {
+if (accessTokenAdmin) {
     showAdminPage();
 }
