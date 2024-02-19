@@ -6,9 +6,18 @@
     background-color: #212529;
 }
 
+.noLogin {
+    background-color: black;
+}
+
 .active {
     color: black !important;
     background-color: white !important;
+}
+
+.profileImage {
+    width: 32px;
+    height: 32px;
 }
 
 .main {
