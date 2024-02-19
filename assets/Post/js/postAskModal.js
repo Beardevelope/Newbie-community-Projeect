@@ -64,6 +64,14 @@ async function createPost() {
             throw new Error(`입력값을 확인해주세요`);
         }
 
+        if (response.status === 401) {
+            throw new Error(`로그인 후 이용해주세요`);
+        }
+
+        if (response.status === 406) {
+            throw new Error(`정지 기간에는  사용하실 수 없습니다.`);
+        }
+
         if (response.status !== 201) {
             throw new Error(`게시글 등록에 실패하였습니다.`);
         }
