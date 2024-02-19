@@ -1,99 +1,121 @@
 <!doctype html>
 <html lang="en">
+    <head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <title>Bootstrap demo</title>
+        <link
+            href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
+            rel="stylesheet"
+            integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN"
+            crossorigin="anonymous"
+        />
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+        <link href="https://fonts.googleapis.com/css2?family=Anton&display=swap" rel="stylesheet" />
+        <link rel="stylesheet" href="../../Auth/css/mainpage.css" />
+        <link rel="stylesheet" href="../../Auth/css/header.css" />
+        <link rel="stylesheet" href="../css/newAdmin.css" />
+    </head>
 
-<head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Bootstrap demo</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
-        integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous" />
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link href="https://fonts.googleapis.com/css2?family=Anton&display=swap" rel="stylesheet" />
-    <link rel="stylesheet" href="../../Auth/css/mainpage.css" />
-    <link rel="stylesheet" href="../css/newAdmin.css" />
-</head>
-
-<body>
-    <header class="header">
-        <div class="total-header">
-            <div class="title-logo">
-                <div><img src="../../Auth/images/logo.png" alt="" class="logo-img" /></div>
-                <div>Roomdevelope</div>
-            </div>
-            <form class="d-flex search-box">
-                <input class="form-control me-2" type="search" placeholder="User Search" aria-label="Search" />
-                <button type="button" class="btn btn-outline-light">Search</button>
-            </form>
-            <div class="buttons">
-                <button type="button" class="btn btn-outline-light" id="loginButton">
-                    log-in
-                </button>
-                <button type="button" class="btn btn-outline-light" id="logoutButton" style="display: none;">
-                    log-out
-                </button>
-            </div>
-        </div>
-    </header>
-    <div class="big-box">
-        <div class="d-flex flex-column flex-shrink-0 p-3 text-bg-dark totalbox" style="width: 250px">
-            <a href="./newAdmin.html" class="d-flex align-items-center mb-3 mb-md-0 me-md-auto text-white text-decoration-none">
-                <svg class="bi pe-none me-2" width="40" height="32">
-                    <use xlink:href="#bootstrap"></use>
-                </svg>
-                <span class="fs-4">Admin Menu</span>
-            </a>
-            <hr />
-            <ul class="nav nav-pills flex-column mb-auto">
-                <li>
-                    <a href="./newAdmin.html" class="nav-link text-white">
-                        <svg class="bi pe-none me-2" width="16" height="16">
-                            <use xlink:href="#speedometer2"></use>
-                        </svg>
-                        Users
-                    </a>
-                </li>
-                <li>
-                    <a href="./bannedUser.html" class="nav-link text-white">
-                        <svg class="bi pe-none me-2" width="16" height="16">
-                            <use xlink:href="#table"></use>
-                        </svg>
-                        Banned User
-                    </a>
-                </li>
-                <li>
-                    <a href="./warningPost.html" class="nav-link text-white">
-                        <svg class="bi pe-none me-2" width="16" height="16">
-                            <use xlink:href="#table"></use>
-                        </svg>
-                        Warning Post
-                    </a>
-                </li>
-                <li>
-                    <a href="../../Banner/html/bannerList.html" class="nav-link text-white">
-                        <svg class="bi pe-none me-2" width="16" height="16">
-                            <use xlink:href="#table"></use>
-                        </svg>
-                        Banner
-                    </a>
-                </li>
-            </ul>
-            <hr />
-        </div>
-        <main class="main">
-            <div class="admin-box">
-                <h1>USER LIST</h1>
-                <div class="userList">
-
+    <body>
+        <header class="header">
+            <div class="total-header">
+                <div class="title-logo">
+                    <div><img src="../../Auth/images/logo.png" alt="" class="logo-img" /></div>
+                    <div>Roomdevelope</div>
+                </div>
+                <form class="d-flex search-box">
+                    <input
+                        class="form-control me-2"
+                        type="search"
+                        placeholder="User Search"
+                        aria-label="Search"
+                    />
+                    <button type="button" class="btn btn-outline-light">Search</button>
+                </form>
+                <div class="buttons">
+                    <button type="button" class="btn btn-outline-light" id="loginButton">
+                        log-in
+                    </button>
+                    <button
+                        type="button"
+                        class="btn btn-outline-light"
+                        id="logoutButton"
+                        style="display: none"
+                    >
+                        log-out
+                    </button>
                 </div>
             </div>
-        </main>
-    </div>
-    <script src="../js/newAdmin.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" ;
-        integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" ; crossorigin="anonymous"
-        ;></script>
-    <script src="../js/transfer.js"></script>
-</body>
-
+        </header>
+        <div class="big-box">
+            <div
+                class="d-flex flex-column flex-shrink-0 p-3 text-bg-dark totalbox"
+                style="width: 250px"
+            >
+                <a
+                    href="./newAdmin.html"
+                    class="d-flex align-items-center mb-3 mb-md-0 me-md-auto text-white text-decoration-none"
+                >
+                    <svg class="bi pe-none me-2" width="40" height="32">
+                        <use xlink:href="#bootstrap"></use>
+                    </svg>
+                    <span class="fs-4">Admin Menu</span>
+                </a>
+                <hr />
+                <ul class="nav nav-pills flex-column mb-auto">
+                    <li>
+                        <a href="./newAdmin.html" class="nav-link text-white">
+                            <svg class="bi pe-none me-2" width="16" height="16">
+                                <use xlink:href="#speedometer2"></use>
+                            </svg>
+                            Users
+                        </a>
+                    </li>
+                    <li>
+                        <a href="./bannedUser.html" class="nav-link text-white">
+                            <svg class="bi pe-none me-2" width="16" height="16">
+                                <use xlink:href="#table"></use>
+                            </svg>
+                            Banned User
+                        </a>
+                    </li>
+                    <li>
+                        <a href="./warningPost.html" class="nav-link text-white">
+                            <svg class="bi pe-none me-2" width="16" height="16">
+                                <use xlink:href="#table"></use>
+                            </svg>
+                            Warning Post
+                        </a>
+                    </li>
+                    <li>
+                        <a href="../../Banner/html/bannerList.html" class="nav-link text-white">
+                            <svg class="bi pe-none me-2" width="16" height="16">
+                                <use xlink:href="#table"></use>
+                            </svg>
+                            Banner
+                        </a>
+                    </li>
+                </ul>
+                <hr />
+            </div>
+            <main class="main">
+                <div class="admin-box">
+                    <h1>USER LIST</h1>
+                    <div class="userList"></div>
+                </div>
+            </main>
+        </div>
+        <script src="../js/newAdmin.js"></script>
+        <script
+            src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
+            ;
+            integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
+            ;
+            crossorigin="anonymous"
+            ;
+        ></script>
+        <script src="../js/transfer.js"></script>
+    </body>
 </html>

@@ -4,6 +4,9 @@ async function fetchUserInfo() {
     try {
         const response = await fetch(`/user/userinfo`, {
             method: 'GET',
+            headers: {
+                Authorization: `Bearer ${accessToken}`,
+            },
         });
 
         const responseData = await response.json();

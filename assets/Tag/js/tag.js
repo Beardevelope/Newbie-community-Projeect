@@ -48,7 +48,7 @@ async function tagList(order) {
 // 게시글 화면에 띄우는 함수
 function tagListReading(data) {
     let tagForm = ` <div class="col" id="${data.id}">
-                      <div style ="margin: auto 10px; auto 5px; border-radius: 20px; border-color: blue" class="tag h-100">
+                      <div class="tag h-100">
                              <div class="tagBody">
                                 <button class="tagName" onclick="location.href='../../Post/html/postList.html?tagName=${data.name}'">${data.name}</button>
                              </div>
@@ -135,7 +135,7 @@ function updatePagination() {
         listItem.appendChild(pageButton);
 
         if (i === currentPage) {
-            pageButton.classList.add('active');
+            pageButton.classList.add('activeBtn');
         }
 
         pageButton.style.color = 'black';

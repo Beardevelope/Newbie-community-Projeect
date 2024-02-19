@@ -1,15 +1,12 @@
+p,
+ul {
+    margin-bottom: 0;
+}
 :root {
     --gap: 20px;
 }
 .totalbox {
-    height: 100%;
     background-color: #212529;
-    width: 100px;
-}
-
-.main {
-    background-color: gray;
-    width: 100%;
 }
 
 .title-logo {
@@ -31,20 +28,6 @@
 }
 .logo-img {
     height: 40px;
-}
-
-.big-box {
-    display: flex;
-    height: 100%;
-}
-body,
-html {
-    height: 100%;
-    margin: 0;
-}
-
-body {
-    background-color: #efefef;
 }
 
 .total-header {
@@ -87,12 +70,13 @@ body {
 }
 /* main */
 #content {
-    padding: 100px;
+    width: 100%;
+    display: flex;
+    gap: 20px;
 }
 /*mainbar*/
 #mainbar {
-    padding: 20px;
-    width: 726px;
+    width: calc(100% - 220px);
 }
 
 /* headline */
@@ -144,6 +128,13 @@ body {
     border-style: solid;
     margin-left: 10px;
     padding: 30px;
+    display: flex;
+    gap: 20px;
+}
+
+#post-cell .imageBox {
+    width: 20%;
+    margin-left: auto;
 }
 
 .votebar {
@@ -157,6 +148,29 @@ body {
     margin-bottom: 10px;
 }
 
+#tagBox {
+    margin-left: 30px;
+    margin-bottom: 30px;
+    display: flex;
+    gap: 10px;
+}
+
+#tagBox .tagButton {
+    display: inline-block;
+    padding: 8px 16px;
+    border-radius: 8px;
+    border: 1px solid black;
+    background-color: white;
+    color: black;
+    cursor: pointer;
+}
+
+#tagBox .tagButton:hover {
+    color: white;
+    background-color: black;
+    transition: all 0.3s;
+}
+
 .comment-list {
     margin-top: 10px;
     font-size: 12px;
@@ -168,17 +182,23 @@ body {
 .comment-list ul li {
     border-top: 2px solid black;
 }
+.comment-list ul li:first-child {
+    border-top: none;
+}
 
 .commentForm {
     display: none;
 }
 
 .comment-editor {
+    display: flex;
+    gap: 10px;
     border-width: 2px;
     border-color: black;
     border-style: solid;
     margin-top: 10px;
     padding: 20px;
+    align-items: center;
 }
 
 .comment-content {
@@ -187,11 +207,49 @@ body {
 }
 
 .commentBox {
-    padding: 5px;
+    padding: 10px;
     display: flex;
+    align-items: center;
     flex-direction: row;
 }
 
 .comment-buttons {
     margin-left: auto;
+}
+
+.comment-buttons button {
+    display: inline-block;
+    padding: 4px 8px;
+    border-radius: 8px;
+    font-size: 10px;
+    border: 1px solid black;
+    background-color: white;
+    color: black;
+    cursor: pointer;
+}
+
+.comment-buttons button:hover {
+    color: white;
+    background-color: black;
+    transition: all 0.3s;
+}
+
+.commentSubmit {
+    display: inline-block;
+    padding: 8px 16px;
+    border-radius: 8px;
+    font-size: 12px;
+    background-color: white;
+    border: 1px solid black;
+    color: black;
+    cursor: pointer;
+}
+.commentSubmit:hover {
+    color: white;
+    background-color: black;
+    transition: all 0.3s;
+}
+
+#commentInput {
+    height: 100px;
 }

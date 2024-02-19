@@ -56,7 +56,7 @@ searchButton.addEventListener('click', () => {
 function tagSearch(userInput) {
     user.innerHTML = ``;
     console.log(userInput);
-    console.log(userInfo)
+    console.log(userInfo);
     userInfo.forEach(function (user) {
         if (user.nickname.toLowerCase().includes(userInput.toLowerCase())) {
             userListReading(user);
@@ -121,7 +121,7 @@ function updatePagination() {
         listItem.appendChild(pageButton);
 
         if (i === currentPage) {
-            pageButton.classList.add('active');
+            pageButton.classList.add('activeBtn');
         }
 
         pageButton.style.color = 'black';

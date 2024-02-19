@@ -1,16 +1,6 @@
-document.getElementById('dataForm').addEventListener('submit', async function (event) {
-    event.preventDefault();
+const accessToken = sessionStorage.getItem('accessToken');
 
-    const accessToken = sessionStorage.getItem('accessToken');
-
-    const formData = new FormData();
-    formData.append('title', document.getElementById('title').value);
-    formData.append('content', document.getElementById('content').value);
-    formData.append('image', document.getElementById('image').files[0]);
-    formData.append('applicationDeadLine', document.getElementById('applicationDeadLine').value);
-    formData.append('startDate', document.getElementById('startDate').value);
-    formData.append('dueDate', document.getElementById('dueDate').value);
-
+async function projectPost(formData) {
     try {
         const responseProject = await fetch('/project-post', {
             method: 'POST',
@@ -21,14 +11,35 @@ document.getElementById('dataForm').addEventListener('submit', async function (e
         });
 
         const createdProjectPost = await responseProject.json();
-        const projectId = createdProjectPost.id;
 
-        const stacks = document.querySelectorAll('#stack');
-        const numberOfPeoples = document.querySelectorAll('#numberOfPeople');
-        for (let i = 0; i < stacks.length; i++) {
-            const stack = stacks[i].value;
-            const numberOfPeople = parseInt(numberOfPeoples[i].value);
+        return createdProjectPost;
+    } catch (error) {
+        console.error('오류:', error);
+        throw new error(error);
+    }
+}
 
+document.getElementById('dataForm').addEventListener('submit', async function (event) {
+    event.preventDefault();
+
+    const formData = new FormData();
+    formData.append('title', document.getElementById('title').value);
+    formData.append('content', document.getElementById('content').value);
+    formData.append('image', document.getElementById('image').files[0]);
+    formData.append('applicationDeadLine', document.getElementById('applicationDeadLine').value);
+    formData.append('startDate', document.getElementById('startDate').value);
+    formData.append('dueDate', document.getElementById('dueDate').value);
+
+    const projectPostData = await projectPost(formData);
+    const projectId = projectPostData.id;
+
+    const stacks = document.querySelectorAll('#stack');
+    const numberOfPeoples = document.querySelectorAll('#numberOfPeople');
+    for (let i = 0; i < stacks.length; i++) {
+        const stack = stacks[i].value;
+        const numberOfPeople = parseInt(numberOfPeoples[i].value);
+
+        try {
             const responseStack = await fetch(`/need-info/${projectId}`, {
                 method: 'POST',
                 headers: {
@@ -37,13 +48,18 @@ document.getElementById('dataForm').addEventListener('submit', async function (e
                 },
                 body: JSON.stringify({ stack, numberOfPeople }),
             });
+        } catch (error) {
+            console.error('오류:', error);
+            alert('데이터 전송 중 오류가 발생했습니다.');
         }
+    }
 
-        const questions = document.querySelectorAll('#question');
+    const questions = document.querySelectorAll('#question');
 
-        for (let j = 0; j < questions.length; j++) {
-            const question = questions[j].value;
+    for (let j = 0; j < questions.length; j++) {
+        const question = questions[j].value;
 
+        try {
             const responseQuestion = await fetch(`/question/${projectId}`, {
                 method: 'POST',
                 headers: {
@@ -52,14 +68,14 @@ document.getElementById('dataForm').addEventListener('submit', async function (e
                 },
                 body: JSON.stringify({ question }),
             });
+        } catch (error) {
+            console.error('오류:', error);
+            alert('데이터 전송 중 오류가 발생했습니다.');
         }
-
-        alert('데이터가 성공적으로 전송되었습니다.');
-        window.location.href = 'projectPostMain.html';
-    } catch (error) {
-        console.error('오류:', error);
-        alert('데이터 전송 중 오류가 발생했습니다.');
     }
+
+    alert('데이터가 성공적으로 전송되었습니다.');
+    window.location.href = 'projectPostMain.html';
 });
 
 const addStackBtn = document.querySelector('.addStackBtn');

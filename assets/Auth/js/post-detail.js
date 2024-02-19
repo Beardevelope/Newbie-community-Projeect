@@ -9,13 +9,14 @@ import { marked } from 'https://cdn.jsdelivr.net/npm/marked/lib/marked.esm.js';
 const headline = document.getElementById('headline');
 const mainbar = document.getElementById('mainbar');
 const postLayout = document.getElementById('post-layout');
+const tagBox = document.getElementById('tagBox');
 const sidebar = document.getElementById('sidebar');
 const commentList = document.querySelector('.comment-list');
 const commentSubmitBtn = document.querySelector('.commentSubmit');
 const commentTextArea = document.querySelector('#commentInput');
 
 const getPost = async () => {
-    const response = await fetch(`${POST_API}/${POST_ID}`, {
+    const response = await fetch(`{POST_API}/${POST_ID}`, {
         method: 'GET',
     });
     const data = await response.json();
@@ -141,10 +142,13 @@ const listDetailPageOfPost = async () => {
             </div>
             <div id="post-cell">
                 <div id="post-body">${marked(post.content)}</div>
+                <div class="imageBox">
+                    <img src="${post.image}" alt="">
+                </div>
             </div>
     `;
         tags.forEach((tag) => {
-            postLayout.innerHTML += `<button type="button" id="${tag.name}" class="tagButton" onclick="location.href='../Post/html/postList.html?tagName=${tag.name}'">${tag.name}</button>`;
+            tagBox.innerHTML += `<button type="button" id="${tag.name}" class="tagButton" onclick="location.href='../Post/html/postList.html?tagName=${tag.name}'">${tag.name}</button>`;
         });
 
         const listComments = async (comments) => {
