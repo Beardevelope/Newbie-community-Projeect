@@ -50,13 +50,13 @@ postList();
 function addPost() {
     const postFirst = foundPosts[foundPosts.length - 1];
 
-        contentBox.innerHTML = `<div class="box1">
+    contentBox.innerHTML = `<div class="box1">
                     <div class="imgBox">
                         <img src="${postFirst.image || './images/no-image.png'}" alt="" />
                     </div>
                     <div class="posts">
                         <div class="post">
-                            <div class="title">${postFirst.title}</div>
+                            <div id=${postFirst.id} class="title">${postFirst.title}</div>
                             <div class="likeAndview">
                                 <div class="like">
                                     <img src="./images/like.png" />${postFirst.likes}
@@ -69,13 +69,48 @@ function addPost() {
                         <div></div>
                     </div>
                 </div>`;
-        return;
-
+    return;
 }
 
 async function fetchDataAndAddPost() {
     await postList();
     addPost();
+    addEventListenersToPost();
 }
 
 fetchDataAndAddPost();
+
+// 조회수 늘리는 함수
+async function addHit(clickedPostId) {
+    try {
+        const newInformation = {
+            id: clickedPostId,
+        };
+        const response = await fetch(`/post/${clickedPostId}/hit`, {
+            method: 'put',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(newInformation),
+        });
+        const information = await response.json();
+        if (response.status !== 200) {
+            throw new Error(information.message);
+        }
+    } catch (error) {
+        console.log(error.message);
+    }
+}
+
+// 게시글 제목 클릭했을 때 실행되는 로직
+function addEventListenersToPost() {
+    const title = document.querySelector('.title');
+
+    title.addEventListener('click', function (event) {
+        const clickedPostId = event.target.id;
+        console.log(clickedPostId);
+        // 조회수 늘리는 함수 실행
+        addHit(clickedPostId);
+         // 상세 조회 페이지 URL을 생성하여 이동
+         const detailPageURL = `../../Auth/post-detail.html?id=${clickedPostId}`;
+         window.location.href = detailPageURL;
+    });
+}
