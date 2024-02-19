@@ -2,7 +2,7 @@ import { Controller, Post, Body, UseGuards, Req } from '@nestjs/common';
 import { EmailService } from './mailer.service';
 import { AccessTokenGuard } from 'src/auth/guard/bearer.guard';
 
-@Controller('mail')
+@Controller('email')
 export class EmailController {
     constructor(private readonly emailService: EmailService) {}
 
