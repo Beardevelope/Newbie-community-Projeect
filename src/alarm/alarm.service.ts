@@ -46,4 +46,13 @@ export class AlarmService {
         });
         this.emitAlarmAddedEvent(userId, alarm.title, description);
     }
+
+    // 해당 유저의 알람 가져오기
+    async findAll(userId: number) {
+        return await this.alarmRepository.find({
+            where: {
+                userId,
+            },
+        });
+    }
 }
