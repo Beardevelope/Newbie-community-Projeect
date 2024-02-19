@@ -1,7 +1,7 @@
 const urlParams = new URLSearchParams(window.location.search);
 const projectId = urlParams.get('id');
 
-// const accessToken = sessionStorage.getItem('accessToken');
+const accessToken = sessionStorage.getItem('accessToken');
 
 async function fetchUserInfo() {
     try {
