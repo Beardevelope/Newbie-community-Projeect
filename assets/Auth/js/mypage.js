@@ -29,6 +29,8 @@ const projectView = document.querySelector('.view');
 
 const POST_API = '/post';
 
+const verfyEmailButton = document.querySelector('.email-verify')
+
 const getPost = async () => {
     const response = await fetch(`${POST_API}/${POST_ID}`, {
         method: 'GET',
@@ -160,6 +162,31 @@ const defaultDisplay = async () => {
             formData.append('image', selectedFile);
             await uploadUserProfile(formData);
         });
+
+        verfyEmailButton.addEventListener('click', async () => {
+            const email = prompt('이메일을 입력해주세요:')
+            const data = {
+                email: email
+            }
+            const response = await fetch('/mail/send-verification-email', {
+                method: "POST",
+                headers: {
+                    'Content-Type': 'application/json',
+                    Authorization: `Bearer ${TOKEN}`,
+                },
+                body: JSON.stringify(data),
+            })
+            const responseJson = await response.json()
+            console.log(responseJson)
+            if (!response.ok) {
+                alert(responseJson.message)
+            }
+            if (response.ok) {
+                alert(responseJson.message)
+            }
+        })
+
+
     } catch (error) {
         alert('서버 에러');
         console.error(error);
