@@ -1,3 +1,6 @@
+// 최대 알림 수
+const MAX_NOTIFICATIONS = 5;
+
 const TOKEN = sessionStorage.getItem('accessToken');
 
 // userId를 추출하는 함수
@@ -54,7 +57,9 @@ async function fetchAlarms(userId) {
         });
         if (response.ok) {
             const alarms = await response.json();
-            alarms.forEach(alarm => {
+            // 최대 5개의 알람만 출력
+            const alarmsToDisplay = alarms.slice(0, MAX_NOTIFICATIONS);
+            alarmsToDisplay.forEach(alarm => {
                 addNotificationToDropdown(alarm.title, alarm.description);
             });
         } else {
@@ -75,7 +80,11 @@ function addNotificationToDropdown(title, description) {
     const notificationList = document.getElementById("notificationList");
     const newNotification = document.createElement("li");
     newNotification.innerHTML = `<strong>${title}</strong>: ${description}`;
-    notificationList.appendChild(newNotification);
+    // 최대 알림 수 제한을 위해 추가
+    if (notificationList.children.length >= MAX_NOTIFICATIONS) {
+        notificationList.removeChild(notificationList.children[MAX_NOTIFICATIONS - 1]);
+    }
+    notificationList.insertBefore(newNotification, notificationList.firstChild);
     // 드롭다운 메뉴 표시
     document.getElementById("notificationDropdown").classList.add("show");
 }
