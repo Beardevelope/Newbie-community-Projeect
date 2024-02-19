@@ -1,7 +1,7 @@
 // 최대 알림 수
 const MAX_NOTIFICATIONS = 5;
 
-const TOKEN = sessionStorage.getItem('accessToken');
+const TOKEN_ACCESS = sessionStorage.getItem('accessToken');
 
 // userId를 추출하는 함수
 function extractUserId(token) {
@@ -22,16 +22,16 @@ function extractUserId(token) {
     }
 }
 
-const userId = extractUserId(TOKEN);
+const oneUserId = extractUserId(TOKEN_ACCESS);
 
-async function initializeSSE(userId) {
+async function initializeSSE(oneUserId) {
     try {
         // 이전 알람을 가져오기
-        await fetchAlarms(userId);
+        await fetchAlarms(oneUserId);
 
         // SSE를 초기화합니다.
-        const eventSource = new EventSource(`/alarm/${userId}`, {
-            headers: { Authorization: `Bearer ${TOKEN}` },
+        const eventSource = new EventSource(`/alarm/${oneUserId}`, {
+            headers: { Authorization: `Bearer ${TOKEN_ACCESS}` },
         });
 
         // SSE 이벤트 수신 및 화면에 출력
@@ -46,13 +46,13 @@ async function initializeSSE(userId) {
 }
 
 // 알람 내역 가져오기
-async function fetchAlarms(userId) {
+async function fetchAlarms(oneUserId) {
     try {
-        const response = await fetch(`/alarm/storage/${userId}`, {
+        const response = await fetch(`/alarm/storage/${oneUserId}`, {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
-                Authorization: `Bearer ${TOKEN}`,
+                Authorization: `Bearer ${TOKEN_ACCESS}`,
             }
         });
         if (response.ok) {
@@ -89,4 +89,4 @@ function addNotificationToDropdown(title, description) {
     document.getElementById("notificationDropdown").classList.add("show");
 }
 
-initializeSSE(userId);
+initializeSSE(oneUserId);
