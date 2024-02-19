@@ -168,7 +168,7 @@ const defaultDisplay = async () => {
             const data = {
                 email: email
             }
-            const response = await fetch('/mail/send-verification-email', {
+            const response = await fetch('/email/send-verification-email', {
                 method: "POST",
                 headers: {
                     'Content-Type': 'application/json',
