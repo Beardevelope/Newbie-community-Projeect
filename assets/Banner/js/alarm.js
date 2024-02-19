@@ -1,5 +1,4 @@
 const TOKEN = sessionStorage.getItem('accessToken');
-// const TOKEN = "토큰"
 
 // userId를 추출하는 함수
 function extractUserId(token) {
@@ -20,17 +19,19 @@ function extractUserId(token) {
     }
 }
 
-// 사용자 ID를 가져온 후에 SSE를 초기화하는 함수를 정의합니다.
 const userId = extractUserId(TOKEN);
 
 async function initializeSSE(userId) {
     try {
+        // 이전 알람을 가져오기
+        await fetchAlarms(userId);
+
         // SSE를 초기화합니다.
         const eventSource = new EventSource(`/alarm/${userId}`, {
             headers: { Authorization: `Bearer ${TOKEN}` },
         });
 
-        // SSE 이벤트 수신 및 드롭다운에 출력
+        // SSE 이벤트 수신 및 화면에 출력
         eventSource.onmessage = function (event) {
             const data = JSON.parse(event.data);
             addNotificationToDropdown(data.title, data.description);
@@ -41,12 +42,35 @@ async function initializeSSE(userId) {
     }
 }
 
+// 알람 내역 가져오기
+async function fetchAlarms(userId) {
+    try {
+        const response = await fetch(`/alarm/storage/${userId}`, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+                Authorization: `Bearer ${TOKEN}`,
+            }
+        });
+        if (response.ok) {
+            const alarms = await response.json();
+            alarms.forEach(alarm => {
+                addNotificationToDropdown(alarm.title, alarm.description);
+            });
+        } else {
+            console.error('알람을 불러오는 데 실패했습니다.');
+        }
+    } catch (error) {
+        console.error('알람을 불러오는 중 에러 발생:', error);
+    }
+}
+
 // 알림을 화면에 출력
 function showAlarm(title, description) {
     console.log(`새 알람: ${title} - ${description}`);
 }
 
-// 알림을 드롭다운 메뉴에 추가하는 함수입니다.
+// 알림 내역 드롭다운에 출력
 function addNotificationToDropdown(title, description) {
     const notificationList = document.getElementById("notificationList");
     const newNotification = document.createElement("li");
@@ -56,7 +80,4 @@ function addNotificationToDropdown(title, description) {
     document.getElementById("notificationDropdown").classList.add("show");
 }
 
-// 사용자 ID를 가져온 후에 SSE를 초기화합니다.
-if (userId) {
-    initializeSSE(userId);
-}
+initializeSSE(userId);
