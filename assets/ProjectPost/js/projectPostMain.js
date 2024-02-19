@@ -1,4 +1,4 @@
-// const accessToken = sessionStorage.getItem('accessToken');
+const accessToken = sessionStorage.getItem('accessToken');
 
 async function fetchUserInfo() {
     try {
