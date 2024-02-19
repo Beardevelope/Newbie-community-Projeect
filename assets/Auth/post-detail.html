@@ -15,6 +15,7 @@
         <link href="https://fonts.googleapis.com/css2?family=Anton&display=swap" rel="stylesheet" />
         <link rel="stylesheet" href="./css/post-detail.css" />
         <link rel="stylesheet" href="./css/mainpage.css" />
+        <link rel="stylesheet" href="./css/banner.css" />
     </head>
     <body>
         <header class="header">
@@ -32,6 +33,12 @@
                     />
                     <button type="button" class="btn btn-outline-light">Search</button>
                 </form>
+                <div class="dropdownAlarm">
+                    <button class="btn btn-outline-light dropdown-toggle" type="button" id="notificationDropdown"
+                        data-bs-toggle="dropdown" aria-expanded="false"> 알림 </button>
+                    <ul class="dropdown-menu" aria-labelledby="notificationDropdown" id="notificationList">
+                    </ul>
+                </div>
                 <div class="buttons">
                     <button type="button" class="btn btn-outline-light" id="loginButton">
                         log-in
@@ -62,7 +69,7 @@
                 <hr />
                 <ul class="nav nav-pills flex-column mb-auto">
                     <li class="nav-item">
-                        <a href="../index.html" class="nav-link active" aria-current="page">
+                        <a href="../index.html" class="nav-link text-white" aria-current="page">
                             <svg class="bi pe-none me-2" width="16" height="16">
                                 <use xlink:href="#home"></use>
                             </svg>
@@ -78,7 +85,15 @@
                         </a>
                     </li>
                     <li>
-                        <a href="#" class="nav-link text-white">
+                        <a href="../Tag/html/tag.html" class="nav-link active">
+                            <svg class="bi pe-none me-2" width="16" height="16">
+                                <use xlink:href="#speedometer2"></use>
+                            </svg>
+                            Tag
+                        </a>
+                    </li>
+                    <li>
+                        <a href="../ProjectPost/projectPostMain.html" class="nav-link text-white">
                             <svg class="bi pe-none me-2" width="16" height="16">
                                 <use xlink:href="#table"></use>
                             </svg>
@@ -86,19 +101,11 @@
                         </a>
                     </li>
                     <li>
-                        <a href="#" class="nav-link text-white">
+                        <a href="../User/html/user.html" class="nav-link text-white">
                             <svg class="bi pe-none me-2" width="16" height="16">
                                 <use xlink:href="#grid"></use>
                             </svg>
                             Users
-                        </a>
-                    </li>
-                    <li>
-                        <a href="#" class="nav-link text-white">
-                            <svg class="bi pe-none me-2" width="16" height="16">
-                                <use xlink:href="#people-circle"></use>
-                            </svg>
-                            Customers
                         </a>
                     </li>
                 </ul>
@@ -122,9 +129,9 @@
                         <strong>mdo</strong>
                     </a>
                     <ul class="dropdown-menu dropdown-menu-dark text-small shadow">
-                        <li><a class="dropdown-item" href="#">New project...</a></li>
+                        <li><a class="dropdown-item" href="../ProjectPost/projectPostWrite.html">New project...</a></li>
                         <li><a class="dropdown-item" href="#">Settings</a></li>
-                        <li><a class="dropdown-item" href="#">Profile</a></li>
+                        <li><a class="dropdown-item" href="./mypage.html">Profile</a></li>
                         <li><hr class="dropdown-divider" /></li>
                         <li><a class="dropdown-item" href="#">Sign out</a></li>
                     </ul>
@@ -206,6 +213,11 @@
                     </div>
                 </div>
             </div>
+            <div class="banners">
+                <a href="#" class="sideBanner">
+                    <span class="txt-label"></span>
+                </a>
+            </div>
         </div>
         <script src="https://cdn.ckeditor.com/ckeditor5/36.0.1/classic/ckeditor.js"></script>
         <script
@@ -213,9 +225,12 @@
             integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
             crossorigin="anonymous"
         ></script>
+        <script src="js/banner.js"></script>
+        <script src="../Post/js/mdo.js"></script>
         <script type="module" src="js/post-detail.js"></script>
         <script type="module" src="js/detailPutDelete.js"></script>
         <script src="js/transfer.js"></script>
+        <script src="../../Banner/js/alarm.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/marked@11.1.1/lib/marked.umd.min.js"></script>
     </body>
 </html>

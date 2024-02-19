@@ -17,7 +17,7 @@ const getUserList = async () => {
 };
 
 const modifyUserInfo = async (userId) => {
-    const response = await fetch(`http://localhost:3000/warning/banUser/${userId}`, {
+    const response = await fetch(`/warning/banUser/${userId}`, {
         method: 'PUT',
         headers: {
             Authorization: `Bearer ${TOKEN}`,
@@ -36,12 +36,17 @@ const modifyUserInfo = async (userId) => {
 };
 
 const modifyUserInfoWarning = async (userId) => {
-    const response = await fetch(`http://localhost:3000/warning/warningUser/${userId}`, {
+    const response = await fetch(`/warning/warningUser/${userId}`, {
         method: 'PUT',
         headers: {
             Authorization: `Bearer ${TOKEN}`,
         },
     });
+
+    if(response.status === 406) {
+        throw new Error('관리자만 접근 가능합니다.')
+    }
+
     const responseData = await response.json();
     if (!response.ok) {
         alert(`${responseData.message}`);

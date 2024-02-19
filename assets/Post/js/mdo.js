@@ -1,15 +1,15 @@
-const accessToken = sessionStorage.getItem('accessToken');
+const AccessToken = sessionStorage.getItem('accessToken');
 const dropdown = document.querySelector('.dropdown');
 
 // userId를 추출하는 함수
-function extractUserId(accessToken) {
-    if (!accessToken) {
+function extractUserId(AccessToken) {
+    if (!AccessToken) {
         console.error('토큰이 없습니다.');
         return null;
     }
     try {
         // 토큰의 페이로드(payload)를 디코딩하여 사용자 정보를 추출합니다.
-        const payload = accessToken.split('.')[1];
+        const payload = AccessToken.split('.')[1];
         const decodedPayload = atob(payload);
         const userInfo = JSON.parse(decodedPayload);
         const userId = userInfo.id;
@@ -20,11 +20,11 @@ function extractUserId(accessToken) {
     }
 }
 
-const userId = extractUserId(accessToken);
+const USER_ID = extractUserId(AccessToken);
 
 async function findByUserId() {
     try {
-        const response = await fetch(`/user/by-userId/${userId}`, {
+        const response = await fetch(`/user/by-userId/${USER_ID}`, {
             accept: 'application/json',
         });
         const jsonData = await response.json();
@@ -57,7 +57,7 @@ async function findByUserId() {
         alert(error.message);
     }
 }
-if (userId) {
+if (USER_ID) {
     findByUserId();
 }
 

@@ -11,6 +11,11 @@ const getpostList = async () => {
             Authorization: `Bearer ${TOKEN}`,
         },
     });
+
+    if(response.status === 406) {
+        throw new Error('관리자만 접근 가능합니다.')
+    }
+
     const responseData = await response.json();
     if (!response.ok) {
         alert(`${responseData.message}`);
@@ -22,7 +27,7 @@ const getpostList = async () => {
 const listpost = async () => {
     try {
         const posts = await getpostList();
-        if (posts.length > 0) {
+        if (posts.posts.length > 0) {
             const postTable = document.createElement('table');
             postTable.className = 'postTable';
 

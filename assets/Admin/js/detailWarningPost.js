@@ -1,4 +1,4 @@
-const post_API = '/warning';
+const WARNING_API = '/warning';
 const userList = document.querySelector('.userList');
 const TOKEN =
     sessionStorage.getItem('accessToken') ||
@@ -7,12 +7,17 @@ let StringPostId = window.location.search;
 const POST_ID = StringPostId.substr(4);
 
 const getWarning = async () => {
-const response = await fetch(`${post_API}/${POST_ID}`, {
+const response = await fetch(`${WARNING_API}/${POST_ID}`, {
         method: 'GET',
         headers: {
             Authorization: `Bearer ${TOKEN}`,
         },
     });
+
+    if(response.status === 406) {
+        throw new Error('관리자만 접근 가능합니다.')
+    }
+
     const responseData = await response.json();
     const responseWarnings = responseData.warnings;
     if (!response.ok) {
@@ -25,7 +30,7 @@ const response = await fetch(`${post_API}/${POST_ID}`, {
 const getUserByUserId = async () => {
     const responseWarnings = await getWarning();
     const responseUsersPromises = responseWarnings.map(async (warning) => {
-        const response = await fetch(`http://localhost:3000/user/by-userId/${warning.userId}`, {
+        const response = await fetch(`/user/by-userId/${warning.userId}`, {
             method: 'GET',
             headers: {
                 Authorization: `Bearer ${TOKEN}`,

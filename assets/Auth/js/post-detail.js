@@ -419,6 +419,19 @@ async function clickStatusButton() {
         });
         const jsonData = await response.json();
         const postStatus = jsonData.postStatus;
+
+        if (response.status === 401) {
+            throw new Error(`로그인 후 이용해주세요`);
+        }
+
+        if (response.status === 403) {
+            throw new Error(`접근 권한이 없습니다.`);
+        }
+
+        if (response.status === 406) {
+            throw new Error(`정지 기간에는  사용하실 수 없습니다.`);
+        }
+
         if (response.status !== 200) {
             //cry catch 구문에서 throw는 에러가 발생했을 때 catch에다가 error를 던져준다.
             throw new Error('게시글 상태변경에 실패하였습니다.');

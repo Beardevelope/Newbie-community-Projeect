@@ -2,7 +2,7 @@
 const title = document.querySelector('#title');
 const image = document.querySelector('#image');
 const tags = document.querySelector('#tags');
-const TOKEN = sessionStorage.getItem('accessToken');
+const ACCESS_TOKEN = sessionStorage.getItem('accessToken');
 
 let editor;
 
@@ -56,12 +56,20 @@ async function createPost() {
         const response = await fetch(`/post`, {
             method: 'post',
             headers: {
-                Authorization: `Bearer ${TOKEN}`,
+                Authorization: `Bearer ${ACCESS_TOKEN}`,
             },
             body: formData,
         });
         if (response.status === 400) {
             throw new Error(`입력값을 확인해주세요`);
+        }
+
+        if (response.status === 401) {
+            throw new Error(`로그인 후 이용해주세요`);
+        }
+
+        if (response.status === 406) {
+            throw new Error(`정지 기간에는  사용하실 수 없습니다.`);
         }
 
         if (response.status !== 201) {

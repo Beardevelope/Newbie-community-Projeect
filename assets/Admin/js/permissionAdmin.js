@@ -1,9 +1,6 @@
-const USER_API = '/user';
-const accessToken = sessionStorage.getItem('accessToken');
+const userApi = '/user';
+const accessTokenAdmin = sessionStorage.getItem('accessToken');
 const adminPage = document.getElementById('adminPage');
-
-console.log('accessToken', accessToken);
-console.log('adminPage', adminPage);
 
 // userId를 추출하는 함수
 function extractUserId(token) {
@@ -24,11 +21,14 @@ function extractUserId(token) {
     }
 }
 
-const userId = extractUserId(accessToken);
+const userId = extractUserId(accessTokenAdmin);
 
-const getUserList = async (userId) => {
-    const response = await fetch(`${USER_API}/by-userId/${userId}`, {
+const getUserList = async () => {
+    const response = await fetch(`${userApi}/by-userId/${userId}`, {
         method: 'GET',
+        headers: {
+            Authorization: `Bearer ${accessTokenAdmin}`,
+        },
     });
     const responseData = await response.json();
     if (!response.ok) {
@@ -39,11 +39,13 @@ const getUserList = async (userId) => {
 };
 
 async function showAdminPage() {
-    const user = await getUserList();
-    const userIsAdmin = user[0].isAdmin;
+    const user = await getUserList(userId);
+    const userIsAdmin = user.isAdmin;
 
     if (userIsAdmin) {
         adminPage.style.display = 'inline-block';
     }
 }
-showAdminPage();
+if (accessTokenAdmin) {
+    showAdminPage();
+}
