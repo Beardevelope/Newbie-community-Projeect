@@ -14,7 +14,9 @@
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
         <link href="https://fonts.googleapis.com/css2?family=Anton&display=swap" rel="stylesheet" />
         <link rel="stylesheet" href="./css/mainpage.css" />
+        <link rel="stylesheet" href="./css/header.css" />
         <link rel="stylesheet" href="./css/mypage.css" />
+        <link rel="stylesheet" href="./css/header.css" />
     </head>
 
     <body>
@@ -40,7 +42,12 @@
                     <button type="button" class="btn btn-outline-light" id="signupButton">
                         sign-up
                     </button>
-                    <button type="button" class="btn btn-outline-light" id="logoutButton" style="display: none;">
+                    <button
+                        type="button"
+                        class="btn btn-outline-light"
+                        id="logoutButton"
+                        style="display: none"
+                    >
                         log-out
                     </button>
                 </div>
@@ -63,7 +70,7 @@
                 <hr />
                 <ul class="nav nav-pills flex-column mb-auto">
                     <li class="nav-item">
-                        <a href="../index.html" class="nav-link active" aria-current="page">
+                        <a href="../index.html" class="nav-link text-white" aria-current="page">
                             <svg class="bi pe-none me-2" width="16" height="16">
                                 <use xlink:href="#home"></use>
                             </svg>
@@ -71,7 +78,7 @@
                         </a>
                     </li>
                     <li>
-                        <a href="#" class="nav-link text-white">
+                        <a href="../Post/html/postList.html" class="nav-link text-white">
                             <svg class="bi pe-none me-2" width="16" height="16">
                                 <use xlink:href="#speedometer2"></use>
                             </svg>
@@ -79,7 +86,15 @@
                         </a>
                     </li>
                     <li>
-                        <a href="#" class="nav-link text-white">
+                        <a href="../Tag/html/tag.html" class="nav-link text-white">
+                            <svg class="bi pe-none me-2" width="16" height="16">
+                                <use xlink:href="#speedometer2"></use>
+                            </svg>
+                            Tag
+                        </a>
+                    </li>
+                    <li>
+                        <a href="../ProjectPost/projectPostMain.html" class="nav-link text-white">
                             <svg class="bi pe-none me-2" width="16" height="16">
                                 <use xlink:href="#table"></use>
                             </svg>
@@ -87,19 +102,11 @@
                         </a>
                     </li>
                     <li>
-                        <a href="#" class="nav-link text-white">
+                        <a href="../User/html/user.html" class="nav-link active">
                             <svg class="bi pe-none me-2" width="16" height="16">
                                 <use xlink:href="#grid"></use>
                             </svg>
                             Users
-                        </a>
-                    </li>
-                    <li>
-                        <a href="#" class="nav-link text-white">
-                            <svg class="bi pe-none me-2" width="16" height="16">
-                                <use xlink:href="#people-circle"></use>
-                            </svg>
-                            Customers
                         </a>
                     </li>
                 </ul>
@@ -141,12 +148,7 @@
                             <!-- 서클이미지 버튼을 클릭하면 이미지 수정 및 추가가 가능하게끔 처리해주세욤 -->
                             <input type="file" id="fileInput" style="display: none" />
 
-                            <img
-                                id="uploadImage"
-                                src="./images/profile2.png"
-                                alt=""
-                                style="cursor: pointer"
-                            />
+                            <img id="uploadImage" src="#" alt="" style="cursor: pointer" />
                         </div>
                         <div class="infoAndButton">
                             <div calss="userInfo">
@@ -207,6 +209,7 @@
                 </div>
             </main>
         </div>
+        <script src="../Post/js/mdo.js"></script>
         <script src="js/mypage.js"></script>
         <script src="js/mypageProject.js"></script>
         <script src="js/mypagePost.js"></script>

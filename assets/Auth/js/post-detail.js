@@ -9,13 +9,14 @@ import { marked } from 'https://cdn.jsdelivr.net/npm/marked/lib/marked.esm.js';
 const headline = document.getElementById('headline');
 const mainbar = document.getElementById('mainbar');
 const postLayout = document.getElementById('post-layout');
+const tagBox = document.getElementById('tagBox');
 const sidebar = document.getElementById('sidebar');
 const commentList = document.querySelector('.comment-list');
 const commentSubmitBtn = document.querySelector('.commentSubmit');
 const commentTextArea = document.querySelector('#commentInput');
 
 const getPost = async () => {
-    const response = await fetch(`${POST_API}/${POST_ID}`, {
+    const response = await fetch(`http://localhost:3000${POST_API}/${POST_ID}`, {
         method: 'GET',
     });
     const data = await response.json();
@@ -27,7 +28,7 @@ const getPost = async () => {
 };
 
 const getCommentsByPostId = async () => {
-    const response = await fetch(`${COMMENT_API}/${POST_ID}`, {
+    const response = await fetch(`http://localhost:3000${COMMENT_API}/${POST_ID}`, {
         method: 'GET',
     });
     const data = await response.json();
@@ -39,7 +40,7 @@ const getCommentsByPostId = async () => {
 };
 
 const updateComment = async (comment) => {
-    const response = await fetch(`${COMMENT_API}/${POST_ID}/${comment.id}`, {
+    const response = await fetch(`http://localhost:3000${COMMENT_API}/${POST_ID}/${comment.id}`, {
         method: 'PUT',
         headers: {
             'Content-Type': 'application/json',
@@ -54,14 +55,14 @@ const updateComment = async (comment) => {
         throw new Error('서버 오류');
     }
     alert('댓글 수정 완료');
-    location.reload()
+    location.reload();
 };
 
 const listDetailPageOfPost = async () => {
     try {
         const post = await getPost();
         const comments = await getCommentsByPostId();
-        console.log(post)
+        console.log(post);
         const timeDifferent = (initialDate) => {
             const date = new Date(initialDate);
             const currentDate = new Date();
@@ -141,10 +142,13 @@ const listDetailPageOfPost = async () => {
             </div>
             <div id="post-cell">
                 <div id="post-body">${marked(post.content)}</div>
+                <div class="imageBox">
+                    <img src="${post.image}" alt="">
+                </div>
             </div>
     `;
         tags.forEach((tag) => {
-            postLayout.innerHTML += `<button type="button" id="${tag.name}" class="tagButton" onclick="location.href='../Post/html/postList.html?tagName=${tag.name}'">${tag.name}</button>`;
+            tagBox.innerHTML += `<button type="button" id="${tag.name}" class="tagButton" onclick="location.href='../Post/html/postList.html?tagName=${tag.name}'">${tag.name}</button>`;
         });
 
         const listComments = async (comments) => {
@@ -246,7 +250,7 @@ const submitButton = async (id) => {
 };
 
 const registerComment = async (comment) => {
-    const response = await fetch(`${COMMENT_API}/${POST_ID}`, {
+    const response = await fetch(`http://localhost:3000${COMMENT_API}/${POST_ID}`, {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
@@ -266,7 +270,7 @@ const registerComment = async (comment) => {
 };
 
 const deleteComment = async (commentId) => {
-    const response = await fetch(`${COMMENT_API}/${POST_ID}/${commentId}`, {
+    const response = await fetch(`http://localhost:3000${COMMENT_API}/${POST_ID}/${commentId}`, {
         method: 'DELETE',
         headers: {
             'Content-Type': 'application/json',
@@ -284,27 +288,26 @@ const deleteComment = async (commentId) => {
     location.reload();
 };
 const editComment = async (commentId) => {
-    const editInput = document.querySelector(`#edit-${commentId}`)
-    const commentText = document.querySelector(`#commentText_${commentId}`)
+    const editInput = document.querySelector(`#edit-${commentId}`);
+    const commentText = document.querySelector(`#commentText_${commentId}`);
     const writeButton = document.querySelector(`#write-${commentId}`);
-    const deleteButton = document.querySelector(`#delete-${commentId}`)
-    const confirmButton = document.querySelector(`#confirm-${commentId}`)
-    const cancelButton = document.querySelector(`#cancel-${commentId}`)
-    const editCommentInput = document.querySelector(`#editCommentInput_${commentId}`)
+    const deleteButton = document.querySelector(`#delete-${commentId}`);
+    const confirmButton = document.querySelector(`#confirm-${commentId}`);
+    const cancelButton = document.querySelector(`#cancel-${commentId}`);
+    const editCommentInput = document.querySelector(`#editCommentInput_${commentId}`);
 
-    editInput.hidden = true
-    commentText.hidden = true
-    writeButton.hidden = true
-    deleteButton.hidden = true
-    editInput.hidden = true
-    editCommentInput.hidden = false
+    editInput.hidden = true;
+    commentText.hidden = true;
+    writeButton.hidden = true;
+    deleteButton.hidden = true;
+    editInput.hidden = true;
+    editCommentInput.hidden = false;
 
-    confirmButton.hidden = false
-    cancelButton.hidden = false
+    confirmButton.hidden = false;
+    cancelButton.hidden = false;
 
-    editCommentInput.value = commentText.textContent
-
-}
+    editCommentInput.value = commentText.textContent;
+};
 
 document.addEventListener('DOMContentLoaded', async () => {
     await listDetailPageOfPost();
@@ -312,7 +315,9 @@ document.addEventListener('DOMContentLoaded', async () => {
         const commentId = button.id.split('-').pop();
         button.addEventListener('click', () => toggleCommentForm(commentId));
     });
+
     document.querySelectorAll('.comment-list ul li .submitButton').forEach((button) => {
+        const commentId = button.id.split('-').pop();
         button.addEventListener('click', () => submitButton(commentId));
     });
 
@@ -330,37 +335,39 @@ document.addEventListener('DOMContentLoaded', async () => {
     document.querySelectorAll('.comment-list ul li .confirmButton').forEach((button) => {
         const commentId = button.id.split('-').pop();
         button.addEventListener('click', async () => {
-            const editedCommentText = document.querySelector(`#editCommentInput_${commentId}`).value
-            console.log(editedCommentText)
+            const editedCommentText = document.querySelector(
+                `#editCommentInput_${commentId}`,
+            ).value;
+            console.log(editedCommentText);
             const comment = {
                 id: commentId,
-                content: editedCommentText
-            }
-            await updateComment(comment)
-        })
-    })
+                content: editedCommentText,
+            };
+            await updateComment(comment);
+        });
+    });
 
     document.querySelectorAll('.comment-list ul li .cancelButton').forEach((button) => {
         const commentId = button.id.split('-').pop();
 
-        const editInput = document.querySelector(`#edit-${commentId}`)
-        const commentText = document.querySelector(`#commentText_${commentId}`)
+        const editInput = document.querySelector(`#edit-${commentId}`);
+        const commentText = document.querySelector(`#commentText_${commentId}`);
         const writeButton = document.querySelector(`#write-${commentId}`);
-        const deleteButton = document.querySelector(`#delete-${commentId}`)
-        const confirmButton = document.querySelector(`#confirm-${commentId}`)
-        const cancelButton = document.querySelector(`#cancel-${commentId}`)
-        const editCommentInput = document.querySelector(`#editCommentInput_${commentId}`)
+        const deleteButton = document.querySelector(`#delete-${commentId}`);
+        const confirmButton = document.querySelector(`#confirm-${commentId}`);
+        const cancelButton = document.querySelector(`#cancel-${commentId}`);
+        const editCommentInput = document.querySelector(`#editCommentInput_${commentId}`);
         button.addEventListener('click', async () => {
-            editInput.hidden = false
-            commentText.hidden = false
-            writeButton.hidden = false
-            deleteButton.hidden = false
-            editCommentInput.hidden = true
-        
-            confirmButton.hidden = true
-            cancelButton.hidden = true
-        })
-    })
+            editInput.hidden = false;
+            commentText.hidden = false;
+            writeButton.hidden = false;
+            deleteButton.hidden = false;
+            editCommentInput.hidden = true;
+
+            confirmButton.hidden = true;
+            cancelButton.hidden = true;
+        });
+    });
     const likeButton = document.getElementById('arrowUp'); // 여기서 likeButton을 찾음
 
     likeButton.addEventListener('click', () => {
@@ -374,11 +381,10 @@ const currentPostId = pagePostId.substr(4);
 
 async function clickLikeButton() {
     try {
-        const response = await fetch(`/post-like/${currentPostId}`, {
+        const response = await fetch(`http://localhost:3000/post-like/${currentPostId}`, {
             method: 'post',
             headers: {
-                Authorization:
-                    `Bearer ${TOKEN}`,
+                Authorization: `Bearer ${TOKEN}`,
             },
         });
         const jsonData = await response.json();
@@ -401,19 +407,18 @@ async function clickLikeButton() {
 }
 
 // 게시글 status(해결, 미해결) 바꾸기
-const statusButton = document.getElementById('statusButton')
+const statusButton = document.getElementById('statusButton');
 statusButton.addEventListener('click', () => {
     clickStatusButton();
 });
-console.log(statusButton)
+console.log(statusButton);
 
 async function clickStatusButton() {
     try {
-        const response = await fetch(`${POST_API}/${currentPostId}/status`, {
+        const response = await fetch(`http://localhost:3000${POST_API}/${currentPostId}/status`, {
             method: 'put',
             headers: {
-                Authorization:
-                    `Bearer ${TOKEN}`,
+                Authorization: `Bearer ${TOKEN}`,
             },
         });
         const jsonData = await response.json();

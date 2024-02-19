@@ -14,6 +14,7 @@
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
         <link href="https://fonts.googleapis.com/css2?family=Anton&display=swap" rel="stylesheet" />
         <link rel="stylesheet" href="../../Auth/css/mainpage.css" />
+        <link rel="stylesheet" href="../../Auth/css/header.css" />
         <link rel="stylesheet" href="../css/admin.css" />
     </head>
 
@@ -37,6 +38,14 @@
                     <button type="button" class="btn btn-outline-light" id="loginButton">
                         log-in
                     </button>
+                    <button
+                        type="button"
+                        class="btn btn-outline-light"
+                        id="logoutButton"
+                        style="display: none"
+                    >
+                        log-out
+                    </button>
                 </div>
             </div>
         </header>
@@ -46,7 +55,7 @@
                 style="width: 250px"
             >
                 <a
-                    href="/"
+                    href="./newAdmin.html"
                     class="d-flex align-items-center mb-3 mb-md-0 me-md-auto text-white text-decoration-none"
                 >
                     <svg class="bi pe-none me-2" width="40" height="32">
@@ -57,7 +66,7 @@
                 <hr />
                 <ul class="nav nav-pills flex-column mb-auto">
                     <li>
-                        <a href="#" class="nav-link text-white">
+                        <a href="./newAdmin.html" class="nav-link text-white">
                             <svg class="bi pe-none me-2" width="16" height="16">
                                 <use xlink:href="#speedometer2"></use>
                             </svg>
@@ -65,11 +74,27 @@
                         </a>
                     </li>
                     <li>
-                        <a href="#" class="nav-link text-white">
+                        <a href="./bannedUser.html" class="nav-link text-white">
                             <svg class="bi pe-none me-2" width="16" height="16">
                                 <use xlink:href="#table"></use>
                             </svg>
                             Banned User
+                        </a>
+                    </li>
+                    <li>
+                        <a href="./warningPost.html" class="nav-link text-white">
+                            <svg class="bi pe-none me-2" width="16" height="16">
+                                <use xlink:href="#table"></use>
+                            </svg>
+                            Warning Post
+                        </a>
+                    </li>
+                    <li>
+                        <a href="../../Banner/html/bannerList.html" class="nav-link text-white">
+                            <svg class="bi pe-none me-2" width="16" height="16">
+                                <use xlink:href="#table"></use>
+                            </svg>
+                            Banner
                         </a>
                     </li>
                 </ul>
@@ -78,8 +103,7 @@
             <main class="main">
                 <div class="admin-box">
                     <h1>BANNED USER LIST</h1>
-                    <div class="userList">
-                    </div>
+                    <div class="userList"></div>
                     <!-- 테이블 예시 -->
                     <!-- <table class="userTable">
                         <caption>

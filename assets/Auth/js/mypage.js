@@ -4,7 +4,6 @@ function logout() {
 }
 
 const USER_API = '/user';
-const USER_ID = 2;
 const TOKEN =
     sessionStorage.getItem('accessToken') ||
     `eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NCwidHlwZSI6ImFjY2VzcyIsImlhdCI6MTcwNjc2MDQ3NiwiZXhwIjoxNzA2NzYwNzc2fQ.j5dxoMx--o6U2KRir4dm7013p4fszOUqVvH0CGmq2BI`;
@@ -42,22 +41,6 @@ const getPost = async () => {
     return data.post;
 };
 
-const uploadUserProfile = async (data) => {
-    const response = await fetch(`${USER_API}/profile/${USER_ID}`, {
-        method: 'POST',
-        headers: {
-            Authorization: `Bearer ${TOKEN}`,
-        },
-        body: data,
-    });
-    const responseJson = await response.json();
-    if (!response.ok) {
-        alert(`${data.message}`);
-        throw new Error('서버 오류');
-    }
-    return responseJson;
-};
-
 const defaultDisplay = async () => {
     try {
         const response = await fetch(`${USER_API}/userinfo`, {
@@ -69,7 +52,7 @@ const defaultDisplay = async () => {
 
         const responseData = await response.json();
         console.log(responseData);
-
+        const USER_ID = responseData.id;
         const posts = responseData.posts;
         const postProject = responseData.projectPost;
         if (!response.ok) {
@@ -82,7 +65,8 @@ const defaultDisplay = async () => {
             nickname.placeholder = responseData.nickname;
             password.placeholder = '*******';
             passwordConfirm.placeholder = '********';
-            uploadImage.src = responseData.profileImage || './images/profile2.png';
+            uploadImage.src =
+                responseData.profileImage || './images/KakaoTalk_20240219_035136481.png';
 
             posts.forEach((post) => {
                 const box = document.createElement('div');
@@ -112,86 +96,74 @@ const defaultDisplay = async () => {
 
                 `;
                 postBoxes.appendChild(box);
-                postBoxes.appendChild(hr);
-            });
-
-            postProject.forEach((post) => {
-                console.log(post);
-                const box = document.createElement('div');
-                const hr = document.createElement('hr');
-                box.className = 'box1';
-
-                box.innerHTML = `
-                <div class="imgBox">
-                    <img src="${post.image}" alt="" />
-                </div>
-                    <div class="title">${post.title}</div>
-                    <div class="viewAndLike">
-                        <div class="views">
-                            <div class="view">
-                                <img src="./images/view.png" alt="" />
-                            </div>
-                            <div>${post.hitCount}</div>
-                        </div>
-                        <div class="likes">
-                            <div class="like">
-                                <img src="./images/like.png" alt="" />
-                            </div>
-                            <div>${post.likes}</div>
-                        </div>
-                    </div>
-                </div>
-                `;
-                postProjectBoxes.appendChild(box);
-                postProjectBoxes.appendChild(hr);
             });
         }
-    } catch (error) {
-        alert('서버 에러');
-        console.error(error);
-    }
-};
 
-const modifyUserInfo = async () => {
-    try {
-        const data = {
-            email: email.value,
-            password: password.value,
-            passwordConfirm: password.value,
-            nickname: nickname.value,
+        const uploadUserProfile = async (data) => {
+            const response = await fetch(`${USER_API}/profile/${USER_ID}`, {
+                method: 'POST',
+                headers: {
+                    Authorization: `Bearer ${TOKEN}`,
+                },
+                body: data,
+            });
+            const responseJson = await response.json();
+            if (!response.ok) {
+                alert(`${data.message}`);
+                throw new Error('서버 오류');
+            }
+            if (response.ok) {
+                alert(`${data.message}`);
+                location.reload();
+            }
+            return responseJson;
         };
-        const response = await fetch(`${USER_API}/${USER_ID}/update`, {
-            method: 'PUT',
-            headers: {
-                'Content-Type': 'application/json',
-                Authorization: `Bearer ${TOKEN}`,
-            },
-            body: JSON.stringify(data),
-        });
-        const responseData = await response.json();
-        if (!response.ok) alert(`${responseData.message}`);
 
-        if (response.ok) {
-            alert(`${responseData.message}`);
-            location.reload();
-        }
+        const modifyUserInfo = async () => {
+            try {
+                const data = {
+                    email: email.value,
+                    password: password.value,
+                    passwordConfirm: password.value,
+                    nickname: nickname.value,
+                };
+                const response = await fetch(`${USER_API}/${USER_ID}/update`, {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        Authorization: `Bearer ${TOKEN}`,
+                    },
+                    body: JSON.stringify(data),
+                });
+                const responseData = await response.json();
+                if (!response.ok) alert(`${responseData.message}`);
+
+                if (response.ok) {
+                    alert(`${responseData.message}`);
+                    location.reload();
+                }
+            } catch (error) {
+                alert('서버 에러');
+                console.error(error);
+            }
+        };
+
+        modifyButton.addEventListener('click', modifyUserInfo);
+        uploadImage.addEventListener('click', () => {
+            fileInput.click();
+        });
+
+        fileInput.addEventListener('change', async (event) => {
+            const selectedFile = event.target.files[0];
+
+            const formData = new FormData();
+            formData.append('image', selectedFile);
+            await uploadUserProfile(formData);
+        });
     } catch (error) {
         alert('서버 에러');
         console.error(error);
     }
 };
-
-modifyButton.addEventListener('click', modifyUserInfo);
-uploadImage.addEventListener('click', () => {
-    fileInput.click();
-});
-
-fileInput.addEventListener('change', async (event) => {
-    const selectedFile = event.target.files[0];
-
-    const formData = new FormData();
-    formData.append('image', selectedFile);
-    await uploadUserProfile(formData);
-});
 
 defaultDisplay();

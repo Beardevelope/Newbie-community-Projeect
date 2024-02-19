@@ -7,18 +7,42 @@ a {
     padding: 20px;
 }
 
+.main .mainWrap {
+    width: calc(100% - 220px);
+    background-color: #e6e6e6;
+    padding: 20px;
+}
+
 .addStackBtn,
 .addQuestionBtn {
     display: inline-flex;
     border: 1px solid black;
-    padding: 5px;
+    padding: 8px 16px;
     border-radius: 5px;
+    font-size: 14px;
     color: black;
+    background-color: white;
 }
 
 .addStackBtn:hover,
 .addQuestionBtn:hover {
     color: white;
     background-color: black;
-    transition: all 0.5s;
+    transition: all 0.3s;
+}
+
+.submitBtn {
+    display: inline-flex;
+    border: 1px solid white;
+    padding: 8px 16px;
+    border-radius: 5px;
+    font-size: 18px;
+    color: white;
+    background-color: black;
+}
+.submitBtn:hover {
+    color: black;
+    background-color: white;
+    transition: all 0.3s;
+    border: 1px solid black;
 }

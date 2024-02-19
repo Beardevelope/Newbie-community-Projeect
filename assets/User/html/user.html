@@ -13,7 +13,9 @@
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
         <link href="https://fonts.googleapis.com/css2?family=Anton&display=swap" rel="stylesheet" />
+        <link rel="stylesheet" href="../../Auth/css/header.css" />
         <link rel="stylesheet" href="../css/user.css" />
+        <link rel="stylesheet" href="../../Auth/css/banner.css" />
     </head>
     <body>
         <header class="header">
@@ -23,20 +25,20 @@
                     <div>Roomdevelope</div>
                 </div>
                 <form
-                action="https://www.google.com/search"
-                method="GET"
-                target="_blank"
-                class="d-flex search-box"
-            >
-                <input
-                    class="form-control me-2"
-                    type="search"
-                    placeholder="Google search box"
-                    aria-label="Search"
-                    name="q"
-                />
-                <button type="submit" class="btn btn-outline-light">Search</button>
-            </form>
+                    action="https://www.google.com/search"
+                    method="GET"
+                    target="_blank"
+                    class="d-flex search-box"
+                >
+                    <input
+                        class="form-control me-2"
+                        type="search"
+                        placeholder="Google search box"
+                        aria-label="Search"
+                        name="q"
+                    />
+                    <button type="submit" class="btn btn-outline-light">Search</button>
+                </form>
                 <div class="buttons">
                     <button type="button" class="btn btn-outline-light" id="loginButton">
                         log-in
@@ -44,7 +46,12 @@
                     <button type="button" class="btn btn-outline-light" id="signupButton">
                         sign-up
                     </button>
-                    <button type="button" class="btn btn-outline-light" id="logoutButton" style="display: none;">
+                    <button
+                        type="button"
+                        class="btn btn-outline-light"
+                        id="logoutButton"
+                        style="display: none"
+                    >
                         log-out
                     </button>
                 </div>
@@ -75,14 +82,6 @@
                         </a>
                     </li>
                     <li>
-                        <a href="../../Tag/html/tag.html" class="nav-link text-white">
-                            <svg class="bi pe-none me-2" width="16" height="16">
-                                <use xlink:href="#speedometer2"></use>
-                            </svg>
-                            Tag
-                        </a>
-                    </li>
-                    <li>
                         <a href="../../Post/html/postList.html" class="nav-link text-white">
                             <svg class="bi pe-none me-2" width="16" height="16">
                                 <use xlink:href="#speedometer2"></use>
@@ -91,7 +90,18 @@
                         </a>
                     </li>
                     <li>
-                        <a href="../../ProjectPost/projectPostMain.html" class="nav-link text-white">
+                        <a href="../../Tag/html/tag.html" class="nav-link text-white">
+                            <svg class="bi pe-none me-2" width="16" height="16">
+                                <use xlink:href="#speedometer2"></use>
+                            </svg>
+                            Tag
+                        </a>
+                    </li>
+                    <li>
+                        <a
+                            href="../../ProjectPost/projectPostMain.html"
+                            class="nav-link text-white"
+                        >
                             <svg class="bi pe-none me-2" width="16" height="16">
                                 <use xlink:href="#table"></use>
                             </svg>
@@ -134,25 +144,30 @@
                 </div>
             </div>
             <main class="main">
-                <div style="height: 100px; font-size: 50px">User</div>
-                <!-- <div style="height: 50px; width: 700px; height: 70px;">
-                    A tag is a keyword or label that categorizes your question with other, similar
-                    questions. Using the right tags makes it easier for others to find and answer
-                    your question.
-                </div> -->
-                <div
-                    class="orderButton"
-                    style="height: 50px; width: 1020px"
-                >
-                    <input class="input" onkeyup="if(window.event.keyCode==13){onClick()}" type="search" placeholder="Search" aria-label="Search" />
-                    <button class="searchButton" type="button" style="margin-right: 650px;">Search</button>
-                    <button class="nameButton">name</button>
-                    <button class="newButton">new</button>
+                <div class="mainBox">
+                    <div style="font-size: 50px">User</div>
+                    <div class="orderButton">
+                        <input
+                            class="input"
+                            onkeyup="if(window.event.keyCode==13){onClick()}"
+                            type="search"
+                            placeholder="Search"
+                            aria-label="Search"
+                        />
+                        <button class="searchButton" type="button">Search</button>
+                        <button class="nameButton">name</button>
+                        <button class="newButton">new</button>
+                    </div>
+                    <div class="tagList">
+                        <div id="user" class="row row-cols-1 row-cols-md-4 g-4"></div>
+                    </div>
+                    <div id="pagination-container" class="pagination"></div>
                 </div>
-                <div class="tagList">
-                    <div id="user" class="row row-cols-1 row-cols-md-4 g-4" style="width: 1205px;"></div>
+                <div class="banners">
+                    <a href="#" class="sideBanner">
+                        <span class="txt-label"></span>
+                    </a>
                 </div>
-                <div id="pagination-container" class="pagination"></div>
             </main>
         </div>
         <script
@@ -163,5 +178,6 @@
     </body>
     <script src="../js/user.js"></script>
     <script src="../../Post/js/mdo.js"></script>
+    <script src="../../Auth/js/banner.js"></script>
     <script src="../../Post/js/transfer.js"></script>
 </html>

@@ -22,7 +22,7 @@ const getpostList = async () => {
 const listpost = async () => {
     try {
         const posts = await getpostList();
-        if (posts.length > 0) {
+        if (posts.posts.length > 0) {
             const postTable = document.createElement('table');
             postTable.className = 'postTable';
 

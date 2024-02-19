@@ -24,7 +24,7 @@ async function handleClickBanner(bannerId) {
 
 // 배너 랜덤 출력 및 광고 페이지 연결
 async function displayRandomBanner() {
-    const response = await fetch('/banner/random');
+    const response = await fetch('http://localhost:3000/banner/random');
     const data = await response.json();
 
     const bannerId = data.id;

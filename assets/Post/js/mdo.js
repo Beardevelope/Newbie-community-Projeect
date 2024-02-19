@@ -24,13 +24,13 @@ const userId = extractUserId(accessToken);
 
 async function findByUserId() {
     try {
-        const response = await fetch(`/user/by-userId/${userId}`, {
+        const response = await fetch(`http://localhost:3000/user/by-userId/${userId}`, {
             accept: 'application/json',
         });
         const jsonData = await response.json();
 
         dropdown.innerHTML = `<a
-                        href="#"
+                        href="#"    
                         class="d-flex align-items-center text-white text-decoration-none dropdown-toggle"
                         data-bs-toggle="dropdown"
                         aria-expanded="false"
@@ -69,7 +69,7 @@ function addEventListenerSignOut() {
         loginButton.style.display = 'inline-block';
         signupButton.style.display = 'inline-block';
         logoutButton.style.display = 'none';
-        alert('로그아웃 하였습니다.')
+        alert('로그아웃 하였습니다.');
         window.location.reload();
     });
 }

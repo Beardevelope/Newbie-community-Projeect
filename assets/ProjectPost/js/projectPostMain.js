@@ -1,4 +1,4 @@
-const accessToken = sessionStorage.getItem('accessToken');
+// const accessToken = sessionStorage.getItem('accessToken');
 
 async function fetchUserInfo() {
     try {
@@ -175,7 +175,7 @@ async function getPages(data) {
             pageNum.className = 'pageNum';
 
             if (i === 1) {
-                pageNum.className = 'pageNum active';
+                pageNum.className = 'pageNum activeBtn';
             }
 
             pageNum.onclick = function (event) {

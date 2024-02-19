@@ -44,7 +44,7 @@ async function postList(orderAndFilter) {
             return;
         }
 
-        const response = await fetch(`/post?page=1`, {
+        const response = await fetch(`http://localhost:3000/post?page=1`, {
             accept: 'application/json',
         });
         const jsonData = await response.json();
@@ -208,9 +208,7 @@ function goToPage(page) {
     // 엘라스틱 서치
     if (searchInput.value) {
         if (receiveOrderSearch.length > 0) {
-            searchPost(
-                `${receiveOrderSearch[receiveOrderSearch.length - 1]}&page=${currentPage}`,
-            );
+            searchPost(`${receiveOrderSearch[receiveOrderSearch.length - 1]}&page=${currentPage}`);
             updatePagination();
             return;
         }

@@ -8,7 +8,6 @@
 }
 
 .main {
-    background-color: gray;
     width: 100%;
 }
 
@@ -37,15 +36,6 @@
 .big-box {
     display: flex;
     min-height: 100vh;
-}
-body,
-html {
-    height: 100%;
-    margin: 0;
-}
-
-body {
-    background-color: #efefef;
 }
 
 .total-header {
@@ -90,8 +80,6 @@ body {
 .main {
     display: flex;
     flex-wrap: wrap;
-    background-color: gray;
-    padding: var(--gap);
     gap: 40px;
 }
 

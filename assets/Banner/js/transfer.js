@@ -8,10 +8,10 @@ const logoutButton = document.querySelector('#logoutButton')
  */
 
 loginButton.addEventListener('click', () => {
-    window.location.href = './auth.html'; //나중에 ip로 경로 관리
+    window.location.href = '../../Auth/auth.html'; //나중에 ip로 경로 관리
 })
 signupButton.addEventListener('click', () => {
-    window.location.href = './auth.html'; //나중에 ip로 경로 관리
+    window.location.href = '../../Auth/auth.html'; //나중에 ip로 경로 관리
 })
 
 /**
@@ -30,4 +30,4 @@ logoutButton.addEventListener('click', function () {
     loginButton.style.display = 'inline-block';
     signupButton.style.display = 'inline-block';
     logoutButton.style.display = 'none';
-  });
+});

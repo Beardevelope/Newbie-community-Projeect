@@ -3,13 +3,13 @@ const secondProject = document.getElementById('secondProject');
 
 async function fetchProject() {
     try {
-        console.time('project-post')
+        console.time('project-post');
         const response = await fetch(`/project-post?page=1`, {
             method: 'GET',
         });
 
         const data = await response.json();
-        console.timeEnd('project-post')
+        console.timeEnd('project-post');
         return data.sortPost;
     } catch (error) {
         console.error('에러 --- ', error);
@@ -58,13 +58,13 @@ async function getProject() {
     <div class="viewAndLike">
         <div class="views">
             <div class="view">
-                <img src="./images/view.png" alt="" />
+                <img src="./Auth/images/view.png" alt="" />
             </div>
             <div>${fetchProjectData[i].hitCount}</div>
         </div>
         <div class="likes">
             <div class="like">
-                <img src="./images/like.png" alt="" />
+                <img src="./Auth/images/like.png" alt="" />
             </div>
             <div class='likeCount'>${fetchLikeData}</div>
         </div>
@@ -73,7 +73,7 @@ async function getProject() {
         projectBox.appendChild(contentBox);
 
         contentBox.addEventListener('click', () => {
-            window.location.href = `../projectPost/projectPostDetail.html?id=${fetchProjectData[i].id}`;
+            window.location.href = `../ProjectPost/projectPostDetail.html?id=${fetchProjectData[i].id}`;
         });
     }
 }
