@@ -29,7 +29,7 @@ async function findByUserId() {
         });
         const jsonData = await response.json();
 
-        if (!jsonData) {
+        if (jsonData == null) {
             dropdown.innerHTML = `<a
                         href="#"    
                         class="d-flex align-items-center text-white text-decoration-none dropdown-toggle"
