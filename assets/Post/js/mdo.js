@@ -35,13 +35,15 @@ async function findByUserId() {
                         data-bs-toggle="dropdown"
                         aria-expanded="false"
                         >
-                            <img
-                                src="${jsonData.profileImage}"
-                                alt=""
-                                width="32"
-                                height="32"
-                                class="rounded-circle me-2"
-                            />
+                            <div class="profileImg>
+                            height="32">
+                                <img
+                                    src="${jsonData.profileImage}"
+                                    alt=""
+                                    
+                                    class="rounded-circle me-2"
+                                />
+                            </div>
                             <strong>${jsonData.nickname}</strong>
                         </a>
                         <ul class="dropdown-menu dropdown-menu-dark text-small shadow">

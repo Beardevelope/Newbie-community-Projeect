@@ -11,6 +11,11 @@
     background-color: white !important;
 }
 
+.profileImage {
+    width: 32px;
+    height: 32px;
+}
+
 .main {
     width: 100%;
     display: flex;
