@@ -2,7 +2,7 @@
 const title = document.querySelector('#title');
 const image = document.querySelector('#image');
 const tags = document.querySelector('#tags');
-const TOKEN = sessionStorage.getItem('accessToken');
+const ACCESS_TOKEN = sessionStorage.getItem('accessToken');
 
 let editor;
 
@@ -56,7 +56,7 @@ async function createPost() {
         const response = await fetch(`/post`, {
             method: 'post',
             headers: {
-                Authorization: `Bearer ${TOKEN}`,
+                Authorization: `Bearer ${ACCESS_TOKEN}`,
             },
             body: formData,
         });

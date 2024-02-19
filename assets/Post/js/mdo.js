@@ -20,11 +20,11 @@ function extractUserId(accessToken) {
     }
 }
 
-const userId = extractUserId(accessToken);
+const USER_ID = extractUserId(accessToken);
 
 async function findByUserId() {
     try {
-        const response = await fetch(`/user/by-userId/${userId}`, {
+        const response = await fetch(`/user/by-userId/${USER_ID}`, {
             accept: 'application/json',
         });
         const jsonData = await response.json();
@@ -57,7 +57,7 @@ async function findByUserId() {
         alert(error.message);
     }
 }
-if (userId) {
+if (USER_ID) {
     findByUserId();
 }
 
