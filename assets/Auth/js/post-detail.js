@@ -16,7 +16,7 @@ const commentSubmitBtn = document.querySelector('.commentSubmit');
 const commentTextArea = document.querySelector('#commentInput');
 
 const getPost = async () => {
-    const response = await fetch(`{POST_API}/${POST_ID}`, {
+    const response = await fetch(`${POST_API}/${POST_ID}`, {
         method: 'GET',
     });
     const data = await response.json();
