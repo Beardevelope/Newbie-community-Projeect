@@ -13,6 +13,7 @@
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
         <link href="https://fonts.googleapis.com/css2?family=Anton&display=swap" rel="stylesheet" />
+        <link rel="stylesheet" href="../../Auth/css/header.css">
         <link rel="stylesheet" href="../css/postList.css" />
         <link rel="stylesheet" href="../../Auth/css/banner.css" />
     </head>
@@ -116,54 +117,40 @@
                 </ul>
                 <hr />
                 <div class="dropdown">
-                    <a
-                        href="#"
-                        class="d-flex align-items-center text-white text-decoration-none dropdown-toggle"
-                        data-bs-toggle="dropdown"
-                        aria-expanded="false"
-                    >
-                        <img
-                            src="https://github.com/mdo.png"
-                            alt=""
-                            width="32"
-                            height="32"
-                            class="rounded-circle me-2"
-                        />
-                        <strong>mdo</strong>
-                    </a>
-                    <ul class="dropdown-menu dropdown-menu-dark text-small shadow">
-                        <li><a class="dropdown-item" href="#">New project...</a></li>
-                        <li><a class="dropdown-item" href="#">Settings</a></li>
-                        <li><a class="dropdown-item" href="#">Profile</a></li>
-                        <li><hr class="dropdown-divider" /></li>
-                        <li><a class="dropdown-item" id="signOut">Sign out</a></li>
-                    </ul>
+                    
                 </div>
             </div>
             <main class="main">
-                <div class="buttonsDown">
-                    <button id="newestButtonSearch" class="btn btn-outline-light" style="display: none;"><span>newest</span>
-                    <button id="newestButton" class="btn btn-outline-light"><span>newest</span>
-                    <button id="answeredButton" class="btn btn-outline-light"><span>answered</span>
-                    <button id="unAnsweredButton" class="btn btn-outline-light"><span>unAnswered</span>
-                    <button id="filterButton" class="btn btn-outline-light"><span>&#8801;filter</span>
-                    <button id="askButton" class="btn btn-outline-light"><span>Ask a Question</span>
+                <div class="mainBox">
+                    <div class="buttonsDown">
+                        <button id="newestButtonSearch" class="btn btn-outline-light" style="display: none;"><span>newest</span>
+                        <button id="newestButton" class="btn btn-outline-light"><span>newest</span>
+                        <button id="answeredButton" class="btn btn-outline-light"><span>answered</span>
+                        <button id="unAnsweredButton" class="btn btn-outline-light"><span>unAnswered</span>
+                        <button id="filterButton" class="btn btn-outline-light"><span>&#8801;filter</span>
+                        <button id="askButton" class="btn btn-outline-light"><span>Ask a Question</span>
+                    </div>
+                    <form class="d-flex search-box">
+                        <input
+                            id = "searchInput"
+                            class="form-control me-2"
+                            type="search"
+                            placeholder="Search"
+                            aria-label="Search"
+                        />
+                        <button id="searchButton" type="button" class="btn btn-outline-dark">Search</button>
+                    </form>
+                    <div class= "postBox">
+                    <div id="questionsList"></div>
+                    <div id="searchList" style="display: none;"></div>
+                    </div>
+                    <div id="pagination-container"></div>
                 </div>
-                <form class="d-flex search-box">
-                    <input
-                        id = "searchInput"
-                        class="form-control me-2"
-                        type="search"
-                        placeholder="Search"
-                        aria-label="Search"
-                    />
-                    <button id="searchButton" type="button" class="btn btn-outline-dark">Search</button>
-                </form>
-                <div class= "postBox">
-                <div id="questionsList"></div>
-                <div id="searchList" style="display: none;"></div>
+                <div class="banners">
+                    <a href="#" class="sideBanner">
+                        <span class="txt-label"></span>
+                    </a>
                 </div>
-                <div id="pagination-container"></div>
             </main>
             <!-- 모달 창 필터-->
         <div id="filterModal" class="modal">
@@ -236,11 +223,7 @@
                 <button type="button" class="close-button" onclick="closeAskModal()">Close</button>
             </div>
         </div>
-        <div class="banners">
-            <a href="#" class="sideBanner">
-                <span class="txt-label"></span>
-            </a>
-        </div>
+       
         </div>
         <script src="https://cdn.ckeditor.com/ckeditor5/36.0.1/classic/ckeditor.js"></script>
         <script

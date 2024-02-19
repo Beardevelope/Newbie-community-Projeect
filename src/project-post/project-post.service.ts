@@ -8,6 +8,7 @@ import _ from 'lodash';
 import { ProjectApplicant } from './entities/project-applicant.entity';
 import { UploadServiceService } from 'src/upload-service/upload-service.service';
 import { AlarmService } from 'src/alarm/alarm.service';
+import { Cron } from '@nestjs/schedule';
 
 @Injectable()
 export class ProjectPostService {
@@ -46,7 +47,7 @@ export class ProjectPostService {
 
     // 토이프로젝트 목록 조회
     async findAll(page: number) {
-        console.time('project-post')
+        console.time('project-post');
         const pageSize = 10;
 
         const skip = (page - 1) * pageSize;
@@ -56,7 +57,7 @@ export class ProjectPostService {
             skip: skip,
             take: pageSize,
         });
-        console.timeEnd('project-post')
+        console.timeEnd('project-post');
         return { sortPost, total, page, pageSize, lastPage: Math.ceil(total / pageSize) };
     }
 
@@ -69,7 +70,6 @@ export class ProjectPostService {
 
     // 내가 작성한 토이프로젝트
     async findMyProject(userId: number) {
-
         const result = await this.projectPostRepository.find({
             where: { userId },
             order: { createdAt: 'DESC' },
@@ -282,5 +282,11 @@ export class ProjectPostService {
         }
 
         return result;
+    }
+
+    // 매주 일요일 자정에 모집완료 글 삭제
+    @Cron('0 0 0 * * 0')
+    async removeApplicantDone() {
+        await this.projectPostRepository.delete({ status: '모집완료' });
     }
 }

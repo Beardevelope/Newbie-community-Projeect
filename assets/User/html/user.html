@@ -13,7 +13,9 @@
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
         <link href="https://fonts.googleapis.com/css2?family=Anton&display=swap" rel="stylesheet" />
+        <link rel="stylesheet" href="../../Auth/css/header.css" />
         <link rel="stylesheet" href="../css/user.css" />
+        <link rel="stylesheet" href="../../Auth/css/banner.css" />
     </head>
     <body>
         <header class="header">
@@ -38,10 +40,20 @@
                     <button type="submit" class="btn btn-outline-light">Search</button>
                 </form>
                 <div class="dropdownAlarm">
-                    <button class="btn btn-outline-light dropdown-toggle" type="button" id="notificationDropdown"
-                        data-bs-toggle="dropdown" aria-expanded="false"> 알림 </button>
-                    <ul class="dropdown-menu" aria-labelledby="notificationDropdown" id="notificationList">
-                    </ul>
+                    <button
+                        class="btn btn-outline-light dropdown-toggle"
+                        type="button"
+                        id="notificationDropdown"
+                        data-bs-toggle="dropdown"
+                        aria-expanded="false"
+                    >
+                        알림
+                    </button>
+                    <ul
+                        class="dropdown-menu"
+                        aria-labelledby="notificationDropdown"
+                        id="notificationList"
+                    ></ul>
                 </div>
                 <div class="buttons">
                     <button type="button" class="btn btn-outline-light" id="loginButton">
@@ -122,60 +134,33 @@
                     </li>
                 </ul>
                 <hr />
-                <div class="dropdown">
-                    <a
-                        href="#"
-                        class="d-flex align-items-center text-white text-decoration-none dropdown-toggle"
-                        data-bs-toggle="dropdown"
-                        aria-expanded="false"
-                    >
-                        <img
-                            src="https://github.com/mdo.png"
-                            alt=""
-                            width="32"
-                            height="32"
-                            class="rounded-circle me-2"
-                        />
-                        <strong>mdo</strong>
-                    </a>
-                    <ul class="dropdown-menu dropdown-menu-dark text-small shadow">
-                        <li><a class="dropdown-item" href="#">New project...</a></li>
-                        <li><a class="dropdown-item" href="#">Settings</a></li>
-                        <li><a class="dropdown-item" href="#">Profile</a></li>
-                        <li><hr class="dropdown-divider" /></li>
-                        <li><a class="dropdown-item" id="signOut">Sign out</a></li>
-                    </ul>
-                </div>
+                <div class="dropdown"></div>
             </div>
             <main class="main">
-                <div style="height: 100px; font-size: 50px">User</div>
-                <!-- <div style="height: 50px; width: 700px; height: 70px;">
-                    A tag is a keyword or label that categorizes your question with other, similar
-                    questions. Using the right tags makes it easier for others to find and answer
-                    your question.
-                </div> -->
-                <div class="orderButton" style="height: 50px; width: 1020px">
-                    <input
-                        class="input"
-                        onkeyup="if(window.event.keyCode==13){onClick()}"
-                        type="search"
-                        placeholder="Search"
-                        aria-label="Search"
-                    />
-                    <button class="searchButton" type="button" style="margin-right: 650px">
-                        Search
-                    </button>
-                    <button class="nameButton">name</button>
-                    <button class="newButton">new</button>
+                <div class="mainBox">
+                    <div style="font-size: 50px">User</div>
+                    <div class="orderButton">
+                        <input
+                            class="input"
+                            onkeyup="if(window.event.keyCode==13){onClick()}"
+                            type="search"
+                            placeholder="Search"
+                            aria-label="Search"
+                        />
+                        <button class="searchButton" type="button">Search</button>
+                        <!-- <button class="nameButton">name</button>
+                        <button class="newButton">new</button> -->
+                    </div>
+                    <div class="tagList">
+                        <div id="user" class="row row-cols-1 row-cols-md-4 g-4"></div>
+                    </div>
+                    <div id="pagination-container" class="pagination"></div>
                 </div>
-                <div class="tagList">
-                    <div
-                        id="user"
-                        class="row row-cols-1 row-cols-md-4 g-4"
-                        style="width: 1205px"
-                    ></div>
+                <div class="banners">
+                    <a href="#" class="sideBanner">
+                        <span class="txt-label"></span>
+                    </a>
                 </div>
-                <div id="pagination-container" class="pagination"></div>
             </main>
         </div>
         <script
@@ -186,6 +171,7 @@
     </body>
     <script src="../js/user.js"></script>
     <script src="../../Post/js/mdo.js"></script>
+    <script src="../../Auth/js/banner.js"></script>
     <script src="../../Post/js/transfer.js"></script>
     <script src="../../Banner/js/alarm.js"></script>
 </html>

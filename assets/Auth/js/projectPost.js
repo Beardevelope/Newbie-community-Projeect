@@ -58,13 +58,13 @@ async function getProject() {
     <div class="viewAndLike">
         <div class="views">
             <div class="view">
-                <img src="./images/view.png" alt="" />
+                <img src="./Auth/images/view.png" alt="" />
             </div>
             <div>${fetchProjectData[i].hitCount}</div>
         </div>
         <div class="likes">
             <div class="like">
-                <img src="./images/like.png" alt="" />
+                <img src="./Auth/images/like.png" alt="" />
             </div>
             <div class='likeCount'>${fetchLikeData}</div>
         </div>

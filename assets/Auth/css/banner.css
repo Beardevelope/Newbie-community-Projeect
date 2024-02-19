@@ -14,3 +14,7 @@
     height: 350px;
     background-color: #ffffff;
 }
+
+.sideBanner img {
+    width: 100%;
+}

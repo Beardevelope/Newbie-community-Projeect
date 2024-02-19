@@ -56,12 +56,9 @@ async function fetchStack(projectId) {
 
 async function increaseHitCount(projectId) {
     try {
-        const response = await fetch(
-            `/project-post/${projectId}/increaseHitCount`,
-            {
-                method: 'PATCH',
-            },
-        );
+        const response = await fetch(`/project-post/${projectId}/increaseHitCount`, {
+            method: 'PATCH',
+        });
     } catch (error) {
         console.error('에러 --- ', error);
         throw new error(error);
@@ -354,17 +351,14 @@ async function editProjectForm(projectId) {
                 numberOfPeople = getStack[i].numberOfPeople;
             }
 
-            const responseStack = await fetch(
-                `/need-info/${projectId}/${getStack[i].id}`,
-                {
-                    method: 'PATCH',
-                    headers: {
-                        Authorization: `Bearer ${accessToken}`,
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify({ numberOfPeople }),
+            const responseStack = await fetch(`/need-info/${projectId}/${getStack[i].id}`, {
+                method: 'PATCH',
+                headers: {
+                    Authorization: `Bearer ${accessToken}`,
+                    'Content-Type': 'application/json',
                 },
-            );
+                body: JSON.stringify({ numberOfPeople }),
+            });
         }
 
         const editQuestions = document.querySelectorAll('.editQuestion input');
@@ -376,17 +370,14 @@ async function editProjectForm(projectId) {
                 editQuestion = getQuestion[j].question;
             }
 
-            const responseQuestion = await fetch(
-                `/question/${projectId}/${getQuestion[j].id}`,
-                {
-                    method: 'PATCH',
-                    headers: {
-                        Authorization: `Bearer ${accessToken}`,
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify({ question: editQuestion }),
+            const responseQuestion = await fetch(`/question/${projectId}/${getQuestion[j].id}`, {
+                method: 'PATCH',
+                headers: {
+                    Authorization: `Bearer ${accessToken}`,
+                    'Content-Type': 'application/json',
                 },
-            );
+                body: JSON.stringify({ question: editQuestion }),
+            });
         }
         alert('수정 완료');
 
@@ -453,15 +444,12 @@ async function postStack(projectId, questionId, selectStack, answer) {
 
 async function postApplicant(projectId) {
     try {
-        const applicant = await fetch(
-            `/project-post/${projectId}/projectApplicant`,
-            {
-                method: 'POST',
-                headers: {
-                    Authorization: `Bearer ${accessToken}`,
-                },
+        const applicant = await fetch(`/project-post/${projectId}/projectApplicant`, {
+            method: 'POST',
+            headers: {
+                Authorization: `Bearer ${accessToken}`,
             },
-        );
+        });
 
         const applicantData = await applicant.json();
 
@@ -597,11 +585,10 @@ async function getProjectDetail() {
                             <div class="openModalBtn">지원하기</div>
                         </div>
                     </div>
-                    <div class="contentBox">
-                        <div class ='content'>${data.content}</div>
-                    </div>
                 </div>
-               
+                <div class="contentBox">
+                    <div class ='content'>${data.content}</div>
+                </div>
           `;
 
         const main = document.querySelector('.main');

@@ -29,6 +29,8 @@ const projectView = document.querySelector('.view');
 
 const POST_API = '/post';
 
+const verfyEmailButton = document.querySelector('.email-verify')
+
 const getPost = async () => {
     const response = await fetch(`${POST_API}/${POST_ID}`, {
         method: 'GET',
@@ -41,7 +43,6 @@ const getPost = async () => {
     return data.post;
 };
 
-
 const defaultDisplay = async () => {
     try {
         const response = await fetch(`${USER_API}/userinfo`, {
@@ -53,7 +54,7 @@ const defaultDisplay = async () => {
 
         const responseData = await response.json();
         console.log(responseData);
-        const USER_ID = responseData.id
+        const USER_ID = responseData.id;
         const posts = responseData.posts;
         const postProject = responseData.projectPost;
         if (!response.ok) {
@@ -66,7 +67,8 @@ const defaultDisplay = async () => {
             nickname.placeholder = responseData.nickname;
             password.placeholder = '*******';
             passwordConfirm.placeholder = '********';
-            uploadImage.src = responseData.profileImage || './images/KakaoTalk_20240219_035136481.png';
+            uploadImage.src =
+                responseData.profileImage || './images/KakaoTalk_20240219_035136481.png';
 
             posts.forEach((post) => {
                 const box = document.createElement('div');
@@ -96,38 +98,6 @@ const defaultDisplay = async () => {
 
                 `;
                 postBoxes.appendChild(box);
-                postBoxes.appendChild(hr);
-            });
-
-            postProject.forEach((post) => {
-                console.log(post);
-                const box = document.createElement('div');
-                const hr = document.createElement('hr');
-                box.className = 'box1';
-
-                box.innerHTML = `
-                <div class="imgBox">
-                    <img src="${post.image}" alt="" />
-                </div>
-                    <div class="title">${post.title}</div>
-                    <div class="viewAndLike">
-                        <div class="views">
-                            <div class="view">
-                                <img src="./images/view.png" alt="" />
-                            </div>
-                            <div>${post.hitCount}</div>
-                        </div>
-                        <div class="likes">
-                            <div class="like">
-                                <img src="./images/like.png" alt="" />
-                            </div>
-                            <div>${post.likes}</div>
-                        </div>
-                    </div>
-                </div>
-                `;
-                postProjectBoxes.appendChild(box);
-                postProjectBoxes.appendChild(hr);
             });
         }
 
@@ -146,7 +116,7 @@ const defaultDisplay = async () => {
             }
             if (response.ok) {
                 alert(`${data.message}`);
-                location.reload()
+                location.reload();
             }
             return responseJson;
         };
@@ -193,13 +163,34 @@ const defaultDisplay = async () => {
             await uploadUserProfile(formData);
         });
 
+        verfyEmailButton.addEventListener('click', async () => {
+            const email = prompt('이메일을 입력해주세요:')
+            const data = {
+                email: email
+            }
+            const response = await fetch('/mail/send-verification-email', {
+                method: "POST",
+                headers: {
+                    'Content-Type': 'application/json',
+                    Authorization: `Bearer ${TOKEN}`,
+                },
+                body: JSON.stringify(data),
+            })
+            const responseJson = await response.json()
+            console.log(responseJson)
+            if (!response.ok) {
+                alert(responseJson.message)
+            }
+            if (response.ok) {
+                alert(responseJson.message)
+            }
+        })
+
 
     } catch (error) {
         alert('서버 에러');
         console.error(error);
     }
 };
-
-
 
 defaultDisplay();

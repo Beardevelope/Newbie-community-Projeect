@@ -53,13 +53,13 @@ async function fetchAlarms(oneUserId) {
             headers: {
                 'Content-Type': 'application/json',
                 Authorization: `Bearer ${TOKEN_ACCESS}`,
-            }
+            },
         });
         if (response.ok) {
             const alarms = await response.json();
             // 최대 5개의 알람만 출력
             const alarmsToDisplay = alarms.slice(0, MAX_NOTIFICATIONS);
-            alarmsToDisplay.forEach(alarm => {
+            alarmsToDisplay.forEach((alarm) => {
                 addNotificationToDropdown(alarm.title, alarm.description);
             });
         } else {
@@ -77,8 +77,8 @@ function showAlarm(title, description) {
 
 // 알림 내역 드롭다운에 출력
 function addNotificationToDropdown(title, description) {
-    const notificationList = document.getElementById("notificationList");
-    const newNotification = document.createElement("li");
+    const notificationList = document.getElementById('notificationList');
+    const newNotification = document.createElement('li');
     newNotification.innerHTML = `<strong>${title}</strong>: ${description}`;
     // 최대 알림 수 제한을 위해 추가
     if (notificationList.children.length >= MAX_NOTIFICATIONS) {
@@ -86,7 +86,7 @@ function addNotificationToDropdown(title, description) {
     }
     notificationList.insertBefore(newNotification, notificationList.firstChild);
     // 드롭다운 메뉴 표시
-    document.getElementById("notificationDropdown").classList.add("show");
+    document.getElementById('notificationDropdown').classList.add('show');
 }
 
 initializeSSE(oneUserId);

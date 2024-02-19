@@ -17,7 +17,6 @@ const searchInput = document.getElementById('searchInput');
 const searchButton = document.getElementById('searchButton');
 const TOKEN_ACCESS_POST = sessionStorage.getItem('accessToken');
 
-
 let foundPosts = [];
 let metaData = [];
 
@@ -210,9 +209,7 @@ function goToPage(page) {
     // 엘라스틱 서치
     if (searchInput.value) {
         if (receiveOrderSearch.length > 0) {
-            searchPost(
-                `${receiveOrderSearch[receiveOrderSearch.length - 1]}&page=${currentPage}`,
-            );
+            searchPost(`${receiveOrderSearch[receiveOrderSearch.length - 1]}&page=${currentPage}`);
             updatePagination();
             return;
         }

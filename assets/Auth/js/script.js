@@ -13,7 +13,7 @@ const loginButton = document.querySelector('#login');
 const loginEmail = document.querySelector('.login-email');
 const loginPassword = document.querySelector('.login-password');
 
-const googleButton = document.querySelector('.field.google')
+const googleButton = document.querySelector('.field.google');
 
 const signup = async () => {
     try {
@@ -46,16 +46,16 @@ const signup = async () => {
 
 const login = async () => {
     try {
-        console.log('login2')
+        console.log('login2');
         const data = {
             email: loginEmail.value,
             password: loginPassword.value,
         };
-        console.log('data', data)
+        console.log('data', data);
         const credentials = btoa(`${data.email}:${data.password}`);
         const token = `Basic ${credentials}`;
-        console.log(token)
-        console.log('before')
+        console.log(token);
+        console.log('before');
         const response = await fetch(`/auth/login`, {
             method: 'POST',
             headers: {
@@ -68,26 +68,25 @@ const login = async () => {
 
         if (response.ok) {
             alert(`로그인 성공`);
-            sessionStorage.setItem('accessToken', responseData.accessToken)
+            sessionStorage.setItem('accessToken', responseData.accessToken);
             window.location.href = '../../';
         }
     } catch (error) {
         alert('서버 에러');
-        console.error(error)
+        console.error(error);
     }
 };
 
 const googleLogin = async () => {
     try {
-        window.location.href = '/auth/to-google'
+        window.location.href = '/auth/to-google';
     } catch (error) {
-        console.error(error)
-        alert('사바 에러')
+        console.error(error);
+        alert('사바 에러');
     }
-}
+};
 
-document.addEventListener("DOMContentLoaded", async () => {
-
+document.addEventListener('DOMContentLoaded', async () => {
     pwShowHide.forEach((eyeIcon) => {
         eyeIcon.addEventListener('click', () => {
             let pwFields = eyeIcon.parentElement.parentElement.querySelectorAll('.password');
@@ -112,10 +111,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     });
     signupButton.addEventListener('click', signup);
     loginButton.addEventListener('click', async () => {
-        await login()
+        await login();
     });
-    googleButton.addEventListener('click', googleLogin)
-})
-
-
-
+    googleButton.addEventListener('click', googleLogin);
+});
