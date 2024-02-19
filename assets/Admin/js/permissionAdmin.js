@@ -46,6 +46,6 @@ async function showAdminPage() {
         adminPage.style.display = 'inline-block';
     }
 }
-if (accessToken) {
+if (accessTokenAdmin) {
     showAdminPage();
 }

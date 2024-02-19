@@ -53,6 +53,7 @@ export class AlarmService {
             where: {
                 userId,
             },
+            order: { createdAt: 'DESC' }
         });
     }
 }

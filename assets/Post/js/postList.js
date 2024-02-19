@@ -15,6 +15,8 @@ const statusDone = document.getElementById('statusDone');
 const statusUnfinished = document.getElementById('statusUnfinished');
 const searchInput = document.getElementById('searchInput');
 const searchButton = document.getElementById('searchButton');
+const TOKEN_ACCESS_POST = sessionStorage.getItem('accessToken');
+
 
 let foundPosts = [];
 let metaData = [];
@@ -282,7 +284,7 @@ async function warningPost(clickedPostId) {
         const response = await fetch(`/warning/${clickedPostId}`, {
             method: 'post',
             headers: {
-                Authorization: `Bearer ${TOKEN}`,
+                Authorization: `Bearer ${TOKEN_ACCESS_POST}`,
             },
         });
         const data = await response.json();
