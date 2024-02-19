@@ -29,28 +29,45 @@ async function findByUserId() {
         });
         const jsonData = await response.json();
 
-        dropdown.innerHTML = `<a
+        if (!jsonData) {
+            dropdown.innerHTML = `<a
                         href="#"    
                         class="d-flex align-items-center text-white text-decoration-none dropdown-toggle"
                         data-bs-toggle="dropdown"
                         aria-expanded="false"
                         >
-                            <img
-                                src="${jsonData.profileImage}"
-                                alt=""
-                                width="32"
-                                height="32"
-                                class="rounded-circle me-2"
-                            />
+                            <div class="profileImg>
+                                <img
+                                    class="rounded-circle me-2 noLogin"
+                                />
+                            </div>
+                            <strong>로그인을 해주세요.</strong>
+                        </a>`;
+        } else {
+            dropdown.innerHTML = `<a
+                        href="#"    
+                        class="d-flex align-items-center text-white text-decoration-none dropdown-toggle"
+                        data-bs-toggle="dropdown"
+                        aria-expanded="false"
+                        >
+                            <div class="profileImg>
+                                <img
+                                    src="${jsonData.profileImage}"
+                                    alt=""
+                                    
+                                    class="rounded-circle me-2"
+                                />
+                            </div>
                             <strong>${jsonData.nickname}</strong>
                         </a>
                         <ul class="dropdown-menu dropdown-menu-dark text-small shadow">
-                            <li><a class="dropdown-item" href="#">New project...</a></li>
-                            <li><a class="dropdown-item" href="#">Settings</a></li>
+                            <li><a class="dropdown-item" href="../../Post/postList.html">New Q&A</a></li>
+                            <li><a class="dropdown-item" href="../../ProjectPost/projectPostWrite.html">New project...</a></li>
                             <li><a class="dropdown-item" href="../../Auth/mypage.html">Profile</a></li>
                             <li><hr class="dropdown-divider" /></li>
                             <li><a class="dropdown-item" id="signOut">Sign out</a></li>
                         </ul>`;
+        }
         addEventListenerSignOut();
     } catch (error) {
         console.log(error.message);
