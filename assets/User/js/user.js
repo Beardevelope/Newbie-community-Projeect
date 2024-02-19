@@ -68,19 +68,6 @@ function add() {
     tagSearch(input.value);
 }
 
-// 필터
-nameButton.addEventListener('click', function () {
-    user.innerHTML = ``;
-    userInfo = [];
-    userList('?order=name');
-});
-
-newButton.addEventListener('click', function () {
-    user.innerHTML = ``;
-    userInfo = [];
-    userList('?order=createdAt');
-});
-
 // 페이지네이션을 업데이트하는 함수
 function updatePagination() {
     const totalPages = Math.ceil(userInfo.length / itemsPerPage);
