@@ -179,7 +179,7 @@ export class AuthService {
         if (!user) {
             throw new NotAcceptableException();
         }
-
+        console.log(user)
         await this.userService.updateUser(user.id, { isVerified: true });
 
         return user;

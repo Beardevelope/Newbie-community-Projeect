@@ -27,7 +27,7 @@ export class EmailService {
             { expiresIn: '1h' },
         );
         // 리다이렉션 url에 email과 userId만 받는 token을 생성하여 인증처리
-        const url = `/auth/verify/${token}`;
+        const url = `https://newveloper.com/auth/verify/${token}`;
 
         await this.mailerService.sendMail({
             to: email,
