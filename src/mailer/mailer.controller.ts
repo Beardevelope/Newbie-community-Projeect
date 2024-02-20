@@ -19,6 +19,7 @@ export class EmailController {
         @Req() req: Request,
         @Body('email') email: string,
     ): Promise<{ message: string }> {
+        console.log('accept email')
         await this.emailService.sendVerificationEmail(email, req['userId']);
 
         return { message: '이메일을 성공적으로 전송했습니다.' };
